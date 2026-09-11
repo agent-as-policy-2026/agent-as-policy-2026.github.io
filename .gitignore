@@ -1,0 +1,11 @@
+# During development nothing but the placeholder is tracked.
+# At launch the reviewed files are added explicitly with `git add -f <path>`.
+/data/
+/img/
+/media/
+/svg/
+/js/
+/css/
+/fonts/
+.DS_Store
+*.tmp
