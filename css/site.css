@@ -1,0 +1,1168 @@
+/* Agent as Policy for Robotic Manipulation - project page
+   One stylesheet. Light theme only in v1. The palette is the same one the generated
+   SVG charts carry, so page chrome and figures cannot drift apart.
+   Written for build/build_site.py; the episode viewer brings its own css/viewer.css
+   and reads the --ink / --muted / --bg / --surface / --rule / --accent tokens below. */
+
+@font-face {
+  font-family: "Ubuntu Sans AGP";
+  src: url("../fonts/ubuntu-sans-agp.woff2") format("woff2-variations"),
+       url("../fonts/ubuntu-sans-agp.woff2") format("woff2");
+  font-weight: 100 800;
+  font-stretch: 75% 100%;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Ubuntu Sans Mono AGP";
+  src: url("../fonts/ubuntu-sans-mono-agp.woff2") format("woff2-variations"),
+       url("../fonts/ubuntu-sans-mono-agp.woff2") format("woff2");
+  font-weight: 100 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+:root {
+  color-scheme: light;
+
+  /* THREE GROUNDS AND FOUR INKS. Every word sits on the board. A mount is a plate the
+     board carries: the method figure, Table 1, the code sheet, the citation. A well is the
+     dark full-bleed band a moving picture sits in, and it holds pictures only.
+
+     --fail is 3.94:1 on --board: a graphic mark only, never small text.
+     --accent is 2.49:1 on --well: no links inside a well. */
+
+  --board: #e9e9e4;       /* the page ground, every word. Ink measures 17.24:1 on it. */
+  --mount: #fcfcfb;       /* plates. This is the charts' own surface token, so a chart
+                             dropped on a mount is seamless and needs no edit. */
+  --well: #23211e;        /* every moving picture, full bleed. The mean of the darkest
+                             decile of the delivered posters, so the surround continues
+                             the footage's own shadow. */
+
+  --ink: #000000;         /* headings, body, every number: 17.24:1 on board, 20.46 on mount */
+  --ink-2: #52514e;       /* captions, notes: 6.52:1 on board */
+  --ink-3: #686761;       /* rail labels, spec labels: 4.66:1 on board, 5.53 on mount,
+                             4.93 on demo tint. Was #6b6a65, which is 4.45:1 on the board
+                             and under AA. The charts carry the same value as --tm. */
+  --rule: #d2d1c9;        /* every hairline: 1.26:1 on the board. Was #e1e0d9, which is
+                             1.09:1 there and effectively invisible. */
+  --accent: #1f5fa8;      /* links, focus, the active control. 5.29:1 on board. */
+  --fail: #d03b3b;        /* the failure mark, and nothing decorative. See the note above. */
+  --demo: #f1efe7;        /* the one tinted ground: human demonstration footage */
+  --surface: #f3f2ec;     /* recessed panels (the viewer reads this) */
+  --radius: 2px;
+
+  /* Two aliases, kept because css/viewer.css reads these token names and is not edited:
+     it maps --ev-bg from --bg and --ev-muted from --muted. Because --bg follows --board,
+     watch.html can set --board on <body> and the viewer keeps the ground its contrast
+     was audited against. Do not delete either line. */
+  --bg: var(--board);
+  --muted: var(--ink-2);
+
+  /* the colour the scroller's travelling covers fade out to: the ground at zero alpha */
+  /* The two covers a scroller paints over its own edge shadows. They belong here and
+     not on .agp-scroller: declared on the scroller itself they would beat the value a
+     plate sets for everything inside it, and a chart on a --mount plate would paint an
+     18px board-coloured band down its right edge. Anything that changes the ground under
+     a scroller sets both of these, in a rule on the ancestor. */
+  --scroll-ground: var(--board);
+  --scroll-fade: rgba(233, 233, 228, 0);
+
+  --font-sans: "Ubuntu Sans AGP", ui-sans-serif, system-ui, -apple-system, "Segoe UI",
+               Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-mono: "Ubuntu Sans Mono AGP", ui-monospace, "SFMono-Regular", Menlo, Consolas,
+               "Liberation Mono", monospace;
+
+  --page: 1120px;
+  --pad: clamp(1.1rem, 4vw, 3rem);
+  /* 57ch of this face measures 68 real characters a line. `ch` is the advance of "0",
+     which is wider than the average lowercase, so 68ch set 81 characters and read as a
+     newspaper column. The spec asks for 62 to 70. */
+  --measure: 57ch;
+  --nav-h: 3rem;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
+/* The no-JS contract: several controls ship with the hidden attribute and are unhidden
+   by their module. An author display declaration beats the user-agent [hidden] rule, so
+   this one has to be here, or a reader without JavaScript is shown buttons that do
+   nothing. */
+[hidden] { display: none !important; }
+
+html { -webkit-text-size-adjust: 100%; }
+
+body {
+  margin: 0;
+  background: var(--board);
+  color: var(--ink);
+  font-family: var(--font-sans);
+  font-size: 1.0625rem;
+  line-height: 1.62;
+  font-variant-numeric: tabular-nums;
+  text-rendering: optimizeLegibility;
+  /* clip, not hidden: hidden would turn the body into a scroll container and break the
+     sticky navigation. The declaration order leaves older browsers on hidden. */
+  overflow-x: hidden;
+  overflow-x: clip;
+}
+
+img, video { max-width: 100%; }
+img { height: auto; }
+
+a { color: var(--accent); text-underline-offset: 0.16em; text-decoration-thickness: from-font; }
+a:hover { text-decoration-thickness: 2px; }
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+/* ---------------------------------------------------------------- scrollers
+
+   Anything wider than its column scrolls sideways, and says so: two shadows pinned to
+   the container (background-attachment: scroll) and two covers that travel with the
+   content (local), so a shadow is visible exactly while there is more content that way.
+   No JavaScript, so it works in the no-JS page too. --scroll-ground is the colour the
+   covers paint, and must match the scroller's own background. */
+.agp-scroller {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  background-image:
+    linear-gradient(to right, var(--scroll-ground) 40%, var(--scroll-fade)),
+    linear-gradient(to left, var(--scroll-ground) 40%, var(--scroll-fade)),
+    radial-gradient(farthest-side at 0 50%, rgba(11, 11, 11, 0.19), rgba(11, 11, 11, 0)),
+    radial-gradient(farthest-side at 100% 50%, rgba(11, 11, 11, 0.19), rgba(11, 11, 11, 0));
+  background-position: left center, right center, left center, right center;
+  background-repeat: no-repeat;
+  background-size: 2.6rem 100%, 2.6rem 100%, 0.7rem 100%, 0.7rem 100%;
+  background-attachment: local, local, scroll, scroll;
+}
+.agp-scroller:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.agp-scrollhint {
+  font-size: 0.8125rem; color: var(--muted); margin: 0.35rem 0 0.8rem;
+  max-width: var(--measure); display: none;
+}
+
+.agp-sr {
+  position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+  overflow: hidden; clip-path: inset(50%); white-space: nowrap; border: 0;
+}
+
+.agp-skip {
+  position: absolute; left: -9999px; top: 0; z-index: 40;
+  background: var(--bg); color: var(--ink); padding: 0.6rem 1rem;
+  border: 1px solid var(--ink);
+}
+.agp-skip:focus { left: 0.5rem; top: 0.5rem; }
+
+/* ---------------------------------------------------------------- navigation */
+
+.agp-nav {
+  position: sticky; top: 0; z-index: 30;
+  display: flex; align-items: center; gap: 1rem;
+  min-height: var(--nav-h);
+  padding: 0 var(--pad);
+  background: var(--bg);
+  border-bottom: 1px solid var(--rule);
+}
+.agp-nav-home {
+  font-weight: 620; letter-spacing: 0.01em; color: var(--ink); text-decoration: none;
+  font-variation-settings: "wdth" 92, "wght" 640;
+}
+.agp-nav-links {
+  display: flex; gap: 1.05rem; margin: 0; padding: 0; list-style: none;
+  overflow-x: auto; scrollbar-width: none; flex: 1 1 auto;
+  /* the strip overflows up to about 830px, so the fade cannot live in a narrow-width
+     media query; 2.5rem fades a whole word rather than one letter */
+  -webkit-mask-image: linear-gradient(to right, #000 calc(100% - 2.5rem), transparent);
+  mask-image: linear-gradient(to right, #000 calc(100% - 2.5rem), transparent);
+}
+.agp-nav-links::-webkit-scrollbar { display: none; }
+.agp-nav-links a {
+  display: block; padding: 0.85rem 0; white-space: nowrap;
+  font-size: 0.875rem; color: var(--muted); text-decoration: none;
+  border-bottom: 2px solid transparent;
+}
+.agp-nav-links a:hover { color: var(--ink); border-bottom-color: var(--ink); }
+.agp-pauseall {
+  flex: 0 0 auto; font: inherit; font-size: 0.8125rem; font-family: var(--font-mono);
+  background: none; border: 1px solid var(--rule); border-radius: var(--radius);
+  color: var(--muted); padding: 0.3rem 0.6rem; cursor: pointer; min-height: 2rem;
+}
+.agp-pauseall:hover { border-color: var(--ink); color: var(--ink); }
+.agp-pauseall[aria-pressed="true"] { border-color: var(--accent); color: var(--accent); }
+
+/* ---------------------------------------------------------------- page shell */
+
+.agp-main { width: 100%; }
+
+.agp-hero, .agp-section, .agp-footer, .agp-pagehead, .agp-trackwrap {
+  width: min(var(--page), 100%);
+  margin-inline: auto;
+  padding-inline: var(--pad);
+  scroll-margin-top: calc(var(--nav-h) + 0.5rem);
+}
+
+/* Section separation. The two reference pages measure 139 to 163px of air before an h2.
+   This is FINAL_SPEC section 3.3 exactly: 3.4rem + 4.2rem = 129px, about 145px with the
+   heading's own space. An earlier build trimmed a third of it back to buy height; the words
+   the rebuild cut pay for it instead. It is what makes eight sections read as eight places
+   rather than as one scroll. */
+.agp-section { padding-top: 3.4rem; padding-bottom: 0; border-top: 1px solid var(--rule); margin-top: 4.2rem; }
+.agp-section:first-of-type { border-top: 0; }
+
+.agp-section > :where(p, ul, ol, dl, blockquote) { max-width: var(--measure); }
+.agp-section > :where(h2, h3, h4) { max-width: 34ch; }
+
+.agp-section-head { display: flex; flex-wrap: wrap; gap: 0.5rem 2.5rem; align-items: baseline;
+                    justify-content: space-between; margin-bottom: 0.9rem; }
+/* A section that has a lede puts it beside the heading instead of under it. Stacked, a
+   two-word heading sat over a 550px ribbon in a 1120px track and the right third of the
+   board was empty through every section opening. Below 62rem they stack, in source order,
+   exactly as before. */
+.agp-section-head-wide { display: grid; grid-template-columns: minmax(0, 1fr); gap: 0.4rem 3rem;
+                         align-items: baseline; justify-content: start; margin-bottom: 1.1rem; }
+.agp-section-head-wide > .agp-lede { margin: 0; max-width: var(--measure); }
+@media (min-width: 62rem) {
+  .agp-section-head-wide { grid-template-columns: minmax(0, 27rem) minmax(0, 1fr); }
+}
+
+.agp-h2 {
+  font-size: clamp(1.6rem, 1.1rem + 1.6vw, 2.05rem);
+  line-height: 1.14; margin: 0;
+  font-variation-settings: "wdth" 94, "wght" 660;
+  letter-spacing: -0.008em;
+}
+.agp-h3 { font-size: 1.15rem; line-height: 1.3; margin: 1.7rem 0 0.5rem;
+          font-variation-settings: "wght" 600; }
+.agp-h4 { font-size: 0.98rem; margin: 1.6rem 0 0.4rem; font-variation-settings: "wght" 600; }
+
+.agp-lede { font-size: 1.1875rem; line-height: 1.5; margin: 0 0 0.8rem; }
+p { margin: 0 0 1.05rem; }
+code { font-family: var(--font-mono); font-size: 0.92em; }
+
+.agp-note, .agp-footnote, .agp-tablenote {
+  font-size: 0.875rem; line-height: 1.55; color: var(--muted); max-width: var(--measure);
+}
+.agp-list { padding-left: 1.1rem; margin: 0 0 1rem; }
+.agp-list li { margin-bottom: 0.5rem; }
+
+.agp-two-up { display: grid; gap: 1rem 3rem; grid-template-columns: 1fr; margin: 1.2rem 0 1rem; }
+.agp-col > .agp-h3:first-child { margin-top: 0.6rem; }
+@media (min-width: 54rem) { .agp-two-up { grid-template-columns: 1fr 1fr; } }
+
+/* ---------------------------------------------------------------- hero */
+
+.agp-hero { padding-top: 3rem; }
+
+.agp-title {
+  font-size: clamp(2.3rem, 1.2rem + 4.4vw, 3.65rem);
+  line-height: 1.045;
+  letter-spacing: -0.018em;
+  font-variation-settings: "wdth" 92, "wght" 660;
+  margin: 0 0 1rem;
+  max-width: 19ch;
+}
+.agp-claim { font-size: 1.1875rem; line-height: 1.5; max-width: 60ch; margin: 0 0 1.6rem; }
+.agp-authors { margin: 0 0 0.25rem; max-width: 66ch; line-height: 1.75; }
+.agp-author { white-space: nowrap; margin-right: 0.85rem; }
+.agp-author sup { font-family: var(--font-mono); font-size: 0.68em; margin-left: 0.1em; }
+.agp-affils { margin: 0 0 0.5rem; font-size: 0.9375rem; color: var(--muted); max-width: 66ch; }
+.agp-affil-item { margin-right: 1.1rem; white-space: nowrap; }
+.agp-affil-item sup { font-family: var(--font-mono); margin-right: 0.2em; }
+.agp-hero-meta {
+  display: flex; flex-wrap: wrap; gap: 0.2rem 1.6rem;
+  font-size: 0.875rem; color: var(--muted); margin: 0 0 1.5rem; max-width: none;
+}
+.agp-btns { display: flex; flex-wrap: wrap; gap: 0.5rem; margin: 0; max-width: none; }
+.agp-btn {
+  display: inline-flex; align-items: baseline; gap: 0.4rem;
+  padding: 0.5rem 1rem; min-height: 2.6rem;
+  border: 1px solid var(--ink); border-radius: var(--radius);
+  color: var(--ink); text-decoration: none; font-size: 0.9375rem;
+  font-variation-settings: "wght" 520;
+  background: var(--bg);
+}
+.agp-btn:hover { background: var(--ink); color: var(--bg); }
+.agp-btn-pending { border-color: var(--rule); color: var(--ink-3); cursor: default; }
+.agp-btn-pending:hover { background: var(--bg); color: var(--ink-3); }
+.agp-btn-sub { font-family: var(--font-mono); font-size: 0.75rem; }
+
+/* the evidence strip: 37 marks, the page's one loud idea */
+
+.agp-evidence { margin: 1.4rem 0 0.4rem; border-top: 1px solid var(--ink); padding-top: 0.8rem; }
+.agp-ev-head { font-size: 0.9375rem; margin: 0 0 0.9rem; font-variation-settings: "wght" 560; }
+.agp-ev-groups { display: flex; flex-wrap: wrap; gap: 1rem 1.8rem; margin: 0 0 0.9rem; padding: 0; list-style: none; }
+.agp-ev-group { display: grid; grid-template-columns: auto auto; gap: 0.1rem 0.5rem;
+                 align-items: baseline; }
+.agp-ev-group .agp-marks { grid-column: 1 / -1; }
+.agp-ev-label { font-size: 0.8125rem; color: var(--muted); }
+.agp-ev-count { font-family: var(--font-mono); font-size: 0.8125rem; color: var(--ink); }
+.agp-ev-read { font-size: 0.875rem; color: var(--muted); max-width: var(--measure); margin: 0 0 0.5rem; }
+
+/* ---------------------------------------------------------------- trial marks */
+
+.agp-marks { display: inline-flex; flex-wrap: wrap; gap: 1px; align-items: center; }
+.agp-mark {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 1.32rem; height: 1.55rem; text-decoration: none; color: var(--ink);
+  position: relative;
+}
+.agp-mark-glyph {
+  width: 0.72rem; height: 0.72rem; display: block;
+  border: 1.4px solid var(--ink); background: var(--ink);
+}
+.agp-mark[data-outcome="failure"] .agp-mark-glyph,
+.agp-trial-outcome[data-outcome="failure"] .agp-mark-glyph {
+  background: transparent; border-color: var(--fail);
+  background-image: linear-gradient(to top left, transparent calc(50% - 0.9px), var(--fail) calc(50% - 0.9px),
+                    var(--fail) calc(50% + 0.9px), transparent calc(50% + 0.9px)),
+                    linear-gradient(to top right, transparent calc(50% - 0.9px), var(--fail) calc(50% - 0.9px),
+                    var(--fail) calc(50% + 0.9px), transparent calc(50% + 0.9px));
+}
+.agp-mark:hover .agp-mark-glyph { outline: 2px solid var(--accent); outline-offset: 2px; }
+.agp-mark:focus-visible { outline: none; }
+.agp-mark:focus-visible .agp-mark-glyph { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+.agp-tooltip {
+  position: absolute; z-index: 50; max-width: 20rem;
+  /* 1.4.13: the reader can move the pointer onto this and finish reading a long row */
+  background: var(--mount); color: var(--ink);
+  border: 1px solid var(--ink); border-radius: var(--radius);
+  padding: 0.5rem 0.6rem; font-size: 0.8125rem; line-height: 1.45;
+  box-shadow: 0 2px 0 rgba(0, 0, 0, 0.06);
+}
+.agp-tooltip dl { display: grid; grid-template-columns: auto auto; gap: 0.05rem 0.6rem; margin: 0.3rem 0 0; }
+.agp-tooltip dt { color: var(--ink-3); font-size: 0.75rem; }
+.agp-tooltip dd { margin: 0; font-family: var(--font-mono); font-size: 0.75rem; }
+.agp-tooltip-title { font-variation-settings: "wght" 600; }
+.agp-tooltip-outcome[data-outcome="failure"] { color: var(--fail); }
+
+/* ---------------------------------------------------------------- grounds and bands
+
+   Three devices, and the page is built out of them: a well (dark, full bleed, pictures
+   only), a plate (a light mount the board carries) and the masthead grid. Nothing here
+   has a shadow, a gradient or a radius other than --radius. */
+
+/* The dark band a picture sits in. Full bleed by the standard trick, so it needs no
+   wrapper outside the track: it is as wide as the viewport whatever contains it. The
+   clip's title, caption and provenance rail stay on the board below it, because --accent
+   is 2.49:1 on --well and type does not belong in there. */
+.agp-well {
+  background: var(--well);
+  padding: 24px 0;
+  width: 100vw;
+  margin-left: calc(50% - 50vw);
+}
+.agp-well-inner {
+  max-width: var(--page);
+  margin: 0 auto;
+  padding: 0 var(--pad);
+}
+
+/* A plate: the mount ground under a figure, a table, a code sheet or the citation.
+   --mount is the charts' own surface token, so a chart sits on one seamlessly. */
+.agp-plate {
+  background: var(--mount);
+  border: 1px solid var(--rule);
+  border-radius: var(--radius);
+  padding: 24px;
+  max-width: 960px;
+  --scroll-ground: var(--mount);
+  --scroll-fade: rgba(252, 252, 251, 0);
+}
+.agp-plate :where(p, li) { max-width: var(--measure); }
+.agp-plate figcaption { max-width: var(--measure); }
+.agp-plate > :first-child { margin-top: 0; }
+.agp-plate > :last-child { margin-bottom: 0; }
+
+/* The masthead: title and claim left, identity and buttons right, stacking below 860px
+   with the left column first. */
+.agp-masthead { display: grid; gap: 1.6rem 2.5rem; align-items: start; }
+@media (min-width: 54rem) {
+  .agp-masthead { grid-template-columns: 7fr 5fr; }
+}
+.agp-masthead-main > :first-child, .agp-masthead-side > :first-child { margin-top: 0; }
+
+/* The contact strip, the clip chips and the failure chips are the same device at three
+   scales: a tablist whose selection shows or hides whole panels. An unselected tab is
+   never dimmed; the selected one takes a 3px rule and a heavier weight, and nothing else
+   changes. The existence of every trial stays legible without a click. */
+.agp-strip {
+  display: grid; gap: 14px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  margin: 0 0 1.6rem; padding: 0;
+}
+@media (min-width: 34rem) { .agp-strip { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+@media (min-width: 56rem) { .agp-strip { grid-template-columns: repeat(5, minmax(0, 1fr)); } }
+/* The cell, not the button, is the grid child: the marks are links to each trial's own
+   record, and a link inside a button is not a control anyone can operate. So the button
+   carries the poster, the name and the score, and the marks sit under it. */
+.agp-strip-cell { display: grid; gap: 0.25rem; align-content: start; min-width: 0; }
+.agp-strip-tab {
+  font: inherit; font-size: 0.9375rem; text-align: left; cursor: pointer;
+  display: grid; gap: 0.28rem; padding: 0 0 0.5rem; min-width: 0;
+  background: none; border: 0; border-bottom: 3px solid transparent;
+  color: var(--ink); font-variation-settings: "wght" 500;
+}
+.agp-strip-tab[aria-selected="true"] {
+  border-bottom-color: var(--ink); font-variation-settings: "wght" 650;
+}
+/* Five delivered posters of four different shapes. The strip is a contact sheet, so they
+   are trimmed to one frame rather than left to set five different row heights; the same
+   poster is shown whole, uncropped, on the player the cell selects. */
+.agp-strip-poster {
+  display: block; width: 100%; height: auto; background: var(--well);
+  aspect-ratio: 1.62 / 1; object-fit: cover; object-position: center;
+  border: 1px solid var(--rule);
+}
+.agp-strip-name { line-height: 1.25; }
+.agp-strip-count { font-family: var(--font-mono); font-size: 0.78rem; color: var(--ink-3); }
+/* Blocks is three configurations and towel is two, so the marks come in groups with a
+   gap between them: fifteen marks in a row would read as one run of fifteen trials. */
+.agp-strip-marks { display: flex; flex-wrap: wrap; gap: 0 0.5rem; margin-left: -0.16rem; }
+
+.agp-chiprow { display: flex; flex-wrap: wrap; gap: 10px; margin: 1.2rem 0 0; padding: 0; }
+.agp-chip-tab {
+  font: inherit; font-size: 0.875rem; cursor: pointer; text-align: left;
+  padding: 0.3rem 0.7rem; min-height: 2.2rem;
+  background: none; color: var(--ink);
+  border: 1px solid var(--rule); border-radius: var(--radius);
+}
+.agp-chip-tab[aria-selected="true"] { border-color: var(--ink); font-variation-settings: "wght" 650; }
+.agp-chip-tab:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+/* A hidden panel is hidden. [hidden] is already !important above; this is the belt for a
+   stylesheet that later sets display on a panel class. */
+[role="tabpanel"][hidden] { display: none !important; }
+
+/* The task gallery. One band for five families; the panel carries the family's own words,
+   its chips and its clips, and the clip puts its picture in the well and everything it
+   says on the board underneath. */
+/* A tab panel is not a direct child of the section, so the section's own measure rule
+   does not reach into it. Repeat it here: 1018px of running text is 110 characters a
+   line, and the page is set to 62-70. */
+.agp-task-panel > :where(p, .agp-criterion, .agp-note) { max-width: var(--measure); }
+/* Two columns wherever a section opens with a paragraph: what it is on the left, what it
+   came to on the right. Stacked, each of these was a 550px ribbon down the left of a
+   1120px board with the right third empty, which is the single thing that made the whole
+   page read as narrow. Below 62rem they stack, in source order, exactly as before. */
+.agp-taskhead, .agp-failhead, .agp-bandtail { display: grid; grid-template-columns: minmax(0, 1fr); gap: 0 2.5rem; }
+.agp-taskhead > *, .agp-failhead > *, .agp-bandtail > * { max-width: var(--measure); }
+.agp-taskhead > div > :last-child, .agp-failhead > :last-child, .agp-bandtail > :last-child { margin-bottom: 0; }
+@media (min-width: 62rem) {
+  .agp-taskhead, .agp-bandtail { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); align-items: start; }
+  .agp-failhead { grid-template-columns: minmax(0, 27rem) minmax(0, 1fr); align-items: baseline; }
+  .agp-failhead > .agp-h3 { margin-top: 0; }
+}
+/* The abstract is one quoted paragraph with a one-word heading over it. Beside it instead:
+   the heading labels the column the way the section heads above it do. */
+@media (min-width: 62rem) {
+  #abstract { display: grid; grid-template-columns: minmax(0, 27rem) minmax(0, 1fr);
+              gap: 0 3rem; align-items: start; }
+  #abstract > .agp-section-head { margin-bottom: 0; }
+  #abstract > .agp-abstract { margin-top: 0; }
+}
+.agp-task-text { margin: 0 0 0.6rem; }
+.agp-task-panel > .agp-result-line { margin-top: 0; }
+.agp-clip-panel > .agp-fig { margin: 1.4rem 0 0; }
+/* The goal image an image-conditioned clip was run against, above its player: what the
+   agent was asked for, beside what it did. Small on purpose - it is the instruction, and
+   the evidence is the picture under it. */
+.agp-given { margin: 1.1rem 0 0; }
+.agp-given .agp-fig { margin: 0; display: grid; grid-template-columns: 7.5rem minmax(0, 1fr);
+                      gap: 0 1rem; align-items: start; max-width: none; }
+.agp-given figcaption { margin-top: 0; font-size: 0.875rem; }
+.agp-given img { aspect-ratio: 4 / 3; object-fit: cover; }
+
+/* results.html's second level: the same underline the level above it uses, so two strips
+   read as one hierarchy instead of boxed chips under an underlined bar. */
+.agp-tab-panel > .agp-trackwrap > .agp-chiprow { gap: 0 1.6rem; border-bottom: 1px solid var(--rule); }
+.agp-tab-panel > .agp-trackwrap > .agp-chiprow > .agp-chip-tab {
+  border: 0; border-bottom: 2px solid transparent; border-radius: 0; margin-bottom: -1px;
+  padding: 0.35rem 0 0.45rem; font-size: 0.9375rem;
+}
+.agp-tab-panel > .agp-trackwrap > .agp-chiprow > .agp-chip-tab[aria-selected="true"] {
+  border-bottom-color: var(--ink);
+}
+/* The human-demonstration tint survives, on the words rather than on the frame: inside the
+   band every clip shares one well, so the tint cannot be the picture's surround here. */
+.agp-tasks .agp-clip[data-variant="demo"] {
+  max-width: none; background: none; border: 0; padding: 0;
+}
+.agp-tasks .agp-clip[data-variant="demo"] > .agp-capwrap {
+  background: var(--demo); border: 1px solid var(--rule); padding: 0.9rem 1rem;
+}
+.agp-tasks .agp-demo-flag { margin: 0 0 0.5rem; }
+/* In the band the success criterion runs on from the result line instead of standing in
+   its own ruled block: the well under it is the loud thing here, and a second rule beside
+   the marks above competes with it. Same words, same source, one line less. */
+.agp-tasks .agp-criterion { border-left: 0; padding-left: 0; margin: 0.15rem 0 0.7rem; }
+.agp-tasks .agp-criterion-label { display: inline; margin-right: 0.45rem; }
+/* One band, fourteen clips, four different shapes. The picture is sized to a fixed
+   HEIGHT and takes whatever width its own shape then asks for, so switching chips does
+   not move the page under the reader and no clip is ever drawn wider than the pixels it
+   was encoded at. --vw and --vh are the clip's own dimensions, written from clips.json;
+   --agp-ctl is the reserved control band and is not touched here. */
+.agp-picbox { margin-left: auto; margin-right: auto; }
+.agp-tasks { --agp-pic: 420px; }
+.agp-tasks .agp-picbox {
+  width: min(100%, calc(var(--vw) * 1px), calc(var(--agp-pic, 470px) * var(--vw) / var(--vh)));
+}
+
+/* ---------------------------------------------------------------- figures, clips */
+
+.agp-fig { margin: 1.1rem 0 1.3rem; }
+/* Every encode carries its provenance line burned into the bottom of the picture, which
+   is exactly where a browser paints its native control bar: on a paused clip, and 26 of
+   the 28 are paused at any moment, the bar would sit on that line. Re-encoding 28 files
+   to letterbox them is a bigger risk than it is worth, so the frame reserves a band under
+   the picture instead: it is the clip's own aspect ratio plus --agp-ctl, and the video
+   fills it and contains the picture at the top. The controls are drawn at the bottom of
+   the video's content box, which is now the band. --vw and --vh are the clip's pixel
+   dimensions, written by build/build_site.py from clips.json. */
+.agp-frame {
+  position: relative;
+  width: 100%;
+  padding-bottom: calc(100% * var(--vh, 9) / var(--vw, 16) + var(--agp-ctl, 46px));
+  background: var(--well);
+  border: 0;
+}
+.agp-video {
+  position: absolute; inset: 0;
+  display: block; width: 100%; height: 100%; background: var(--well);
+  object-fit: contain;
+  object-position: top center;
+}
+.agp-video-fallback { padding: 1rem; font-size: 0.875rem; color: var(--muted); }
+
+/* The clip foot is one column. It used to put the caption beside a 17.5rem specification
+   list; the provenance rail took that job and runs the full width under the caption. */
+.agp-capwrap { display: grid; gap: 0.35rem; margin-top: 0.6rem; grid-template-columns: minmax(0, 1fr); }
+.agp-cap-title { font-size: 1rem; margin: 0 0 0.3rem; font-variation-settings: "wght" 600; }
+.agp-cap-text { font-size: 0.9375rem; line-height: 1.55; color: var(--muted); margin: 0; max-width: 62ch; }
+.agp-cap-note { font-size: 0.875rem; color: var(--muted); margin: 0.5rem 0 0; max-width: 62ch; }
+/* The verified caption, one click under the short one, on the clips whose caption runs
+   past 34 words. The full text is always on the page; it is not always printed. */
+.agp-capfull { margin: 0.45rem 0 0; }
+.agp-capfull > summary { font-size: 0.8125rem; color: var(--ink-2); cursor: pointer; }
+.agp-capfull > summary:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.agp-capfull .agp-cap-text { margin-top: 0.4rem; }
+
+.agp-spec { margin: 0; display: grid; gap: 0.05rem; align-content: start;
+            border-top: 1px solid var(--rule); padding-top: 0.35rem; }
+.agp-spec-row { display: grid; grid-template-columns: 5.2rem 1fr; gap: 0.6rem; align-items: baseline; }
+.agp-spec dt { font-size: 0.75rem; color: var(--ink-3); }
+.agp-spec dd { margin: 0; font-family: var(--font-mono); font-size: 0.78rem; line-height: 1.5; }
+/* --fail is 3.94:1 on --board: legal as a graphic mark, illegal as small text. A failure
+   is marked with the hollow square, never with coloured type. */
+.agp-spec-fail { color: var(--ink); }
+.agp-spec-fail::before {
+  content: ""; display: inline-block; width: 0.55em; height: 0.55em;
+  margin-right: 0.4em; border: 1.5px solid var(--fail);
+}
+
+/* ---------------------------------------------------------------- the provenance rail
+
+   Under every clip, in place of the nine-row definition list that cost about 250px there.
+   Same markup contract: a <dl> of <dt>/<dd> pairs, so what a screen reader walks is
+   unchanged. Only the axis is: labels above values, cells flowing across one line at
+   1280px and wrapping to about three on a phone. Every value is read from clips.json by
+   build/build_site.py; none of it is typed.
+
+   Cells size to their content, so the one clip whose real-time note is a sentence takes
+   the room it needs instead of forcing nine narrow columns on the other twenty-seven. */
+.agp-rail {
+  margin: 0.55rem 0 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 16px;
+  border-top: 1px solid var(--rule);
+  padding-top: 0.45rem;
+  align-items: start;
+}
+.agp-rail-cell { min-width: 0; max-width: 100%; }
+.agp-rail-cell + .agp-rail-cell {
+  border-left: 1px solid var(--rule);
+  padding-left: 16px;
+}
+/* The verdict is a sentence, not a measurement: it takes a row of its own under the
+   measurements instead of trailing the last of them as a half-width orphan with a rule
+   down its left. */
+.agp-rail-cell.agp-rail-wide {
+  flex: 1 0 100%; border-left: 0; padding-left: 0;
+  border-top: 1px solid var(--rule); padding-top: 0.4rem; margin-top: 0.1rem;
+}
+.agp-rail dt { font-size: 0.72rem; line-height: 1.3; color: var(--ink-3); }
+.agp-rail dd {
+  margin: 0; font-family: var(--font-mono); font-size: 0.8125rem; line-height: 1.35;
+  color: var(--ink); overflow-wrap: break-word;
+}
+.agp-clip[data-variant="demo"] { background: var(--demo); padding: 1rem; max-width: 44rem;
+                                 border: 1px solid var(--rule); }
+.agp-clip[data-variant="demo"] .agp-frame { border: 1px solid #d8d4c6; background: var(--demo); }
+.agp-demo-flag {
+  font-family: var(--font-mono); font-size: 0.78rem; margin: 0 0 0.6rem;
+  color: var(--ink); display: inline-block;
+  border-bottom: 2px solid var(--ink); padding-bottom: 0.15rem;
+}
+.agp-clip[data-variant="failure"] { border-left: 3px solid var(--fail); padding-left: 1rem; }
+.agp-clip[data-variant="hero"] { margin-top: 1.2rem; }
+.agp-hero { --agp-pic: 385px; }
+.agp-hero .agp-picbox {
+  width: min(100%, calc(var(--vw) * 1px), calc(var(--agp-pic) * var(--vw) / var(--vh)));
+}
+
+/* A still is a reference, not the evidence of a run: keep it modest unless it is
+   explicitly wide (the rig photograph) or filling a grid cell. */
+.agp-still { max-width: 30rem; }
+.agp-grid .agp-still, .agp-pair .agp-still { max-width: none; }
+.agp-still-wide { max-width: 46rem; }
+/* An image whose content has to be readable gets the whole column and a link to the
+   file at full size. */
+.agp-still-full { max-width: none; }
+.agp-still-full img { width: 100%; }
+.agp-fullsize-link { font-size: 0.8125rem; margin: 0.3rem 0 0; }
+.agp-still img { display: block; width: 100%; border: 1px solid var(--rule); background: var(--surface); }
+.agp-still figcaption, .agp-chart figcaption {
+  font-size: 0.875rem; line-height: 1.5; color: var(--muted); margin-top: 0.45rem; max-width: 62ch;
+}
+.agp-still-wide { margin-left: 0; }
+.agp-agent-made img { border-left: 3px solid var(--ink); }
+.agp-agent-made figcaption::before {
+  content: "Made by the agent during the run. ";
+  font-family: var(--font-mono); font-size: 0.78rem; color: var(--ink);
+}
+
+/* align-items: start keeps a row of images of different heights from stretching, and
+   the shared aspect ratio below keeps their captions on one baseline. */
+.agp-grid { display: grid; gap: 1rem 1.2rem; margin: 1.4rem 0; grid-template-columns: 1fr;
+            align-items: start; }
+@media (min-width: 40rem) {
+  .agp-grid-2, .agp-grid-3 { grid-template-columns: repeat(2, 1fr); }
+  .agp-grid-4, .agp-grid-5 { grid-template-columns: repeat(2, 1fr); }
+}
+@media (min-width: 60rem) {
+  .agp-grid-3 { grid-template-columns: repeat(3, 1fr); }
+  .agp-grid-4 { grid-template-columns: repeat(4, 1fr); }
+  .agp-grid-5 { grid-template-columns: repeat(3, 1fr); }
+}
+/* In a grid of renders and photographs the sources have different shapes. One ratio for
+   every cell, the image centred inside it, so the row bottoms and the captions line up.
+   Nothing is cropped away that the caption depends on: these are objects on an empty
+   ground. */
+.agp-grid-figs .agp-still img { aspect-ratio: 4 / 3; object-fit: contain; background: var(--bg); }
+.agp-grid .agp-fig { margin: 0; }
+.agp-pair { display: grid; gap: 1.2rem; grid-template-columns: 1fr; margin: 1.4rem 0;
+             align-items: start; }
+@media (min-width: 46rem) { .agp-pair { grid-template-columns: 1fr 1fr; } }
+.agp-pair .agp-fig { margin: 0; }
+
+.agp-pairclips { display: grid; gap: 1.6rem; grid-template-columns: 1fr; margin: 1.4rem 0 1.8rem; }
+@media (min-width: 60rem) { .agp-pairclips { grid-template-columns: 1fr 1fr; } }
+.agp-pairclips .agp-fig { margin: 0; }
+
+/* ---------------------------------------------------------------- charts */
+
+.agp-chart { margin: 1.5rem 0 1.7rem; }
+/* A chart is drawn at its own width (--figw, from the figures manifest). Below that the
+   wrapper scrolls at 1:1 rather than shrinking the type: at 0.72x the 10px axis labels
+   land at 7 CSS px, which is not readable on a phone. The wrapper is focusable, so a
+   keyboard can reach the right-hand side; role="img" on the SVG prunes its children, so
+   there is nothing focusable inside. */
+.agp-fig-scroll > svg, .agp-fig-narrow > svg { min-width: var(--figw, 660px); }
+.agp-fig-alt-toggle { margin-top: 0.5rem; }
+.agp-fig-alt-toggle > summary { font-size: 0.8125rem; color: var(--muted); cursor: pointer; }
+.agp-fig-alt-body { margin-top: 0.6rem; }
+
+/* The charts carry their own palette in an inline <style>. This selector has higher
+   specificity, so these are the values that actually paint: they are the same seven that
+   build/figures/chartlib.py writes, and the two must be changed together. Every mark
+   colour clears 3:1 on the chart surface and --tm clears 4.5:1 as small text. --grid
+   stays a hairline at the page's own --rule value: it is a reading aid, not a value, and
+   every number in every chart is also in the table view underneath it. */
+html .agpc {
+  --s: #fcfcfb; --tp: #0b0b0b; --ts: #52514e; --tm: #6b6a65; --grid: #e1e0d9;
+  --ax: #8f8e83; --band: rgba(11, 11, 11, 0.035);
+  --c1: #3a82dc; --c2: #cf5a24; --c3: #12855c; --c4: #8a6100; --c5: #c9567f;
+  --c6: #008300; --crit: #d03b3b;
+  font-family: var(--font-sans);
+}
+
+table.fig-table { border-collapse: collapse; font-size: 0.8125rem; width: 100%;
+                  font-variant-numeric: tabular-nums; font-family: var(--font-mono); }
+table.fig-table caption { text-align: left; font-size: 0.8125rem; padding-bottom: 0.4rem;
+                          color: var(--muted); font-family: var(--font-sans); }
+table.fig-table th, table.fig-table td { text-align: right; padding: 0.28rem 0.5rem;
+                                         border-bottom: 1px solid var(--rule); white-space: nowrap; }
+table.fig-table th[scope="row"] { text-align: left; font-family: var(--font-sans);
+                                  font-variation-settings: "wght" 500; }
+table.fig-table thead th { text-align: right; font-family: var(--font-sans);
+                           font-variation-settings: "wght" 600; }
+table.fig-table thead th:first-child { text-align: left; }
+p.fig-note, p.fig-src { font-size: 0.75rem; color: var(--ink-3); margin: 0.4rem 0 0; }
+.fig-alt h3, .fig-alt h4 { font-size: 0.95rem; margin: 0 0 0.5rem; }
+.fig-alt p, .fig-alt li { font-size: 0.875rem; line-height: 1.55; }
+
+/* ---------------------------------------------------------------- tables */
+
+.agp-tablewrap { margin: 1rem 0 0.8rem; border-top: 1px solid var(--ink); }
+.agp-table { border-collapse: collapse; width: 100%; font-size: 0.9375rem; }
+.agp-table th, .agp-table td { text-align: left; padding: 0.45rem 0.9rem 0.45rem 0;
+                               border-bottom: 1px solid var(--rule); vertical-align: baseline; }
+.agp-table thead th { font-size: 0.8125rem; color: var(--muted); font-variation-settings: "wght" 560;
+                      padding-top: 0.5rem; padding-bottom: 0.4rem; white-space: nowrap; }
+.agp-table tbody th[scope="row"] { font-variation-settings: "wght" 560; padding-right: 1.4rem; }
+.agp-table td:last-child, .agp-table th:last-child { padding-right: 0; }
+.agp-num { text-align: right; font-family: var(--font-mono); white-space: nowrap; }
+.agp-table td.agp-num, .agp-table th.agp-num { text-align: right; padding-left: 1.2rem; }
+.agp-stat { display: inline-block; font-size: 0.9375rem; margin-right: 0.35rem; }
+.agp-range { display: inline-block; font-size: 0.75rem; color: var(--ink-3); }
+.agp-nodata { color: var(--ink-3); font-family: var(--font-sans); font-size: 0.8125rem;
+              text-align: right; }
+.agp-frac { font-family: var(--font-mono); display: inline-block; margin-right: 0.45rem; }
+.agp-td-success { white-space: nowrap; min-width: 7.2rem; }
+.agp-td-success .agp-marks { margin-top: 0.15rem; }
+.agp-group-row th { font-variation-settings: "wght" 620; padding-top: 1.1rem; font-size: 0.875rem;
+                    border-bottom-color: var(--ink); }
+.agp-table-1 tbody th[scope="row"] { min-width: 17rem; }
+.agp-table-2 tbody th[scope="row"] { min-width: 13rem; }
+.agp-table-trials { font-size: 0.8125rem; }
+.agp-table-trials td { white-space: nowrap; font-family: var(--font-mono); }
+.agp-table-trials tbody th[scope="row"] { font-family: var(--font-mono); font-size: 0.75rem; }
+.agp-table-small { font-size: 0.875rem; }
+.agp-dagger { font-family: var(--font-mono); font-size: 0.8em; }
+.agp-dagger a { text-decoration: none; }
+.agp-tablenote { margin-top: 0.5rem; }
+
+.agp-key { display: grid; gap: 0.35rem; margin: 0 0 1rem; }
+.agp-keyrow { display: grid; grid-template-columns: 1fr; gap: 0.1rem; }
+.agp-keyrow dt { font-variation-settings: "wght" 560; font-size: 0.9375rem; }
+.agp-keyrow dd { margin: 0; font-size: 0.9375rem; color: var(--muted); }
+
+.agp-protocol { margin: 2.2rem 0 1rem; border-top: 1px solid var(--ink); padding-top: 0.8rem; }
+.agp-protocol-grid { display: grid; gap: 1.1rem 2.4rem; grid-template-columns: 1fr; }
+@media (min-width: 46rem) { .agp-protocol-grid { grid-template-columns: 1fr 1fr; } }
+@media (min-width: 72rem) { .agp-protocol-grid { grid-template-columns: repeat(3, 1fr); } }
+.agp-protocol-item h4 { margin: 0 0 0.2rem; font-size: 0.9375rem; font-variation-settings: "wght" 600; }
+.agp-protocol-item p { margin: 0; font-size: 0.875rem; line-height: 1.55; color: var(--muted); }
+
+/* ---------------------------------------------------------------- in short */
+
+.agp-chips { display: grid; grid-template-columns: 1fr; gap: 0 2rem; margin: 0 0 1rem;
+             border-top: 1px solid var(--ink); }
+@media (min-width: 40rem) { .agp-chips { grid-template-columns: 1fr 1fr; } }
+@media (min-width: 64rem) { .agp-chips { grid-template-columns: repeat(4, 1fr); } }
+.agp-chip { padding: 0.7rem 0 0.8rem; border-bottom: 1px solid var(--rule); }
+@media (min-width: 64rem) {
+  .agp-chip { border-bottom: 0; border-left: 1px solid var(--rule); padding-left: 1.2rem; }
+  .agp-chip:first-child { border-left: 0; padding-left: 0; }
+}
+.agp-chip-value { font-family: var(--font-mono); font-size: clamp(1.15rem, 0.95rem + 0.5vw, 1.3rem);
+                  line-height: 1.2;
+                  margin: 0 0 0.3rem; font-variation-settings: "wght" 500; }
+.agp-chip-label { margin: 0 0 0.35rem; font-size: 0.9375rem; font-variation-settings: "wght" 560; }
+.agp-chip-sub { margin: 0; font-size: 0.8125rem; color: var(--muted); line-height: 1.45; }
+.agp-abstract { margin-top: 0.6rem; }
+.agp-abstract p { max-width: var(--measure); }
+
+/* ---------------------------------------------------------------- method */
+
+.agp-steps { counter-reset: step; list-style: none; padding: 0; margin: 0.8rem 0 1.6rem;
+             display: grid; gap: 1rem; }
+@media (min-width: 52rem) { .agp-steps { grid-template-columns: 1fr 1fr; } }
+.agp-step { counter-increment: step; padding-left: 2.2rem; position: relative; max-width: 46ch; }
+.agp-step::before {
+  content: counter(step); position: absolute; left: 0; top: 0.05rem;
+  font-family: var(--font-mono); font-size: 0.8125rem; color: var(--ink);
+  border: 1px solid var(--ink); width: 1.5rem; height: 1.5rem;
+  display: grid; place-items: center;
+}
+.agp-step-title { margin: 0 0 0.15rem; font-size: 0.9375rem; font-variation-settings: "wght" 600; }
+.agp-step p { margin: 0; font-size: 0.9375rem; color: var(--muted); line-height: 1.55; }
+
+.agp-rels { list-style: none; padding: 0; margin: 0.6rem 0 1rem; display: grid; gap: 0.55rem; }
+.agp-rel { display: grid; grid-template-columns: 1fr; gap: 0.05rem 1rem;
+           border-bottom: 1px solid var(--rule); padding-bottom: 0.5rem; }
+@media (min-width: 52rem) { .agp-rel { grid-template-columns: 10rem 15rem 1fr; align-items: baseline; } }
+.agp-rel-name { font-variation-settings: "wght" 600; }
+.agp-rel-cite { font-family: var(--font-mono); font-size: 0.78rem; color: var(--muted); }
+.agp-rel-why { font-size: 0.875rem; color: var(--muted); }
+
+/* ---------------------------------------------------------------- tasks */
+
+.agp-scores { list-style: none; margin: 0; padding: 0; display: grid; gap: 0.3rem; }
+.agp-score { display: flex; align-items: center; gap: 0.6rem; }
+.agp-score-label { font-size: 0.8125rem; color: var(--muted); min-width: 8.5rem; }
+.agp-score-frac { font-family: var(--font-mono); font-size: 0.8125rem; }
+.agp-criterion { border-left: 2px solid var(--ink); padding-left: 0.9rem; font-size: 0.9375rem;
+                 margin: 1.2rem 0; }
+.agp-criterion-label { display: block; font-family: var(--font-mono); font-size: 0.75rem;
+                       color: var(--ink-3); }
+.agp-result-line { font-size: 1.0625rem; }
+
+/* ---------------------------------------------------------------- failures */
+
+.agp-fail-card { margin: 2.2rem 0; }
+.agp-fail-card > .agp-h3 { margin-top: 0; }
+.agp-card-meta { font-family: var(--font-mono); font-size: 0.8125rem; color: var(--muted);
+                 margin: 0 0 0.7rem; max-width: var(--measure); }
+.agp-fail-card > p { max-width: var(--measure); }
+.agp-verdict { font-size: 0.9375rem; border-top: 1px solid var(--rule); padding-top: 0.5rem;
+               max-width: var(--measure); }
+.agp-callout { border: 1px solid var(--rule); background: var(--mount); padding: 1rem 1.2rem;
+               margin: 1.4rem 0; }
+.agp-callout .agp-h3 { margin-top: 0; }
+.agp-callout p { margin-bottom: 0; max-width: var(--measure); }
+.agp-disagree { margin-top: 1.8rem; border-top: 1px solid var(--ink); padding-top: 0.8rem; }
+.agp-tally { list-style: none; padding: 0; margin: 0 0 1rem; display: grid; gap: 0.6rem; }
+@media (min-width: 46rem) {
+  .agp-tally { grid-template-columns: repeat(3, 1fr); gap: 0 2.2rem; }
+  .agp-tally li { grid-template-columns: minmax(0, 1fr); gap: 0.1rem; }
+  .agp-tally-n { text-align: left; }
+}
+.agp-tally li { display: grid; grid-template-columns: 3rem 1fr; gap: 0.8rem; align-items: baseline;
+                font-size: 0.9375rem; color: var(--muted); max-width: 58ch; }
+.agp-tally-n { font-family: var(--font-mono); font-size: 1.5rem; color: var(--ink); text-align: right; }
+.agp-agent-quote { margin: 1.4rem 0; border-left: 3px solid var(--ink); padding-left: 1rem;
+                   max-width: var(--measure); }
+.agp-agent-label { font-family: var(--font-mono); font-size: 0.75rem; color: var(--ink-3);
+                   margin-bottom: 0.35rem; }
+.agp-agent-quote blockquote { margin: 0; }
+.agp-agent-quote blockquote p { font-family: var(--font-mono); font-size: 0.875rem; line-height: 1.6;
+                                margin: 0; }
+.agp-agent-src { font-size: 0.8125rem; color: var(--muted); margin: 0.5rem 0 0; }
+.agp-code pre { margin: 0.4rem 0 0; overflow-x: auto; background: var(--mount);
+                border: 1px solid var(--rule); padding: 0.8rem 0.9rem; }
+.agp-code code { font-family: var(--font-mono); font-size: 0.8125rem; line-height: 1.6; }
+.agp-code-label { font-size: 0.875rem; color: var(--muted); margin: 0; }
+
+/* ---------------------------------------------------------------- trial browser */
+
+.agp-breakdown { list-style: none; padding: 0; margin: 0 0 1rem; display: flex; flex-wrap: wrap;
+                 gap: 0.3rem 1.6rem; font-family: var(--font-mono); font-size: 0.8125rem;
+                 color: var(--muted); max-width: none; }
+.agp-filters { display: flex; flex-wrap: wrap; gap: 0.4rem; margin: 0 0 0.6rem; }
+.agp-filter {
+  font: inherit; font-size: 0.875rem; background: var(--bg); color: var(--ink);
+  border: 1px solid var(--rule); border-radius: var(--radius); cursor: pointer;
+  padding: 0.4rem 0.75rem; min-height: 2.4rem; display: inline-flex; align-items: baseline; gap: 0.45rem;
+}
+.agp-filter:hover { border-color: var(--ink); }
+.agp-filter[aria-pressed="true"] { border-color: var(--accent); color: var(--accent);
+                                   box-shadow: inset 0 -2px 0 var(--accent); }
+.agp-filter-n { font-family: var(--font-mono); font-size: 0.78rem; color: var(--ink-3); }
+.agp-filter[aria-pressed="true"] .agp-filter-n { color: var(--accent); }
+.agp-filter-status { font-size: 0.8125rem; color: var(--muted); margin: 0 0 1rem; min-height: 1.2rem; }
+
+.agp-trialgroup { margin: 1.8rem 0; }
+.agp-trialgroup > .agp-h3 { margin-top: 0; font-size: 0.9375rem; color: var(--muted);
+                            border-bottom: 1px solid var(--rule); padding-bottom: 0.4rem; }
+.agp-trials { list-style: none; padding: 0; margin: 0.9rem 0 0; display: grid; gap: 1.1rem 1rem;
+              grid-template-columns: repeat(2, 1fr); max-width: none; }
+@media (min-width: 34rem) { .agp-trials { grid-template-columns: repeat(3, 1fr); } }
+/* Every configuration has exactly five trials, so five to a row makes each row one
+   configuration. */
+@media (min-width: 62rem) { .agp-trials { grid-template-columns: repeat(5, 1fr); } }
+.agp-trial { margin: 0; scroll-margin-top: 5rem; }
+.agp-trial[hidden] { display: none; }
+.agp-trial-open { display: block; text-decoration: none; color: var(--ink); }
+.agp-trial-img { display: block; width: 100%; height: auto; border: 1px solid var(--rule);
+                 background: var(--surface); }
+.agp-trial-open:hover .agp-trial-img { border-color: var(--ink); }
+.agp-trial-open:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.agp-trial-body { display: grid; gap: 0.06rem; margin-top: 0.4rem; }
+.agp-trial-config { font-size: 0.8125rem; font-variation-settings: "wght" 560; line-height: 1.3; }
+.agp-trial-index, .agp-trial-agent { font-family: var(--font-mono); font-size: 0.72rem; color: var(--ink-3); }
+.agp-trial-outcome { font-family: var(--font-mono); font-size: 0.75rem; display: flex;
+                     align-items: center; gap: 0.35rem; }
+.agp-trial-outcome[data-outcome="failure"] { color: var(--fail); }
+.agp-trial-outcome .agp-mark-glyph { width: 0.6rem; height: 0.6rem; border: 1.3px solid var(--ink);
+                                     background: var(--ink); }
+.agp-spec-tight { border-top: 0; padding-top: 0.25rem; }
+.agp-spec-tight .agp-spec-row { grid-template-columns: 3.4rem 1fr; }
+.agp-spec-tight dt, .agp-spec-tight dd { font-size: 0.72rem; }
+.agp-trialtable { margin: 1.6rem 0; }
+.agp-trialtable > summary { font-size: 0.875rem; color: var(--muted); cursor: pointer; }
+
+.agp-drawer {
+  border: 1px solid var(--ink); border-radius: var(--radius); background: var(--mount);
+  color: var(--ink); padding: 0; width: min(46rem, 94vw); max-height: 88vh; overflow: auto;
+}
+.agp-drawer::backdrop { background: rgba(20, 20, 18, 0.45); }
+.agp-drawer-inner { padding: 1.1rem 1.2rem 1.4rem; }
+.agp-drawer-head { display: flex; justify-content: space-between; align-items: baseline; gap: 1rem; }
+.agp-drawer-title { margin: 0; font-size: 1.05rem; font-variation-settings: "wght" 620; }
+.agp-drawer-close { font: inherit; font-size: 0.875rem; background: none; border: 1px solid var(--rule);
+                    border-radius: var(--radius); padding: 0.3rem 0.7rem; cursor: pointer;
+                    min-height: 2.2rem; }
+.agp-drawer-close:hover { border-color: var(--ink); }
+.agp-drawer img { display: block; width: 100%; height: auto; margin: 0.8rem 0;
+                  border: 1px solid var(--rule); }
+.agp-drawer .agp-spec { border-top: 1px solid var(--rule); }
+.agp-drawer .agp-spec-row { grid-template-columns: 8rem 1fr; }
+/* On a 375x667 phone the record is taller than the dialog, and the navigation used to
+   fall below the fold with no cue that it was there. Pinned to the bottom of the dialog
+   it is always reachable, and the three controls share a baseline however the link
+   wraps. */
+.agp-drawer-nav { display: flex; flex-wrap: wrap; gap: 0.5rem 0.75rem; margin-top: 1rem;
+                  align-items: center; position: sticky; bottom: 0; z-index: 1;
+                  background: var(--mount); border-top: 1px solid var(--rule);
+                  padding: 0.6rem 0 0.2rem; }
+.agp-drawer-nav button, .agp-drawer-nav a { min-height: 2.2rem; display: inline-flex;
+                                            align-items: center; }
+.agp-drawer-nav button { font: inherit; font-size: 0.8125rem; background: none;
+                         border: 1px solid var(--rule); border-radius: var(--radius);
+                         padding: 0.35rem 0.7rem; cursor: pointer; }
+.agp-drawer-nav button:hover { border-color: var(--ink); }
+.agp-drawer-csv { font-size: 0.8125rem; }
+
+/* ---------------------------------------------------------------- data, cite, footer */
+
+.agp-dls { display: grid; gap: 1.2rem 2.4rem; grid-template-columns: 1fr; margin: 1rem 0 1.6rem; }
+@media (min-width: 46rem) { .agp-dls { grid-template-columns: 1fr 1fr; } }
+.agp-dl h3 { margin: 0 0 0.25rem; }
+.agp-dl p { font-size: 0.875rem; color: var(--muted); margin: 0 0 0.4rem; max-width: 44ch; }
+.agp-dl-files { list-style: none; padding: 0; margin: 0; display: grid; gap: 0.15rem; }
+.agp-dl-files a { font-family: var(--font-mono); font-size: 0.8125rem; }
+.agp-dl-size { font-family: var(--font-mono); font-size: 0.72rem; color: var(--ink-3); }
+
+.agp-bibtex-wrap { display: grid; gap: 0.6rem; justify-items: start; margin: 0.8rem 0 1.4rem; }
+/* The entry is meant to be copied, and it ended mid-author-name inside a 561px column.
+   It wraps instead: the whole entry is on the page without a horizontal gesture. */
+.agp-bibtex { --scroll-ground: var(--mount); --scroll-fade: rgba(252, 252, 251, 0);
+              margin: 0; width: 100%; white-space: pre-wrap; overflow-wrap: break-word;
+              background: var(--mount); border: 1px solid var(--rule); padding: 0.9rem 1rem; }
+.agp-bibtex code { font-family: var(--font-mono); font-size: 0.8125rem; line-height: 1.6; }
+.agp-copy { cursor: pointer; font-family: var(--font-sans); }
+.agp-credits { display: grid; gap: 0.4rem; margin: 0.6rem 0 0.8rem; max-width: 54rem; }
+.agp-credit { display: grid; grid-template-columns: 1fr; gap: 0.05rem 1.2rem; }
+@media (min-width: 46rem) { .agp-credit { grid-template-columns: 12rem 1fr; } }
+.agp-credit dt { font-variation-settings: "wght" 560; font-size: 0.9375rem; }
+.agp-credit dd { margin: 0; font-size: 0.9375rem; color: var(--muted); }
+
+.agp-footer { border-top: 1px solid var(--ink); margin-top: 2.6rem; padding-top: 1rem;
+              padding-bottom: 2rem; font-size: 0.875rem; color: var(--muted); }
+.agp-footer p { max-width: var(--measure); margin-bottom: 0.5rem; }
+.agp-footer-updated, .agp-footer-type { font-size: 0.8125rem; color: var(--ink-3); }
+
+/* ---------------------------------------------------------------- viewer host */
+
+.agp-viewer-host:empty { display: none; }
+
+/* ---------------------------------------------------------------- the split
+
+   Four pages now: index.html, results.html, trials.html and watch.html. What follows is
+   everything the split and the rebuilt sections need, and nothing else. */
+
+/* watch.html hands the episode viewer the ground its contrast was audited against.
+   viewer.css reads --bg, and a var() is substituted where it is DECLARED, on :root, so a
+   page that wants a different ground has to set both names rather than only --board. */
+body.agp-page-watch { --board: #fcfcfb; --bg: #fcfcfb; background: #fcfcfb; }
+
+.agp-pagehead { padding-top: 2.2rem; }
+.agp-backlink { margin: 0 0 1.1rem; font-size: 0.9375rem; }
+.agp-title-sub { font-size: clamp(1.9rem, 1.1rem + 3vw, 2.6rem); max-width: 24ch; }
+/* A secondary page's own head already separates itself from what follows; the full
+   section rhythm under it reads as a hole. */
+.agp-pagehead + .agp-section, .agp-pagehead + .agp-trackwrap { margin-top: 1.4rem; }
+.agp-pagehead + .agp-section { padding-top: 0.6rem; }
+
+/* Links into the flow, never only in the navigation: the two under Table 1 that DECISIONS
+   asks for, and the "in full" line under a section the split shortened. */
+.agp-linkrow { list-style: none; max-width: none; padding: 0.8rem 0 0; margin: 1.6rem 0 0.4rem;
+               display: grid; gap: 0.4rem; border-top: 1px solid var(--rule); }
+@media (min-width: 46rem) { .agp-linkrow { grid-template-columns: 1fr 1fr; gap: 0 2rem; } }
+.agp-linkrow a { font-size: 0.9375rem; }
+.agp-morelink { margin: 1rem 0 0; font-size: 0.9375rem; }
+
+/* results.html. Four tabs across the top; inside the fourth, the same device one level
+   down, because eight sections stacked in one panel is the monster at a new address. */
+.agp-tabstrip { display: flex; flex-wrap: wrap; gap: 0 1.8rem; margin: 0.4rem 0 0;
+                padding: 0; border-bottom: 1px solid var(--rule); }
+.agp-tabstrip-tab { font: inherit; font-size: 1rem; cursor: pointer; text-align: left;
+                    background: none; border: 0; color: var(--ink); margin-bottom: -1px;
+                    border-bottom: 3px solid transparent; padding: 0.4rem 0 0.5rem;
+                    font-variation-settings: "wght" 500; }
+.agp-tabstrip-tab[aria-selected="true"] { border-bottom-color: var(--ink);
+                                          font-variation-settings: "wght" 650; }
+.agp-tabstrip-tab:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.agp-tab-panel > .agp-section:first-of-type,
+.agp-group-panel > .agp-section:first-of-type { margin-top: 0.4rem; padding-top: 0; border-top: 0; }
+.agp-group-panel { margin-top: 0.2rem; }
+.agp-tab-panel > .agp-trackwrap > .agp-chiprow { margin: 0.2rem 0 0; }
+.agp-trackwrap + .agp-tab-panel > .agp-section:first-of-type,
+.agp-trackwrap + .agp-group-panel > .agp-section:first-of-type { margin-top: 1.4rem; }
+
+/* Table 1: one plate, five columns, the capability and instruction wording folded into a
+   tag line under the task name. Both forms are in the markup; the width decides. */
+.agp-tableplate { margin: 1.4rem 0 0.4rem; max-width: none; }
+.agp-tableplate .agp-tablewrap { margin-top: 0; }
+.agp-tagline { display: block; margin-top: 0.2rem; font-size: 0.75rem; color: var(--ink-3);
+               font-variation-settings: "wght" 400; line-height: 1.35; white-space: normal; }
+.agp-howmade { margin: 1.6rem 0 0; border-top: 1px solid var(--rule); padding-top: 0.7rem; }
+.agp-howmade > summary { font-size: 0.9375rem; cursor: pointer;
+                         font-variation-settings: "wght" 560; }
+.agp-howmade > summary:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.agp-howmade-body { margin-top: 0.8rem; }
+.agp-howmade-body .agp-protocol { margin-top: 0.4rem; border-top: 0; padding-top: 0; }
+
+/* The code sheet: the page's only sight of the agent's own code, which is the paper's
+   title claim. Mono, because mono on this page means measured or quoted. */
+/* The method plate: the diagram and, under a rule, the four lines of the agent's own
+   program that one turn of that loop produced. */
+.agp-methodplate { margin: 1.2rem 0 0.4rem; padding: 20px; }
+.agp-methodplate > .agp-chart { margin: 0; }
+.agp-codesheet { margin: 0.9rem 0 0; border-top: 1px solid var(--rule); padding-top: 0.7rem; }
+.agp-codesheet .agp-agent-label { margin: 0 0 0.3rem; }
+.agp-codesheet .agp-code { margin: 0.4rem 0 0; background: var(--mount); padding: 0.8rem 0.9rem;
+                           border: 1px solid var(--rule);
+                           font-size: 0.8125rem; line-height: 1.6;
+                           --scroll-ground: var(--mount); --scroll-fade: rgba(252, 252, 251, 0); }
+.agp-code-case { margin: 0.7rem 0 0; font-size: 0.9375rem; color: var(--muted);
+                 max-width: var(--measure); }
+
+/* The failure band: four chips over one well, the task band's device a third time. */
+.agp-fails .agp-chiprow { margin: 0 0 1.4rem; }
+.agp-fail-panel > .agp-h3 { margin-top: 0; }
+.agp-fail-panel > p { max-width: var(--measure); }
+/* A 3px red rule down the left of a figure that is mostly a full-bleed well would cut
+   across the band. In here the failure is marked where it is marked everywhere else: the
+   hollow crossed glyph in the provenance rail. */
+.agp-fails .agp-clip[data-variant="failure"] { border-left: 0; padding-left: 0; }
+.agp-fails { --agp-pic: 420px; }
+.agp-modelclips { --agp-pic: 255px; }
+.agp-modelclips .agp-picbox {
+  width: min(100%, calc(var(--vw) * 1px), calc(var(--agp-pic) * var(--vw) / var(--vh)));
+}
+.agp-modelclips .agp-chiprow { margin: 1rem 0 0.4rem; }
+.agp-fails .agp-picbox {
+  width: min(100%, calc(var(--vw) * 1px), calc(var(--agp-pic, 470px) * var(--vw) / var(--vh)));
+}
+/* The verdict travels inside its own clip's rail, so it can never end up under another
+   card's picture. It is a sentence rather than a measurement, so it keeps the prose face
+   and a measure of its own; everything else in the rail stays mono. */
+.agp-rail-wide dd.agp-rail-prose { font-family: var(--font-sans); max-width: var(--measure); }
+
+/* The fourth band: two clips, one dark ground, both feet on the board. */
+.agp-pairband { margin: 1.2rem 0 0.4rem; --agp-pic: 250px; }
+.agp-pairband .agp-picbox {
+  width: min(100%, calc(var(--vw) * 1px), calc(var(--agp-pic) * var(--vw) / var(--vh)));
+}
+.agp-pairband .agp-fig { margin: 0 0 1.4rem; }
+.agp-pairband .agp-rail { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.agp-pairband .agp-rail-cell + .agp-rail-cell:nth-child(3n+1) { border-left: 0; padding-left: 0; }
+.agp-band-ground { display: none; }
+.agp-band-line { margin: 1.2rem 0 0; max-width: var(--measure); }
+@media (min-width: 52rem) {
+  .agp-pairband { display: grid; grid-template-columns: 1fr 1fr; column-gap: 2rem; }
+  /* The two figures stay whole elements - picture, caption and rail in one <figure>, which
+     is what keeps a trial number under the picture it belongs to - and hand their two
+     parts to the grid. The ground spans both columns of the first row and is declared
+     first, so the pictures paint over it. It is full bleed by the same trick .agp-well
+     uses: a percentage margin resolves against the grid area, which is the track. */
+  .agp-pairband > figure { display: contents; }
+  .agp-band-ground { display: block; grid-row: 1; grid-column: 1 / -1; background: var(--well);
+                     width: 100vw; margin-left: calc(50% - 50vw); }
+  .agp-pairband > figure:nth-of-type(1) > .agp-picbox { grid-row: 1; grid-column: 1; }
+  .agp-pairband > figure:nth-of-type(1) > .agp-capwrap { grid-row: 2; grid-column: 1; }
+  .agp-pairband > figure:nth-of-type(2) > .agp-picbox { grid-row: 1; grid-column: 2; }
+  .agp-pairband > figure:nth-of-type(2) > .agp-capwrap { grid-row: 2; grid-column: 2; }
+  .agp-pairband .agp-picbox { margin: 24px 0; align-self: center; }
+}
+
+/* The doors. Four lines, four links, and the four limits that stay visible. */
+.agp-doors { list-style: none; max-width: none; padding: 0; margin: 1.1rem 0 1.4rem;
+             display: grid; gap: 0.7rem; }
+.agp-door { border-top: 1px solid var(--rule); padding-top: 0.55rem; }
+.agp-door:first-child { border-top-color: var(--ink); }
+@media (min-width: 54rem) {
+  .agp-door { display: grid; grid-template-columns: 17rem 1fr; gap: 0 1.6rem; align-items: baseline; }
+  .agp-door-findings { grid-column: 2; }
+}
+.agp-door-link { font-size: 1.05rem; font-variation-settings: "wght" 600; }
+.agp-door-line { margin: 0.25rem 0 0; font-size: 0.9375rem; color: var(--muted); max-width: 62ch; }
+.agp-door-findings { margin: 0.55rem 0 0; padding-left: 1.05rem; font-size: 0.875rem;
+                     color: var(--muted); max-width: 48ch; }
+.agp-door-findings li { margin-bottom: 0.3rem; }
+.agp-limits { margin-top: 1.2rem; border-top: 1px solid var(--rule); padding-top: 0.8rem; }
+.agp-limits .agp-h3 { margin-top: 0; }
+.agp-limits .agp-list { margin-bottom: 0.3rem; max-width: var(--measure); }
+.agp-licence { margin-top: 1.1rem; border-top: 1px solid var(--rule); padding-top: 0.7rem; }
+
+/* trials.html pages at 30 cards. Without the script every card is on the page and this
+   control is not, which is why the no-script fallback is still the whole list. */
+.agp-pager { display: flex; flex-wrap: wrap; gap: 0.6rem 1rem; align-items: center;
+             margin: 1.6rem 0 0; border-top: 1px solid var(--rule); padding-top: 0.9rem; }
+.agp-pager button { font: inherit; font-size: 0.875rem; background: none; color: var(--ink);
+                    border: 1px solid var(--rule); border-radius: var(--radius);
+                    padding: 0.35rem 0.8rem; min-height: 2.2rem; cursor: pointer; }
+.agp-pager button:hover:not(:disabled) { border-color: var(--ink); }
+.agp-pager button:disabled { color: var(--ink-3); cursor: default; }
+.agp-pager-status { font-size: 0.8125rem; color: var(--muted); }
+
+.agp-tailcols { display: grid; gap: 1.2rem 2.8rem; grid-template-columns: 1fr; }
+@media (min-width: 60rem) { .agp-tailcols { grid-template-columns: 1.35fr 1fr; align-items: start; } }
+.agp-tailcols > * > :first-child, .agp-tailcols > :first-child { margin-top: 0; }
+.agp-tailcols .agp-credits, .agp-tailcols .agp-bibtex-wrap { max-width: none; }
+@media (min-width: 60rem) { .agp-tailcols .agp-credit { grid-template-columns: 9.5rem 1fr; } }
+
+/* ---------------------------------------------------------------- responsive, motion */
+
+.agp-narrow-only { display: none; }
+
+@media (max-width: 46rem) {
+  .agp-wide-only { display: none; }
+  /* tighter above the fold, so the arXiv, PDF, BibTeX and data buttons are visible on a
+     667px-tall phone screen without scrolling */
+  .agp-claim { line-height: 1.4; margin-bottom: 1.1rem; }
+  .agp-authors { line-height: 1.5; }
+  .agp-affils { margin-bottom: 0.35rem; }
+  .agp-hero-meta { margin-bottom: 1rem; }
+  .agp-btns { margin-bottom: 1.8rem; }
+  .agp-hero { padding-top: 2rem; }
+  .agp-scrollhint { display: block; }
+  /* a phone's control bar is taller than a desktop one */
+  .agp-frame { --agp-ctl: 54px; }
+  .agp-narrow-only { display: inline; }
+  .agp-table { font-size: 0.875rem; }
+  .agp-table th, .agp-table td { padding-right: 0.7rem; }
+  /* 9.5rem of task name plus the whole unwrapped Success cell is just inside the plate's
+     own width, so the horizontal cut falls at the Time column's edge rather than inside a
+     mark or, as it did before, inside a number: a cut word is legible, "54." is not. */
+  .agp-table-1 tbody th[scope="row"] { min-width: 9.5rem; }
+  /* Five marks wrapping four-and-one doubled the height of every row in both tables. */
+  .agp-table-1 .agp-td-success, .agp-table-2 .agp-td-success { white-space: nowrap; }
+  .agp-table-1 .agp-marks, .agp-table-2 .agp-marks { flex-wrap: nowrap; }
+  .agp-table-1 .agp-num { min-width: 5.2rem; }
+  .agp-table-2 tbody th[scope="row"] { min-width: 10rem; }
+  .agp-nav-links { display: none; }
+  .agp-spec-row { grid-template-columns: 5rem 1fr; }
+  .agp-clip[data-variant="demo"] { padding: 0.8rem; }
+  .agp-tally li { grid-template-columns: 2.4rem 1fr; }
+  .agp-tally-n { font-size: 1.25rem; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * { animation-duration: 0.001ms !important; animation-iteration-count: 1 !important;
+      transition-duration: 0.001ms !important; scroll-behavior: auto !important; }
+}
+
+/* Windows High Contrast replaces every background and drops the gradients that draw the
+   failure cross, so the 151 marks would collapse into identical empty boxes. Redraw the
+   distinction with a border and a glyph the mode keeps. Screen-reader users already have
+   the .agp-sr text on every mark. */
+@media (forced-colors: active) {
+  .agp-mark-glyph { forced-color-adjust: none; background: CanvasText; border-color: CanvasText; }
+  .agp-mark[data-outcome="failure"] .agp-mark-glyph,
+  .agp-trial-outcome[data-outcome="failure"] .agp-mark-glyph {
+    background: Canvas; border-color: CanvasText; background-image: none; position: relative;
+  }
+  .agp-mark[data-outcome="failure"] .agp-mark-glyph::after,
+  .agp-trial-outcome[data-outcome="failure"] .agp-mark-glyph::after {
+    content: "\00d7"; position: absolute; inset: 0; display: grid; place-items: center;
+    font-size: 0.85rem; line-height: 1; color: CanvasText;
+  }
+  .agp-filter[aria-pressed="true"] { outline: 2px solid; }
+}

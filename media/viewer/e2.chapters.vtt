@@ -1,0 +1,30 @@
+WEBVTT
+
+NOTE time base: video seconds. The clip plays at 2x, so every cue time
+here is the run time divided by 2. Run time is in e2.json.
+
+NOTE Chapter marks derived from the episode's own gripper commands.
+
+1
+00:00:00.000 --> 00:00:16.110
+Read the interface, study the demonstration
+
+2
+00:00:16.110 --> 00:02:58.135
+Survey the scene, measure the parts
+
+3
+00:02:58.135 --> 00:04:36.665
+Pick up the hex part and seat it on its post
+
+4
+00:04:36.665 --> 00:05:51.540
+Check the first pair, approach the round part
+
+5
+00:05:51.540 --> 00:06:38.215
+Pick up the round part and seat it on its cylinder
+
+6
+00:06:38.215 --> 00:07:39.235
+Withdraw, verify, report

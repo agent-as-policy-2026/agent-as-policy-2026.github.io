@@ -1,0 +1,15 @@
+Typefaces on this page
+======================
+
+Ubuntu Sans and Ubuntu Sans Mono, copyright 2010-2022 Canonical Ltd., licensed
+under the Ubuntu Font Licence 1.0 (UBUNTU-FONT-LICENCE-1.0.txt in this folder).
+
+Both files here are Modified Versions under that licence: the character set is
+subset to what this page draws and the container is converted to WOFF2. Neither
+is Substantially Changed, so clause 2(c) applies and each keeps the name of the
+original with "derivative AGP" appended:
+
+  ubuntu-sans-agp.woff2        Ubuntu Sans derivative AGP (88364 bytes)
+  ubuntu-sans-mono-agp.woff2   Ubuntu Sans Mono derivative AGP (28412 bytes)
+
+No other change was made. Rebuild with build/make_fonts.py.

@@ -1,0 +1,11 @@
+arm_of_study,config_slug,trial,n_trials,model,harness,effort,robot_arm,outcome,time_min,tokens_k,cost_usd,session_stamp,slot_id,still_id
+GPT-6 Astra building the experience store,astra_experience_store,01,5,GPT-6 Astra,Codex CLI,high,left,success,9.083703001340231,2826.784,4.385104,20260911_014410,transfer-astra_store-t01,transfer-astra_store-t01
+GPT-6 Astra building the experience store,astra_experience_store,02,5,GPT-6 Astra,Codex CLI,high,left,success,8.177725684642791,2808.384,4.08336,20260911_023848,transfer-astra_store-t02,transfer-astra_store-t02
+GPT-6 Astra building the experience store,astra_experience_store,03,5,GPT-6 Astra,Codex CLI,high,left,success,7.267567316691081,2245.861,3.494194,20260911_025700,transfer-astra_store-t03,transfer-astra_store-t03
+GPT-6 Astra building the experience store,astra_experience_store,04,5,GPT-6 Astra,Codex CLI,high,left,success,6.99851731856664,2240.463,3.449366,20260911_031357,transfer-astra_store-t04,transfer-astra_store-t04
+GPT-6 Astra building the experience store,astra_experience_store,05,5,GPT-6 Astra,Codex CLI,high,left,success,6.493454166253408,2355.661,3.557042,20260911_033025,transfer-astra_store-t05,transfer-astra_store-t05
+GPT-5.6 Terra reading the frozen store,terra_with_experience,01,5,GPT-5.6 Terra,Codex CLI,high,left,success,16.888879883289338,4814.171,1.5620751999999998,20260911_035635,transfer-terra_exp-t01,transfer-terra_exp-t01
+GPT-5.6 Terra reading the frozen store,terra_with_experience,02,5,GPT-5.6 Terra,Codex CLI,high,left,success,10.073740633328756,5816.48,1.6156567999999996,20260911_042610,transfer-terra_exp-t02,transfer-terra_exp-t02
+GPT-5.6 Terra reading the frozen store,terra_with_experience,03,5,GPT-5.6 Terra,Codex CLI,high,left,failure,19.583026432991026,7283.751,2.1741164,20260911_051015,transfer-terra_exp-t03,transfer-terra_exp-t03
+GPT-5.6 Terra reading the frozen store,terra_with_experience,04,5,GPT-5.6 Terra,Codex CLI,high,left,success,11.728875450293224,5756.673,1.7411283999999996,20260911_120204,transfer-terra_exp-t04,transfer-terra_exp-t04
+GPT-5.6 Terra reading the frozen store,terra_with_experience,05,5,GPT-5.6 Terra,Codex CLI,high,left,success,11.184549534320832,5865.428,1.6529776000000005,20260911_122756,transfer-terra_exp-t05,transfer-terra_exp-t05

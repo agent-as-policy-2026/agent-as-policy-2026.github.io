@@ -1,11 +1,36 @@
-# During development nothing but the placeholder is tracked.
-# At launch the reviewed files are added explicitly with `git add -f <path>`.
-/data/
-/img/
-/media/
-/svg/
-/js/
-/css/
-/fonts/
+# What ships is an allowlist, not a list of exclusions.
+#
+# The payload is 453 files. While this file ignored /css/, /js/, /img/, /media/,
+# /data/, /svg/ and /fonts/, `git status` reported a clean tree with 449 of them
+# untracked-and-invisible, and `git add -A` on launch day would have published an
+# index.html pointing at files that were not in the commit: no stylesheet, no
+# scripts, no video, no images, and nothing failing loudly enough to notice.
+#
+# So: ignore everything, then allow exactly the directories the page loads from.
+# `git status` now shows the real payload, and `python3 build/publish_check.py`
+# compares the tracked set against what is on disk before the push.
+#
+# site/svg/ is deliberately NOT here. The seven charts are inlined into
+# index.html by build/build_site.py; the .svg and .table.html files under svg/
+# are the build's own inputs, nothing on the page links them, and shipping them
+# would put a second, silently drifting copy of every chart on the web.
+
+/*
+!/.gitignore
+!/.nojekyll
+!/index.html
+!/results.html
+!/trials.html
+!/watch.html
+!/robots.txt
+!/css/
+!/js/
+!/fonts/
+!/img/
+!/media/
+!/data/
+
+# never, anywhere under the allowed directories
 .DS_Store
 *.tmp
+Thumbs.db

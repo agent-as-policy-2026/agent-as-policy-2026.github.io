@@ -1,0 +1,960 @@
+/* Episode viewer — section 12, "Watch one run, second by second".
+   Owned by the viewer build. Pairs with js/viewer.js and the markup generated
+   by build/make_viewer_partial.py.
+
+   ── Page variables this file reads ─────────────────────────────────────────
+   Every one is read as var(--name, <fallback>), so the viewer inherits the
+   page's palette and type from site.css and still stands on its own if this
+   file is opened alone. The names and the values below are site.css's:
+
+     --ink       --muted    --ink-3    --bg      --surface
+     --rule      --accent   --fail     --radius
+     --measure   --font-sans           --font-mono
+
+   The section heading and lede in the partial use the page's own
+   .agp-section-head / .agp-h2 / .agp-lede classes, because build_site.py
+   emits <section id="viewer"> empty.
+
+   ── Variables this file owns ───────────────────────────────────────────────
+   --ev-* only, all declared on .ev, so nothing leaks into the page. The lane
+   hues are the dataviz reference palette's categorical slots 1, 2, 3, 4, 7, 5
+   and its reserved status colour for a failed motion; identity is carried by
+   the lane label and the legend as well as by hue.                         */
+
+.ev {
+  --ev-ink: var(--ink, #000000);
+  --ev-muted: var(--muted, #52514e);
+  --ev-bg: var(--bg, #fcfcfb);
+  --ev-surface: var(--surface, #f3f2ec);
+  --ev-rule: var(--rule, #e1e0d9);
+  --ev-accent: var(--accent, #1f5fa8);
+  --ev-measure: var(--measure, 68ch);
+  --ev-sans: var(--font-sans, system-ui, -apple-system, "Segoe UI", sans-serif);
+  --ev-mono: var(--font-mono, ui-monospace, "SFMono-Regular", "Menlo", "Consolas", monospace);
+  --ev-radius: var(--radius, 2px);
+
+  /* Measured against --ev-track, the ground every lane is drawn on: model 3.05,
+     tool 3.21, motion 3.64, motion-bad 3.77, capture 4.35, look 6.72, say 3.22,
+     neutral 4.26. WCAG 1.4.11 asks for 3:1, and identity is carried by the lane
+     label and the legend as well as by hue. The same seven values are the chart
+     palette in site.css (html .agpc) and build/figures/chartlib.py. */
+  --ev-model: #3a82dc;
+  --ev-tool: #cf5a24;
+  --ev-motion: #12855c;
+  --ev-motion-bad: var(--fail, #d03b3b);
+  --ev-capture: #8a6100;
+  --ev-look: #4a3aa7;
+  --ev-say: #c9567f;
+  --ev-neutral: var(--ink-3, #6b6a65);
+
+  --ev-track: #e6e4dc;
+  --ev-ring: rgba(0, 0, 0, 0.13);
+  --ev-lane-h: 11px;
+  --ev-gutter: 8.5rem;
+
+  color: var(--ev-ink);
+  font-family: var(--ev-sans);
+  font-size: 1rem;
+  line-height: 1.55;
+}
+
+/* announced, never seen: spoken times beside the monospace ones */
+.ev-vh {
+  position: absolute;
+  width: 1px; height: 1px;
+  padding: 0; margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+.ev *,
+.ev *::before,
+.ev *::after { box-sizing: border-box; }
+
+.ev :focus-visible {
+  outline: 2px solid var(--ev-accent);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+.ev [data-mount]:empty { display: none; }
+
+/* ── intro ─────────────────────────────────────────────────────────────── */
+
+.ev-guide {
+  margin: 0 0 1.6rem;
+  padding: 0.85rem 1rem 0.9rem;
+  background: var(--ev-surface);
+  border-radius: var(--ev-radius);
+}
+.ev-guide-title {
+  margin: 0 0 0.4rem;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  color: var(--ev-muted);
+}
+.ev-guide-list {
+  margin: 0;
+  padding-left: 1.05rem;
+  max-width: var(--ev-measure);
+  font-size: 0.9375rem;
+  color: var(--ev-muted);
+}
+.ev-guide-list li { margin: 0.25rem 0; break-inside: avoid; }
+@media (min-width: 62rem) {
+  .ev-guide-list { columns: 2; column-gap: 2.2rem; max-width: none; }
+}
+
+/* ── episode picker ────────────────────────────────────────────────────── */
+
+.ev-picker {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.4rem 0.75rem;
+  margin: 0 0 1rem;
+  padding-bottom: 0.7rem;
+  border-bottom: 1px solid var(--ev-rule);
+}
+.ev-picker-label {
+  font-size: 0.8125rem;
+  color: var(--ev-muted);
+  margin-right: 0.1rem;
+}
+.ev-tabs { display: flex; gap: 0.4rem; flex-wrap: wrap; }
+.ev-tab {
+  font: inherit;
+  font-size: 0.875rem;
+  color: var(--ev-ink);
+  background: var(--ev-bg);
+  border: 1px solid var(--ev-rule);
+  border-radius: var(--ev-radius);
+  padding: 0.3rem 0.7rem;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.45rem;
+}
+.ev-tab:hover { border-color: #cfcdc2; }
+.ev-tab[aria-pressed="true"] {
+  background: var(--ev-ink);
+  border-color: var(--ev-ink);
+  color: var(--ev-bg);
+}
+.ev-tab-key {
+  font-family: var(--ev-mono);
+  font-size: 0.75rem;
+  color: var(--ev-muted);
+}
+.ev-tab[aria-pressed="true"] .ev-tab-key { color: rgba(255, 255, 255, 0.72); }
+
+/* ── episode ───────────────────────────────────────────────────────────── */
+
+.ev-ep { margin: 0 0 2rem; }
+.ev-ep + .ev-ep { padding-top: 1.6rem; border-top: 1px solid var(--ev-rule); }
+.ev--js .ev-ep + .ev-ep { padding-top: 0; border-top: 0; }
+
+.ev-ep-head { margin: 0 0 0.85rem; }
+.ev-ep-title {
+  margin: 0;
+  font-size: 1.15rem;
+  line-height: 1.3;
+  font-weight: 600;
+  font-variation-settings: "wght" 600;
+}
+.ev-ep-meta {
+  margin: 0.25rem 0 0;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.8125rem;
+  color: var(--ev-muted);
+}
+.ev-sep {
+  width: 1px;
+  height: 0.75em;
+  background: var(--ev-rule);
+}
+.ev-trial { font-variant-numeric: tabular-nums; }
+
+/* video */
+
+/* the player and its caption: the same figure + figcaption every other clip on the page
+   uses, so the trial line is programmatically the video's caption */
+.ev-figure { margin: 0; max-width: 48rem; }
+.ev-figure > .ev-ep-meta { margin-top: 0.45rem; }
+
+.ev-frame {
+  max-width: 48rem;
+  background: #0e1013;
+  border-radius: var(--ev-radius);
+  overflow: hidden;
+  line-height: 0;
+}
+.ev-video {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-height: min(70vh, 34rem);
+  aspect-ratio: 4 / 3;
+  background: #0e1013;
+  object-fit: contain;
+}
+/* Until the module builds the transport (and for a reader with no JavaScript) the
+   episode keeps its native controls, which would land on the provenance line burned
+   into the bottom of the picture. Reserve a band for them, as the page clips do. */
+.ev-video[controls] {
+  padding-bottom: 46px;
+  object-position: top center;
+}
+.ev-nomedia {
+  line-height: 1.5;
+  padding: 1rem;
+  color: #e9ecef;
+  font-size: 0.875rem;
+}
+
+.ev-video::cue {
+  background: rgba(14, 16, 19, 0.82);
+  color: #f4f6f8;
+  font-size: 0.92em;
+  line-height: 1.35;
+}
+.ev-video::cue(.think) { color: #cde2fb; font-style: italic; }
+.ev-video::cue(.run) { font-family: var(--ev-mono); }
+
+/* ── transport ─────────────────────────────────────────────────────────── */
+
+.ev-transport {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+  margin-top: 0.55rem;
+}
+.ev-btn {
+  font: inherit;
+  font-size: 0.8125rem;
+  color: var(--ev-ink);
+  background: var(--ev-bg);
+  border: 1px solid var(--ev-rule);
+  border-radius: var(--ev-radius);
+  padding: 0.3rem 0.6rem;
+  min-height: 30px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+.ev-btn:hover { border-color: #cfcdc2; background: var(--ev-surface); }
+.ev-btn--play { min-width: 5.1rem; font-weight: 600; }
+.ev-clock {
+  font-family: var(--ev-mono);
+  font-variant-numeric: tabular-nums;
+  font-size: 0.8125rem;
+  color: var(--ev-muted);
+  margin-left: 0.15rem;
+}
+.ev-clock b { color: var(--ev-ink); font-weight: 600; }
+.ev-clock-unit { margin-left: 0.35rem; font-family: var(--ev-sans); }
+.ev-speed {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.8125rem;
+  color: var(--ev-muted);
+}
+.ev-clocknote {
+  margin: 0.35rem 0 0;
+  max-width: var(--ev-measure);
+  font-size: 0.8125rem;
+  color: var(--ev-muted);
+}
+.ev-speed select {
+  font: inherit;
+  font-size: 0.8125rem;
+  color: var(--ev-ink);
+  background: var(--ev-bg);
+  border: 1px solid var(--ev-rule);
+  border-radius: var(--ev-radius);
+  padding: 0.22rem 0.3rem;
+  min-height: 30px;
+}
+
+/* ── the time strip: chapters, lanes, tokens ───────────────────────────── */
+
+.ev-strip { margin-top: 0.8rem; }
+
+.ev-chapbar {
+  display: grid;
+  gap: 2px;
+  margin-left: var(--ev-gutter);
+  margin-bottom: 5px;
+}
+.ev-chap {
+  font: inherit;
+  font-size: 0.75rem;
+  text-align: left;
+  color: var(--ev-muted);
+  background: var(--ev-track);
+  border: 0;
+  border-radius: 2px;
+  padding: 0.2rem 0.4rem;
+  min-height: 24px;
+  overflow: hidden;
+  white-space: nowrap;
+  cursor: pointer;
+}
+/* A chapter button is as wide as its chapter is long, which at any page width leaves
+   some of them too narrow for their title: "3 Pick up the h" carries no information and
+   reads as a rendering fault. viewer.js measures each button after layout and keeps the
+   title only where the whole title fits; the rest show the number alone, with the title
+   on the button as its accessible name and spelled out in the Chapters list below. */
+.ev-chap-title { white-space: nowrap; }
+.ev-chap:hover { background: #dcd9cd; color: var(--ev-ink); }
+.ev-chap[aria-current="true"] {
+  background: var(--ev-ink);
+  color: var(--ev-bg);
+}
+.ev-chap:not(.ev-chap--wide) { text-align: center; padding-inline: 0.1rem; }
+.ev-chap-num {
+  font-family: var(--ev-mono);
+  opacity: 0.7;
+}
+.ev-chap--wide .ev-chap-num { margin-right: 0.35rem; }
+.ev-chapnow {
+  margin: 0.5rem 0 0;
+  font-size: 0.8125rem;
+}
+.ev-chapnow-n {
+  color: var(--ev-muted);
+  margin-right: 0.45rem;
+}
+
+.ev-plot {
+  position: relative;
+  background: var(--ev-surface);
+  border-radius: var(--ev-radius);
+  padding: 7px 0 7px;
+  cursor: crosshair;
+  touch-action: pan-y;
+}
+.ev-plot:focus-visible { outline-offset: 1px; }
+
+.ev-lane {
+  position: relative;
+  display: grid;
+  grid-template-columns: var(--ev-gutter) minmax(0, 1fr);
+  align-items: center;
+  height: calc(var(--ev-lane-h) + 6px);
+}
+.ev-lane-name {
+  font-size: 0.75rem;
+  color: var(--ev-muted);
+  padding-right: 0.6rem;
+  text-align: right;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.4rem;
+}
+.ev-lane-short { display: none; }
+.ev-swatch {
+  width: 9px;
+  height: 9px;
+  border-radius: 2px;
+  flex: none;
+  box-shadow: 0 0 0 1px var(--ev-ring);
+}
+.ev-track {
+  position: relative;
+  height: var(--ev-lane-h);
+  background: var(--ev-track);
+  border-radius: 2px;
+}
+.ev-mark {
+  position: absolute;
+  top: 0;
+  height: 100%;
+  min-width: 3px;
+  border-radius: 2px;
+  background: var(--ev-neutral);
+}
+.ev-mark--point { width: 4px; margin-left: -2px; box-shadow: 0 0 0 1px var(--ev-ring); }
+.ev-lane--model .ev-mark { background: var(--ev-model); }
+.ev-lane--tool .ev-mark { background: var(--ev-tool); }
+.ev-lane--motion .ev-mark { background: var(--ev-motion); }
+.ev-lane--motion .ev-mark[data-ok="0"] {
+  background: var(--ev-motion-bad);
+  box-shadow: 0 0 0 1px var(--ev-bg), 0 0 0 2px var(--ev-motion-bad);
+  min-width: 5px;
+}
+.ev-lane--capture .ev-mark { background: var(--ev-capture); }
+.ev-lane--look .ev-mark { background: var(--ev-look); }
+.ev-lane--say .ev-mark { background: var(--ev-say); }
+.ev-mark[data-hit="1"] { filter: brightness(0.82); }
+
+.ev-spark { display: grid; grid-template-columns: var(--ev-gutter) minmax(0, 1fr); align-items: center; }
+.ev-spark svg { display: block; width: 100%; height: 34px; overflow: visible; }
+.ev-spark-line { fill: none; stroke: var(--ev-muted); stroke-width: 1.5; }
+.ev-spark-fill { fill: #dcd9cd; }
+
+.ev-playhead {
+  position: absolute;
+  top: 2px;
+  bottom: 2px;
+  width: 1px;
+  margin-left: -0.5px;
+  background: var(--ev-ink);
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.75);
+  pointer-events: none;
+}
+.ev-playhead::before {
+  content: "";
+  position: absolute;
+  top: -4px;
+  left: -3.5px;
+  width: 8px;
+  height: 5px;
+  background: var(--ev-ink);
+  clip-path: polygon(0 0, 100% 0, 50% 100%);
+}
+.ev-hover {
+  position: absolute;
+  top: 2px;
+  bottom: 2px;
+  width: 1px;
+  margin-left: -0.5px;
+  background: var(--ev-ring);
+  pointer-events: none;
+}
+
+.ev-tip {
+  position: absolute;
+  z-index: 3;
+  transform: translate(-50%, -100%);
+  background: var(--ev-ink);
+  color: var(--ev-bg);
+  font-size: 0.75rem;
+  line-height: 1.4;
+  padding: 0.3rem 0.45rem;
+  border-radius: var(--ev-radius);
+  pointer-events: none;
+  white-space: nowrap;
+  max-width: 22rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.ev-tip b { font-family: var(--ev-mono); font-weight: 600; }
+
+.ev-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem 1rem;
+  margin: 0.5rem 0 0;
+  padding-left: 0;
+  list-style: none;
+  font-size: 0.75rem;
+  color: var(--ev-muted);
+}
+.ev-legend li { display: flex; align-items: center; gap: 0.35rem; }
+
+.ev-striphelp {
+  margin: 0.45rem 0 0;
+  font-size: 0.75rem;
+  color: var(--ev-muted);
+}
+
+/* ── the log rail ──────────────────────────────────────────────────────── */
+
+.ev-railhead {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin: 0 0 0.4rem;
+}
+.ev-railtitle {
+  margin: 0;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--ev-muted);
+}
+.ev-railnote {
+  margin: 0;
+  font-size: 0.8125rem;
+  color: var(--ev-muted);
+  flex: 1 1 14rem;
+}
+.ev-follow {
+  font: inherit;
+  font-size: 0.75rem;
+  color: var(--ev-bg);
+  background: var(--ev-ink);
+  border: 1px solid var(--ev-ink);
+  border-radius: var(--ev-radius);
+  padding: 0.15rem 0.5rem;
+  cursor: pointer;
+}
+.ev-follow[hidden] { display: none; }
+
+.ev-rail {
+  position: relative;
+  margin: 0;
+  padding: 0.35rem;
+  list-style: none;
+  background: var(--ev-surface);
+  border-radius: var(--ev-radius);
+  max-height: min(72vh, 620px);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-gutter: stable;
+}
+.ev-pre {
+  margin: 0 0 0.35rem;
+  padding: 0.4rem 0.5rem;
+  border-radius: 2px;
+  background: var(--ev-bg);
+  font-size: 0.75rem;
+  color: var(--ev-muted);
+}
+.ev-pre b { color: var(--ev-ink); font-weight: 600; }
+
+.ev-e {
+  position: relative;
+  display: grid;
+  grid-template-columns: 3.1rem minmax(0, 1fr);
+  gap: 0.5rem;
+  padding: 0.32rem 0.4rem 0.32rem 0.3rem;
+  border-radius: 2px;
+  border-left: 3px solid var(--ev-neutral);
+  cursor: pointer;
+  scroll-margin: 0.75rem;
+}
+.ev-e + .ev-e { margin-top: 2px; }
+.ev-e:hover { background: var(--ev-bg); }
+.ev-e[aria-selected="true"] {
+  background: var(--ev-bg);
+  box-shadow: inset 0 0 0 1px var(--ev-rule), 0 1px 2px rgba(22, 25, 29, 0.06);
+}
+.ev-e--child { margin-left: 1.15rem; }
+.ev-e--say, .ev-e--final { border-left-color: var(--ev-say); }
+.ev-e--think { border-left-color: var(--ev-model); }
+.ev-e--run { border-left-color: var(--ev-tool); }
+.ev-e--look { border-left-color: var(--ev-look); }
+.ev-e--robot { border-left-color: var(--ev-neutral); }
+.ev-e--robot[data-group="motion"] { border-left-color: var(--ev-motion); }
+.ev-e--robot[data-group="capture"] { border-left-color: var(--ev-capture); }
+.ev-e--robot[data-ok="0"] { border-left-color: var(--ev-motion-bad); }
+
+.ev-time {
+  font-family: var(--ev-mono);
+  font-variant-numeric: tabular-nums;
+  font-size: 0.75rem;
+  color: var(--ev-muted);
+  padding-top: 0.1rem;
+}
+.ev-body { min-width: 0; }
+.ev-kind {
+  font-size: 0.6875rem;
+  color: var(--ev-muted);
+  margin-right: 0.4rem;
+}
+.ev-label { font-size: 0.9375rem; }
+.ev-text {
+  margin: 0;
+  font-size: 0.9375rem;
+  overflow-wrap: break-word;
+}
+.ev-voice {
+  quotes: "\201c" "\201d";
+}
+.ev-voice::before { content: open-quote; color: var(--ev-muted); }
+.ev-voice::after { content: close-quote; color: var(--ev-muted); }
+.ev-own {
+  display: inline-block;
+  font-size: 0.6875rem;
+  color: var(--ev-muted);
+  border: 1px solid var(--ev-rule);
+  border-radius: 2px;
+  padding: 0 0.25rem;
+  margin-left: 0.35rem;
+  vertical-align: 1px;
+  white-space: nowrap;
+}
+.ev-cmdname {
+  font-family: var(--ev-mono);
+  font-size: 0.8125rem;
+  color: var(--ev-ink);
+}
+.ev-cmd {
+  display: block;
+  margin-top: 0.2rem;
+  font-family: var(--ev-mono);
+  font-size: 0.8125rem;
+  line-height: 1.45;
+  color: var(--ev-muted);
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  max-height: 3.9em;
+  overflow: hidden;
+}
+.ev-e[aria-selected="true"] .ev-cmd { max-height: none; }
+.ev-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem 0.4rem;
+  margin-top: 0.15rem;
+  font-family: var(--ev-mono);
+  font-variant-numeric: tabular-nums;
+  font-size: 0.6875rem;
+  color: var(--ev-muted);
+}
+.ev-chip {
+  border: 1px solid var(--ev-rule);
+  border-radius: 2px;
+  padding: 0 0.3rem;
+  background: var(--ev-bg);
+}
+.ev-chip--bad {
+  border-color: var(--ev-motion-bad);
+  color: var(--ev-motion-bad);
+  font-family: var(--ev-sans);
+}
+.ev-chip--counted { border-style: dashed; }
+.ev-thumbs { display: flex; gap: 3px; margin-top: 0.25rem; flex-wrap: wrap; }
+.ev-thumb-btn {
+  border: 0;
+  padding: 0;
+  background: none;
+  cursor: pointer;
+  line-height: 0;
+  border-radius: 2px;
+}
+.ev-thumb-mini {
+  width: 40px;
+  height: 30px;
+  object-fit: cover;
+  border-radius: 2px;
+  box-shadow: 0 0 0 1px var(--ev-ring);
+  background: var(--ev-track);
+}
+.ev-thumb-mini--gated {
+  display: grid;
+  place-items: center;
+  font-size: 0.625rem;
+  color: var(--ev-muted);
+}
+.ev-final {
+  white-space: pre-wrap;
+  overflow-wrap: break-word;
+  font-size: 0.9375rem;
+  margin: 0.15rem 0 0;
+}
+
+/* ── filmstrip ─────────────────────────────────────────────────────────── */
+
+.ev-filmwrap { margin-top: 1.1rem; }
+.ev-filmhead {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 0.4rem;
+}
+.ev-filmtitle {
+  margin: 0;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--ev-muted);
+}
+.ev-filmnote { margin: 0; font-size: 0.8125rem; color: var(--ev-muted);
+  max-width: var(--ev-measure); }
+.ev-film {
+  display: flex;
+  gap: 6px;
+  margin: 0;
+  padding: 6px;
+  list-style: none;
+  background: var(--ev-surface);
+  border-radius: var(--ev-radius);
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-padding: 6px;
+  /* the same scroll cue the page uses on its tables and charts */
+  background-image:
+    linear-gradient(to right, var(--ev-surface) 40%, rgba(243, 242, 236, 0)),
+    linear-gradient(to left, var(--ev-surface) 40%, rgba(243, 242, 236, 0)),
+    radial-gradient(farthest-side at 0 50%, rgba(11, 11, 11, 0.19), rgba(11, 11, 11, 0)),
+    radial-gradient(farthest-side at 100% 50%, rgba(11, 11, 11, 0.19), rgba(11, 11, 11, 0));
+  background-position: left center, right center, left center, right center;
+  background-repeat: no-repeat;
+  background-size: 2.2rem 100%, 2.2rem 100%, 0.6rem 100%, 0.6rem 100%;
+  background-attachment: local, local, scroll, scroll;
+}
+.ev-shot {
+  flex: none;
+  position: relative;
+  width: 118px;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+  font: inherit;
+  text-align: left;
+  scroll-margin: 6px;
+}
+.ev-shot img {
+  display: block;
+  width: 118px;
+  height: 76px;
+  object-fit: cover;
+  border-radius: 2px;
+  background: var(--ev-track);
+  box-shadow: 0 0 0 1px var(--ev-ring);
+  /* not yet reached, not broken: dimmer than a seen frame but plainly a picture */
+  opacity: 0.66;
+  filter: saturate(0.7);
+}
+.ev-shot[data-seen="1"] img { opacity: 1; filter: none; }
+.ev-shot[data-current="1"] img {
+  box-shadow: 0 0 0 2px var(--ev-ink);
+}
+.ev-shot-time {
+  font-family: var(--ev-mono);
+  color: var(--ev-ink);
+  margin-right: 0.3rem;
+}
+.ev-shot-cap {
+  display: block;
+  margin-top: 2px;
+  font-size: 0.6875rem;
+  line-height: 1.25;
+  color: var(--ev-muted);
+  font-variant-numeric: tabular-nums;
+}
+.ev-shot-made {
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  font-size: 0.625rem;
+  background: var(--ev-bg);
+  color: var(--ev-ink);
+  border-radius: 2px;
+  padding: 0 0.2rem;
+  box-shadow: 0 0 0 1px var(--ev-ring);
+}
+.ev-gate {
+  display: grid;
+  align-content: center;
+  gap: 0.25rem;
+  width: 118px;
+  height: 76px;
+  padding: 0.3rem;
+  border-radius: 2px;
+  background: var(--ev-track);
+  box-shadow: 0 0 0 1px var(--ev-ring);
+  font-size: 0.6875rem;
+  line-height: 1.25;
+  color: var(--ev-muted);
+  text-align: center;
+}
+.ev-gate-show {
+  font: inherit;
+  font-size: 0.6875rem;
+  color: var(--ev-ink);
+  background: var(--ev-bg);
+  border: 1px solid var(--ev-rule);
+  border-radius: 2px;
+  padding: 0.1rem 0.3rem;
+  margin: 0 auto;
+  cursor: pointer;
+}
+
+/* lightbox */
+
+.ev-lightbox {
+  border: 0;
+  color-scheme: light;
+  padding: 0;
+  max-width: min(94vw, 1000px);
+  max-height: 92vh;
+  background: var(--ev-bg);
+  color: var(--ev-ink);
+  border-radius: var(--ev-radius);
+  box-shadow: 0 10px 40px rgba(22, 25, 29, 0.28);
+}
+.ev-lightbox::backdrop { background: rgba(14, 16, 19, 0.72); }
+.ev-lb-img {
+  display: block;
+  max-width: 100%;
+  max-height: 68vh;
+  margin: 0 auto;
+  background: #0e1013;
+}
+.ev-lb-foot {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem 0.9rem;
+  padding: 0.6rem 0.8rem;
+  border-top: 1px solid var(--ev-rule);
+}
+.ev-lb-textcol { flex: 1 1 18rem; min-width: 0; }
+.ev-lb-cap { margin: 0; font-size: 0.8125rem; }
+.ev-lb-meta {
+  margin: 0.15rem 0 0;
+  font-size: 0.75rem;
+  color: var(--ev-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ── summary, notes ────────────────────────────────────────────────────── */
+
+.ev-summary { margin-top: 1.2rem; }
+.ev-caption {
+  margin: 0 0 0.9rem;
+  max-width: var(--ev-measure);
+  font-size: 0.9375rem;
+  color: var(--ev-muted);
+}
+.ev-h4 {
+  margin: 0 0 0.3rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--ev-muted);
+}
+.ev-dl {
+  margin: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(11rem, 1fr));
+  gap: 0.1rem 1.2rem;
+  font-size: 0.8125rem;
+}
+.ev-dl > div {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.6rem;
+  padding: 0.14rem 0;
+  border-bottom: 1px solid var(--ev-rule);
+}
+.ev-dl dt { color: var(--ev-muted); }
+.ev-dl dd {
+  margin: 0;
+  font-family: var(--ev-mono);
+  font-variant-numeric: tabular-nums;
+  /* "80.4 s" is one value: never break the unit onto its own line */
+  white-space: nowrap;
+}
+.ev-dl dt { min-width: 0; }
+.ev-budget, .ev-counts { margin-bottom: 0.9rem; }
+.ev-budget-note, .ev-exposes {
+  margin: 0.45rem 0 0;
+  max-width: var(--ev-measure);
+  font-size: 0.875rem;
+  color: var(--ev-muted);
+}
+.ev-chlist {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: 0.8125rem;
+  max-width: 48rem;
+}
+.ev-chlist li {
+  display: flex;
+  gap: 0.6rem;
+  align-items: baseline;
+  padding: 0.14rem 0;
+  border-bottom: 1px solid var(--ev-rule);
+}
+.ev-chbtn {
+  display: flex;
+  flex: 1;
+  gap: 0.6rem;
+  align-items: baseline;
+  font: inherit;
+  color: inherit;
+  text-align: left;
+  background: none;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+  border-radius: 2px;
+}
+.ev-chbtn:hover { color: var(--ev-accent); }
+.ev-chlist .ev-num {
+  font-family: var(--ev-mono);
+  color: var(--ev-muted);
+  width: 1.2rem;
+  flex: none;
+}
+.ev-chtime {
+  margin-left: auto;
+  font-family: var(--ev-mono);
+  font-variant-numeric: tabular-nums;
+  color: var(--ev-muted);
+}
+.ev-note {
+  margin: 0.8rem 0 0;
+  max-width: var(--ev-measure);
+  font-size: 0.875rem;
+  color: var(--ev-muted);
+}
+.ev--js .ev-note--nojs { display: none; }
+.ev--js [data-js-hide] { display: none; }
+
+/* ── two-column layout ─────────────────────────────────────────────────── */
+
+.ev-ep[hidden] { display: none !important; }
+
+@media (min-width: 62rem) {
+  .ev--js .ev-ep:not([hidden]) {
+    display: grid;
+    grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr);
+    column-gap: 1.4rem;
+    align-items: start;
+  }
+  .ev--js .ev-ep-head,
+  .ev--js .ev-filmwrap,
+  .ev--js .ev-summary { grid-column: 1 / -1; }
+  .ev--js .ev-railwrap { align-self: stretch; }
+  .ev--js .ev-video { max-height: min(58vh, 460px); }
+  .ev--js .ev-frame { display: grid; place-items: center; }
+}
+
+@media (max-width: 47.99rem) {
+  .ev { --ev-gutter: 5.4rem; }
+  .ev-lane-name { font-size: 0.6875rem; gap: 0.3rem; }
+  .ev-lane-long, .ev-chap-title { display: none; }
+  .ev-lane-short { display: inline; }
+  .ev-chap { font-size: 0.6875rem; padding: 0.2rem 0.1rem; text-align: center; }
+  .ev-btn-more { display: none; }
+  .ev-rail { max-height: 26rem; }
+  .ev-speed { margin-left: 0; }
+  .ev-guide { padding: 0.7rem 0.8rem; }
+  .ev-railnote, .ev-filmnote { flex-basis: 100%; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ev * { scroll-behavior: auto !important; }
+}
+
+@media (forced-colors: active) {
+  .ev-mark, .ev-swatch, .ev-spark-fill, .ev-spark-line {
+    forced-color-adjust: none;
+  }
+  .ev-e[aria-selected="true"] { outline: 2px solid; }
+  .ev-shot[data-current="1"] img { outline: 3px solid; }
+}
+
+@media print {
+  .ev-rail { max-height: none; overflow: visible; }
+  .ev-film { overflow: visible; flex-wrap: wrap; }
+}

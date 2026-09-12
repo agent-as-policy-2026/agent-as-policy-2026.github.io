@@ -1,0 +1,38 @@
+config,config_slug,trial,n_trials,model,harness,effort,arm,outcome,time_min,tokens_k,cost_usd,session_stamp,slot_id,still_id
+Four pair assembly,four_pair_assembly,01,5,GPT-6 Astra,Codex CLI,high,right,success,38.58625000317891,12837.668,16.919216,20260909_173954,assembly-fourpair-t01,assembly-fourpair-t01
+Four pair assembly,four_pair_assembly,02,5,GPT-6 Astra,Codex CLI,high,right,success,53.02403781414032,17140.029,22.905378,20260909_181930,assembly-fourpair-t02,assembly-fourpair-t02
+Four pair assembly,four_pair_assembly,03,5,GPT-6 Astra,Codex CLI,high,right,failure,89.24330714941024,40405.794,48.390284,20260909_191715,assembly-fourpair-t03,assembly-fourpair-t03
+Four pair assembly,four_pair_assembly,04,5,GPT-6 Astra,Codex CLI,high,right,success,47.193112214406334,16056.229,19.944202,20260909_204906,assembly-fourpair-t04,assembly-fourpair-t04
+Four pair assembly,four_pair_assembly,05,5,GPT-6 Astra,Codex CLI,high,right,success,78.22697273492813,42987.676,49.878024,20260906_183723,assembly-fourpair-t05,assembly-fourpair-t05
+Pyramid,pyramid,01,5,GPT-6 Astra,Codex CLI,high,left,success,16.80269556840261,6362.825,8.168162,20260904_155618,blocks-pyramid-t01,blocks-pyramid-t01
+Pyramid,pyramid,02,5,GPT-6 Astra,Codex CLI,high,left,success,23.22117833296458,8656.675,11.149094,20260904_161611,blocks-pyramid-t02,blocks-pyramid-t02
+Pyramid,pyramid,03,5,GPT-6 Astra,Codex CLI,high,left,success,26.930476117134095,11120.357,15.279698,20260904_164513,blocks-pyramid-t03,blocks-pyramid-t03
+Pyramid,pyramid,04,5,GPT-6 Astra,Codex CLI,high,left,success,14.869348764419556,6266.921,8.00785,20260904_171625,blocks-pyramid-t04,blocks-pyramid-t04
+Pyramid,pyramid,05,5,GPT-6 Astra,Codex CLI,high,left,success,32.2486336350441,12936.551,15.187046,20260904_173848,blocks-pyramid-t05,blocks-pyramid-t05
+Two towers,two_towers,01,5,GPT-6 Astra,Codex CLI,high,left,success,20.97600338459015,7613.541,9.573538,20260904_215438,blocks-twotowers-t01,blocks-twotowers-t01
+Two towers,two_towers,02,5,GPT-6 Astra,Codex CLI,high,left,success,19.419573096434274,7802.66,9.680696,20260904_232204,blocks-twotowers-t02,blocks-twotowers-t02
+Two towers,two_towers,03,5,GPT-6 Astra,Codex CLI,high,left,success,14.756527582804361,4944.141,6.273978,20260905_000722,blocks-twotowers-t03,blocks-twotowers-t03
+Two towers,two_towers,04,5,GPT-6 Astra,Codex CLI,high,left,success,22.641433533032735,6909.004,9.010256,20260905_004219,blocks-twotowers-t04,blocks-twotowers-t04
+Two towers,two_towers,05,5,GPT-6 Astra,Codex CLI,high,left,success,29.151611085732778,14389.627,16.850102,20260905_013322,blocks-twotowers-t05,blocks-twotowers-t05
+Six block tower,six_block_tower,01,5,GPT-6 Astra,Codex CLI,high,left,success,46.41243000030518,19075.89,25.2915,20260906_170749,blocks-sixblock-t01,blocks-sixblock-t01
+Six block tower,six_block_tower,02,5,GPT-6 Astra,Codex CLI,high,left,failure,35.64759381612142,13507.898,17.018444,20260906_175805,blocks-sixblock-t02,blocks-sixblock-t02
+Six block tower,six_block_tower,03,5,GPT-6 Astra,Codex CLI,high,left,success,20.12030586798986,8437.1,10.621992,20260906_184253,blocks-sixblock-t03,blocks-sixblock-t03
+Six block tower,six_block_tower,04,5,GPT-6 Astra,Codex CLI,high,left,success,17.26916253566742,5086.498,6.69454,20260906_190445,blocks-sixblock-t04,blocks-sixblock-t04
+Six block tower,six_block_tower,05,5,GPT-6 Astra,Codex CLI,high,left,success,54.96599028110504,19846.386,26.779332,20260906_192439,blocks-sixblock-t05,blocks-sixblock-t05
+Die flipping,die_flipping,01,5,GPT-6 Astra,Codex CLI,high,left,success,36.358525200684866,10158.462,12.567972,20260906_205226,dice-flip-t01,dice-flip-t01
+Die flipping,die_flipping,02,5,GPT-6 Astra,Codex CLI,high,left,success,56.013102400302884,23603.202,28.758436,20260907_115609,dice-flip-t02,dice-flip-t02
+Die flipping,die_flipping,03,5,GPT-6 Astra,Codex CLI,high,left,success,47.92242695093155,20189.827,23.723046,20260909_173937,dice-flip-t03,dice-flip-t03
+Die flipping,die_flipping,04,5,GPT-6 Astra,Codex CLI,high,left,success,51.3603011171023,24999.998,31.201572,20260909_184200,dice-flip-t04,dice-flip-t04
+Die flipping,die_flipping,05,5,GPT-6 Astra,Codex CLI,high,left,success,22.608984430631,13350.959,16.34063,20260909_194245,dice-flip-t05,dice-flip-t05
+Targeted throwing (potato),targeted_throwing_potato,01,2,GPT-6 Astra,Codex CLI,high,right,success,22.224342548847197,6254.389,8.706394,20260907_141651,throw-potato-t01,throw-potato-t01
+Targeted throwing (potato),targeted_throwing_potato,02,2,GPT-6 Astra,Codex CLI,high,right,success,23.277297500769297,6257.49,9.17894,20260907_153645,throw-potato-t02,throw-potato-t02
+"Towel folding, sequential",towel_sequential,01,5,GPT-6 Astra,Codex CLI,high,both,success,61.62632863124212,17584.935,27.98027,20260908_204543,towel-sequential-t01,towel-sequential-t01
+"Towel folding, sequential",towel_sequential,02,5,GPT-6 Astra,Codex CLI,high,both,success,50.74035566647847,18582.003,23.534894,20260908_220219,towel-sequential-t02,towel-sequential-t02
+"Towel folding, sequential",towel_sequential,03,5,GPT-6 Astra,Codex CLI,high,both,success,44.57361093362172,19060.277,24.141866,20260909_110329,towel-sequential-t03,towel-sequential-t03
+"Towel folding, sequential",towel_sequential,04,5,GPT-6 Astra,Codex CLI,high,both,success,63.32190876801808,25262.073,30.901466,20260909_115607,towel-sequential-t04,towel-sequential-t04
+"Towel folding, sequential",towel_sequential,05,5,GPT-6 Astra,Codex CLI,high,both,success,33.791317733128864,10125.607,14.158174,20260909_132848,towel-sequential-t05,towel-sequential-t05
+"Towel folding, simultaneous",towel_simultaneous,01,5,GPT-6 Astra,Codex CLI,high,both,failure,14.01511073509852,3825.322,5.8635,20260909_142704,towel-simultaneous-t01,towel-simultaneous-t01
+"Towel folding, simultaneous",towel_simultaneous,02,5,GPT-6 Astra,Codex CLI,high,both,success,15.661139166355133,4269.727,6.156566,20260909_144354,towel-simultaneous-t02,towel-simultaneous-t02
+"Towel folding, simultaneous",towel_simultaneous,03,5,GPT-6 Astra,Codex CLI,high,both,failure,27.599831998348236,8929.19,12.732572,20260909_150832,towel-simultaneous-t03,towel-simultaneous-t03
+"Towel folding, simultaneous",towel_simultaneous,04,5,GPT-6 Astra,Codex CLI,high,both,success,31.208451950550078,5683.838,8.668748,20260909_154653,towel-simultaneous-t04,towel-simultaneous-t04
+"Towel folding, simultaneous",towel_simultaneous,05,5,GPT-6 Astra,Codex CLI,high,both,success,17.41697388490041,5212.728,7.542992,20260909_162537,towel-simultaneous-t05,towel-simultaneous-t05
