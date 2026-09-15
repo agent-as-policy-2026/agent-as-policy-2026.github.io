@@ -1,8 +1,8 @@
-/* trials.js - the 87-slot trial browser on trials.html: filters, pagination, a record
+/* trials.js - the 112-slot trial browser on trials.html: filters, pagination, a record
    drawer, hash routing and keyboard navigation.
 
-   Without this file every one of the 87 cards is on the page, every card links to itself,
-   the pager is hidden and the same 87 rows are in the table under the grid. That is the
+   Without this file every one of the 112 cards is on the page, every card links to itself,
+   the pager is hidden and the same 112 rows are in the table under the grid. That is the
    fallback, and it is why the pager ships hidden rather than ships disabled.
 
    Pagination is 30 cards a page over whatever the current filter matches. The hash
@@ -17,14 +17,14 @@ const section = document.getElementById('trial-browser');
 if (section) {
   const cards = Array.from(section.querySelectorAll('.agp-trial'));
   const groups = Array.from(section.querySelectorAll('.agp-trialgroup'));
-  const buttons = Array.from(section.querySelectorAll('.agp-filter'));
+  const buttons = Array.from(section.querySelectorAll('.agp-filter[data-filter]'));
   const status = section.querySelector('.agp-filter-status');
   const pager = section.querySelector('.agp-pager');
-  const pagerPrev = section.querySelector('.agp-pager-prev');
-  const pagerNext = section.querySelector('.agp-pager-next');
-  const pagerStatus = section.querySelector('.agp-pager-status');
   const drawer = document.getElementById('agp-trial-drawer');
   const bySlot = new Map(cards.map((c) => [c.dataset.slot, c]));
+  const categoryButtons = Array.from(section.querySelectorAll('[data-category]'));
+  const categoryTables = { main: 'table1', models: 'table2', transfer: 'transfer' };
+  let category = 'all';
   let current = 'all';
   let page = 0;
   let opener = null;
@@ -33,13 +33,12 @@ if (section) {
     all: () => true,
     success: (c) => c.dataset.outcome === 'success',
     failure: (c) => c.dataset.outcome === 'failure',
-    disagree: (c) => c.dataset.disagree === 'yes',
-    unclassified: (c) => c.dataset.label === 'unclear',
   };
 
   /* Everything the current filter matches, in page order: the list the drawer steps
      through and the list the pager cuts into pages. */
-  const matching = (filter) => cards.filter((c) => matches[filter || current](c));
+  const inCategory = (c) => category === 'all' || c.dataset.table === categoryTables[category];
+  const matching = (filter) => cards.filter((c) => inCategory(c) && matches[filter || current](c));
   const visible = () => cards.filter((c) => !c.hidden);
 
   function pageCount(shown) {
@@ -52,13 +51,14 @@ if (section) {
     const name = label ? label.firstChild.textContent.trim().toLowerCase() : filter;
     return shown === 0
       ? `No trial matches ${name}.`
-      : `Showing ${shown} of ${cards.length} slots: ${name}.`;
+      : `Showing ${shown} of ${cards.filter(inCategory).length} trials in this category. ${name}.`;
   }
 
   function hashFor() {
-    const base = current === 'all' ? '#trial-browser' : `#trials=${current}`;
-    if (page === 0) return base;
-    return `${current === 'all' ? '#trials=all' : `#trials=${current}`}&p=${page + 1}`;
+    const params = new URLSearchParams({ trials: current });
+    if (category !== 'all') params.set('category', category);
+    if (page > 0) params.set('p', String(page + 1));
+    return '#' + params.toString();
   }
 
   function apply(filter, { announce = true, updateHash = false, toPage = null } = {}) {
@@ -73,22 +73,25 @@ if (section) {
     groups.forEach((group) => {
       group.hidden = !group.querySelector('.agp-trial:not([hidden])');
     });
-    buttons.forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.filter === filter)));
+    buttons.forEach((b) => {
+      b.setAttribute('aria-pressed', String(b.dataset.filter === filter));
+      b.querySelector('.agp-filter-n').textContent = cards.filter(c => inCategory(c) && matches[b.dataset.filter](c)).length;
+    });
+    categoryButtons.forEach(b => b.setAttribute('aria-pressed', String(b.dataset.category === category)));
     if (status && announce) status.textContent = describe(filter, list.length);
     if (pager) {
       pager.hidden = list.length <= PAGE_SIZE;
-      if (pagerPrev) pagerPrev.disabled = page === 0;
-      if (pagerNext) pagerNext.disabled = page >= pages - 1;
-      if (pagerStatus) {
-        const pattern = pagerStatus.dataset.pattern || '';
-        pagerStatus.textContent = pattern
-          .replace('{page}', String(page + 1))
-          .replace('{pages}', String(pages))
-          .replace('{first}', String(list.length ? first + 1 : 0))
-          .replace('{last}', String(Math.min(first + PAGE_SIZE, list.length)))
-          .replace('{total}', String(list.length));
-      }
+      pager.replaceChildren(...Array.from({ length: pages }, (_, index) => {
+        const button = document.createElement('button');
+        button.type = 'button';
+        button.dataset.page = index;
+        button.textContent = index + 1;
+        button.setAttribute('aria-label', `Page ${index + 1}`);
+        if (index === page) button.setAttribute('aria-current', 'page');
+        return button;
+      }));
     }
+
     if (updateHash && (!drawer || !drawer.open)) {
       history.replaceState(null, '', hashFor());
     }
@@ -103,6 +106,7 @@ if (section) {
     let list = matching(current);
     if (list.indexOf(card) < 0) {
       /* the running filter excludes it: the link wins, the filter gives way */
+      category = 'all';
       apply('all', { announce: false });
       list = matching('all');
     }
@@ -117,20 +121,19 @@ if (section) {
     const rows = [
       ['Configuration', d.config],
       ['Trial', d.trial],
-      ['Audited outcome', d.outcome],
-      ['Agent report', d.label],
+      ['Outcome', d.outcome],
       ['Model', d.model],
       ['Thinking effort', d.effort],
       ['Harness', d.harness],
       ['Arm', d.arm],
       ['Time', recorded ? `${d.time} min` : 'not recorded'],
-      ['Tokens', recorded ? `${d.tokens} k` : 'not recorded'],
+      ['Tokens', recorded ? `${d.tokens} M` : 'not recorded'],
       ['Cost', recorded ? `USD ${d.cost}` : 'not recorded'],
       ['Session', d.stamp],
       ['Slot id', d.slot],
     ];
     return rows.map(([k, v]) => {
-      const fail = (k === 'Audited outcome' && v === 'failure') ? ' class="agp-spec-fail"' : '';
+      const fail = (k === 'Outcome' && v === 'failure') ? ' class="agp-spec-fail"' : '';
       return `<div class="agp-spec-row"><dt>${k}</dt><dd${fail}>${v}</dd></div>`;
     }).join('');
   }
@@ -151,7 +154,6 @@ if (section) {
       '<div class="agp-drawer-nav">' +
       '<button type="button" data-step="-1">Previous trial</button>' +
       '<button type="button" data-step="1">Next trial</button>' +
-      '<a class="agp-drawer-csv" href="data/trials.csv" download>This row in the CSV</a>' +
       '</div></div>';
     drawer.querySelector('.agp-drawer-close').addEventListener('click', () => drawer.close());
     drawer.querySelectorAll('[data-step]').forEach((b) => {
@@ -178,12 +180,18 @@ if (section) {
     if (next) open(next.dataset.slot, { focusBack: opener, restore: String(delta) });
   }
 
+  categoryButtons.forEach(b => b.addEventListener('click', () => {
+    category = category === b.dataset.category ? 'all' : b.dataset.category;
+    apply(current, { updateHash: true, toPage: 0 });
+  }));
   buttons.forEach((b) => b.addEventListener('click',
     () => apply(b.dataset.filter, { updateHash: true, toPage: 0 })));
-  if (pagerPrev) pagerPrev.addEventListener('click',
-    () => apply(current, { updateHash: true, toPage: page - 1 }));
-  if (pagerNext) pagerNext.addEventListener('click',
-    () => apply(current, { updateHash: true, toPage: page + 1 }));
+  if (pager) pager.addEventListener('click', (event) => {
+    const button = event.target.closest('button[data-page]');
+    if (!button) return;
+    apply(current, { updateHash: true, toPage: Number(button.dataset.page) });
+    pager.querySelector('[aria-current="page"]').focus({ preventScroll: true });
+  });
   section.querySelectorAll('.agp-js-only').forEach((el) => { el.hidden = false; });
 
   cards.forEach((card) => {
@@ -210,10 +218,13 @@ if (section) {
 
   function fromHash() {
     const hash = location.hash;
-    const filter = hash.match(/^#trials=(\w+)(?:&p=(\d+))?$/);
+    const params = new URLSearchParams(hash.slice(1));
+    const filter = params.get('trials');
     const slot = hash.match(/^#t-(.+)$/);
     if (filter) {
-      apply(filter[1], { toPage: filter[2] ? Number(filter[2]) - 1 : 0 });
+      category = Object.hasOwn(categoryTables, params.get('category')) ? params.get('category') : 'all';
+      const requestedPage = Number(params.get('p') || 1);
+      apply(filter, { toPage: Number.isFinite(requestedPage) ? requestedPage - 1 : 0 });
     } else if (slot && bySlot.has(slot[1])) {
       open(slot[1]);
     }

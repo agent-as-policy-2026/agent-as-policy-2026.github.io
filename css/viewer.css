@@ -958,3 +958,9 @@
   .ev-rail { max-height: none; overflow: visible; }
   .ev-film { overflow: visible; flex-wrap: wrap; }
 }
+
+/* Supporting information stays closed until requested. */
+.ev-details { border-top: 1px solid var(--ev-rule, #ccc); padding-top: 0.7rem; margin-bottom: 1rem; }
+.ev-details > summary { cursor: pointer; font-size: 0.9375rem; font-weight: 600; color: var(--ev-ink, #181818); }
+.ev-details[open] > summary { margin-bottom: 0.9rem; }
+.ev-data-note { margin-top: 1rem; }

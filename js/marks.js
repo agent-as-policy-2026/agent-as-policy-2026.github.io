@@ -8,7 +8,7 @@ const FIELDS = [
   ['harness', 'Harness'],
   ['arm', 'Arm'],
   ['time', 'Time (min)'],
-  ['tokens', 'Tokens (k)'],
+  ['tokens', 'Tokens (M)'],
   ['cost', 'Cost (USD)'],
   ['agent', 'Agent report'],
 ];

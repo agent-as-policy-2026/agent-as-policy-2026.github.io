@@ -110,6 +110,19 @@ document.addEventListener('agp:tabchange', () => {
   rank();
 });
 
+document.addEventListener('agp:sourcechange', ({ detail: { video } }) => {
+  autoStarted.delete(video);
+  manual.delete(video);
+  ratios.set(video, visibleRatio(video));
+  rank();
+});
+
+document.addEventListener('agp:input-play', ({ detail: { video } }) => {
+  video.pause();
+  autoStarted.delete(video);
+  manual.add(video);
+});
+
 /* The episode viewer says when it starts playing. Two long clips decoding at once is
    exactly what the two-at-a-time cap exists to prevent, and the uncut episode is the
    largest file on the page, so the section clips stop. */

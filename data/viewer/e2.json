@@ -2,12 +2,12 @@
  "schema": "agp-viewer/1.1",
  "id": "e2",
  "task": "Two-pair assembly from a demonstration video",
- "task_long": "Watch a demonstration video of a person assembling two part pairs, then assemble the same two pairs on the left half of the table and leave each one stable after release.",
+ "task_long": "Watch a demonstration video of a person assembling two part pairs, then assemble the same two pairs in the workspace and leave each one stable after release.",
  "agent": {
   "harness": "Claude Code",
   "model": "Claude Opus 5",
   "effort": "high",
-  "arm": "left"
+  "arm": "single"
  },
  "trial": {
   "k": 3,
@@ -4142,7 +4142,7 @@
    "i": 169,
    "t": 900.76,
    "type": "final",
-   "text": "I think this one worked: the robot put both blue parts on their matching white parts. The final overhead image, `frames/0024_top.png`, matches the goal image, the arm is back at the observe posture and the gripper is open.\n\n- **The two pairs, from the demo video:** the blue hex nut goes over the white hex-head bolt's shaft and rests on its head. The blue round ring goes over the tall white cylinder and ends up around its base.\n- **The white parts were already standing:** in the overhead image they looked tipped over, but that's the camera's steep angle. Depth from the wrist camera showed them upright, so I only had to pick up each blue part and lower it over its white part. Both assemblies were built where the white parts stood, in my half of the table. The right arm and its parts were not touched.\n- **Nut:** gripped across two flat sides and lifted. From a wrist image I worked out where its hole sat in the gripper (about 4 mm off-centre, with about 3.7 mm of clearance around the shaft). I lowered it until the shaft top showed through the hole, then opened the gripper. Depth shows the nut's top face level at the expected height, so it is sitting flat on the bolt head.\n- **Ring:** gripped across its diameter and lined up over the cylinder in the same way, then released. It slid down around the cylinder base. I confirmed this visually in the wrist and overhead images, but couldn't get a clean depth reading of the ring's top edge.\n\nNeither part needed a second attempt. The run used 53 of the 400 commands and about 15 minutes of the 120.\n\nThe write-up is in `scratch/RESULT.md`. I left one helper script, `scratch/knowledge_delta_tools/blobplane.py`, for future sessions. It finds a coloured part's outline at a known height and reports its centre, size and hole. The reason it's general is in `scratch/knowledge_delta.md`."
+   "text": "I think this one worked: the robot put both blue parts on their matching white parts. The final overhead image, `frames/0024_top.png`, matches the goal image, the arm is back at the observe posture and the gripper is open.\n\n- **The two pairs, from the demo video:** the blue hex nut goes over the white hex-head bolt's shaft and rests on its head. The blue round ring goes over the tall white cylinder and ends up around its base.\n- **The white parts were already standing:** in the overhead image they looked tipped over, but that's the camera's steep angle. Depth from the wrist camera showed them upright, so I only had to pick up each blue part and lower it over its white part. Both assemblies were built where the white parts stood, in my half of the table.\n- **Nut:** gripped across two flat sides and lifted. From a wrist image I worked out where its hole sat in the gripper (about 4 mm off-centre, with about 3.7 mm of clearance around the shaft). I lowered it until the shaft top showed through the hole, then opened the gripper. Depth shows the nut's top face level at the expected height, so it is sitting flat on the bolt head.\n- **Ring:** gripped across its diameter and lined up over the cylinder in the same way, then released. It slid down around the cylinder base. I confirmed this visually in the wrist and overhead images, but couldn't get a clean depth reading of the ring's top edge.\n\nNeither part needed a second attempt. The run used 53 of the 400 commands and about 15 minutes of the 120.\n\nThe write-up is in `scratch/RESULT.md`. I left one helper script, `scratch/knowledge_delta_tools/blobplane.py`, for future sessions. It finds a coloured part's outline at a known height and reports its centre, size and hole. The reason it's general is in `scratch/knowledge_delta.md`."
   }
  ],
  "images": [

@@ -47,6 +47,7 @@
   --rule: #d2d1c9;        /* every hairline: 1.26:1 on the board. Was #e1e0d9, which is
                              1.09:1 there and effectively invisible. */
   --accent: #1f5fa8;      /* links, focus, the active control. 5.29:1 on board. */
+  --success: #238347;
   --fail: #d03b3b;        /* the failure mark, and nothing decorative. See the note above. */
   --demo: #f1efe7;        /* the one tinted ground: human demonstration footage */
   --surface: #f3f2ec;     /* recessed panels (the viewer reads this) */
@@ -247,6 +248,7 @@ code { font-family: var(--font-mono); font-size: 0.92em; }
 }
 .agp-list { padding-left: 1.1rem; margin: 0 0 1rem; }
 .agp-list li { margin-bottom: 0.5rem; }
+#limits > .agp-list { max-width: none; }
 
 .agp-two-up { display: grid; gap: 1rem 3rem; grid-template-columns: 1fr; margin: 1.2rem 0 1rem; }
 .agp-col > .agp-h3:first-child { margin-top: 0.6rem; }
@@ -311,7 +313,7 @@ code { font-family: var(--font-mono); font-size: 0.92em; }
 }
 .agp-mark-glyph {
   width: 0.72rem; height: 0.72rem; display: block;
-  border: 1.4px solid var(--ink); background: var(--ink);
+  border: 1.4px solid var(--success); background: var(--success);
 }
 .agp-mark[data-outcome="failure"] .agp-mark-glyph,
 .agp-trial-outcome[data-outcome="failure"] .agp-mark-glyph {
@@ -385,44 +387,6 @@ code { font-family: var(--font-mono); font-size: 0.92em; }
 }
 .agp-masthead-main > :first-child, .agp-masthead-side > :first-child { margin-top: 0; }
 
-/* The contact strip, the clip chips and the failure chips are the same device at three
-   scales: a tablist whose selection shows or hides whole panels. An unselected tab is
-   never dimmed; the selected one takes a 3px rule and a heavier weight, and nothing else
-   changes. The existence of every trial stays legible without a click. */
-.agp-strip {
-  display: grid; gap: 14px;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  margin: 0 0 1.6rem; padding: 0;
-}
-@media (min-width: 34rem) { .agp-strip { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
-@media (min-width: 56rem) { .agp-strip { grid-template-columns: repeat(5, minmax(0, 1fr)); } }
-/* The cell, not the button, is the grid child: the marks are links to each trial's own
-   record, and a link inside a button is not a control anyone can operate. So the button
-   carries the poster, the name and the score, and the marks sit under it. */
-.agp-strip-cell { display: grid; gap: 0.25rem; align-content: start; min-width: 0; }
-.agp-strip-tab {
-  font: inherit; font-size: 0.9375rem; text-align: left; cursor: pointer;
-  display: grid; gap: 0.28rem; padding: 0 0 0.5rem; min-width: 0;
-  background: none; border: 0; border-bottom: 3px solid transparent;
-  color: var(--ink); font-variation-settings: "wght" 500;
-}
-.agp-strip-tab[aria-selected="true"] {
-  border-bottom-color: var(--ink); font-variation-settings: "wght" 650;
-}
-/* Five delivered posters of four different shapes. The strip is a contact sheet, so they
-   are trimmed to one frame rather than left to set five different row heights; the same
-   poster is shown whole, uncropped, on the player the cell selects. */
-.agp-strip-poster {
-  display: block; width: 100%; height: auto; background: var(--well);
-  aspect-ratio: 1.62 / 1; object-fit: cover; object-position: center;
-  border: 1px solid var(--rule);
-}
-.agp-strip-name { line-height: 1.25; }
-.agp-strip-count { font-family: var(--font-mono); font-size: 0.78rem; color: var(--ink-3); }
-/* Blocks is three configurations and towel is two, so the marks come in groups with a
-   gap between them: fifteen marks in a row would read as one run of fifteen trials. */
-.agp-strip-marks { display: flex; flex-wrap: wrap; gap: 0 0.5rem; margin-left: -0.16rem; }
-
 .agp-chiprow { display: flex; flex-wrap: wrap; gap: 10px; margin: 1.2rem 0 0; padding: 0; }
 .agp-chip-tab {
   font: inherit; font-size: 0.875rem; cursor: pointer; text-align: left;
@@ -437,22 +401,15 @@ code { font-family: var(--font-mono); font-size: 0.92em; }
    stylesheet that later sets display on a panel class. */
 [role="tabpanel"][hidden] { display: none !important; }
 
-/* The task gallery. One band for five families; the panel carries the family's own words,
-   its chips and its clips, and the clip puts its picture in the well and everything it
-   says on the board underneath. */
-/* A tab panel is not a direct child of the section, so the section's own measure rule
-   does not reach into it. Repeat it here: 1018px of running text is 110 characters a
-   line, and the page is set to 62-70. */
-.agp-task-panel > :where(p, .agp-criterion, .agp-note) { max-width: var(--measure); }
 /* Two columns wherever a section opens with a paragraph: what it is on the left, what it
    came to on the right. Stacked, each of these was a 550px ribbon down the left of a
    1120px board with the right third empty, which is the single thing that made the whole
    page read as narrow. Below 62rem they stack, in source order, exactly as before. */
-.agp-taskhead, .agp-failhead, .agp-bandtail { display: grid; grid-template-columns: minmax(0, 1fr); gap: 0 2.5rem; }
-.agp-taskhead > *, .agp-failhead > *, .agp-bandtail > * { max-width: var(--measure); }
-.agp-taskhead > div > :last-child, .agp-failhead > :last-child, .agp-bandtail > :last-child { margin-bottom: 0; }
+.agp-failhead, .agp-bandtail { display: grid; grid-template-columns: minmax(0, 1fr); gap: 0 2.5rem; }
+.agp-failhead > *, .agp-bandtail > * { max-width: var(--measure); }
+.agp-failhead > :last-child, .agp-bandtail > :last-child { margin-bottom: 0; }
 @media (min-width: 62rem) {
-  .agp-taskhead, .agp-bandtail { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); align-items: start; }
+  .agp-bandtail { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); align-items: start; }
   .agp-failhead { grid-template-columns: minmax(0, 27rem) minmax(0, 1fr); align-items: baseline; }
   .agp-failhead > .agp-h3 { margin-top: 0; }
 }
@@ -464,18 +421,7 @@ code { font-family: var(--font-mono); font-size: 0.92em; }
   #abstract > .agp-section-head { margin-bottom: 0; }
   #abstract > .agp-abstract { margin-top: 0; }
 }
-.agp-task-text { margin: 0 0 0.6rem; }
-.agp-task-panel > .agp-result-line { margin-top: 0; }
 .agp-clip-panel > .agp-fig { margin: 1.4rem 0 0; }
-/* The goal image an image-conditioned clip was run against, above its player: what the
-   agent was asked for, beside what it did. Small on purpose - it is the instruction, and
-   the evidence is the picture under it. */
-.agp-given { margin: 1.1rem 0 0; }
-.agp-given .agp-fig { margin: 0; display: grid; grid-template-columns: 7.5rem minmax(0, 1fr);
-                      gap: 0 1rem; align-items: start; max-width: none; }
-.agp-given figcaption { margin-top: 0; font-size: 0.875rem; }
-.agp-given img { aspect-ratio: 4 / 3; object-fit: cover; }
-
 /* results.html's second level: the same underline the level above it uses, so two strips
    read as one hierarchy instead of boxed chips under an underlined bar. */
 .agp-tab-panel > .agp-trackwrap > .agp-chiprow { gap: 0 1.6rem; border-bottom: 1px solid var(--rule); }
@@ -723,7 +669,9 @@ p.fig-note, p.fig-src { font-size: 0.75rem; color: var(--ink-3); margin: 0.4rem 
               text-align: right; }
 .agp-frac { font-family: var(--font-mono); display: inline-block; margin-right: 0.45rem; }
 .agp-td-success { white-space: nowrap; min-width: 7.2rem; }
-.agp-td-success .agp-marks { margin-top: 0.15rem; }
+.agp-td-success .agp-frac { width: 5ch; vertical-align: middle; }
+.agp-td-success .agp-marks { flex-wrap: nowrap; vertical-align: middle; }
+.agp-td-success .agp-mark { flex-shrink: 0; width: 1.1rem; }
 .agp-group-row th { font-variation-settings: "wght" 620; padding-top: 1.1rem; font-size: 0.875rem;
                     border-bottom-color: var(--ink); }
 .agp-table-1 tbody th[scope="row"] { min-width: 17rem; }
@@ -770,17 +718,18 @@ p.fig-note, p.fig-src { font-size: 0.75rem; color: var(--ink-3); margin: 0.4rem 
 /* ---------------------------------------------------------------- method */
 
 .agp-steps { counter-reset: step; list-style: none; padding: 0; margin: 0.8rem 0 1.6rem;
-             display: grid; gap: 1rem; }
-@media (min-width: 52rem) { .agp-steps { grid-template-columns: 1fr 1fr; } }
-.agp-step { counter-increment: step; padding-left: 2.2rem; position: relative; max-width: 46ch; }
+             display: grid; gap: 1rem 3rem; }
+#method > .agp-steps, #method > p { max-width: none; }
+@media (min-width: 54rem) { .agp-steps { grid-template-columns: 1fr 1fr; } }
+.agp-step { counter-increment: step; padding-left: 2.2rem; position: relative; min-width: 0; }
 .agp-step::before {
   content: counter(step); position: absolute; left: 0; top: 0.05rem;
   font-family: var(--font-mono); font-size: 0.8125rem; color: var(--ink);
   border: 1px solid var(--ink); width: 1.5rem; height: 1.5rem;
   display: grid; place-items: center;
 }
-.agp-step-title { margin: 0 0 0.15rem; font-size: 0.9375rem; font-variation-settings: "wght" 600; }
-.agp-step p { margin: 0; font-size: 0.9375rem; color: var(--muted); line-height: 1.55; }
+.agp-step-title { margin: 0 0 0.15rem; font-size: 1em; font-variation-settings: "wght" 600; }
+.agp-step p { margin: 0; font-size: inherit; color: inherit; line-height: inherit; }
 
 .agp-rels { list-style: none; padding: 0; margin: 0.6rem 0 1rem; display: grid; gap: 0.55rem; }
 .agp-rel { display: grid; grid-template-columns: 1fr; gap: 0.05rem 1rem;
@@ -791,6 +740,9 @@ p.fig-note, p.fig-src { font-size: 0.75rem; color: var(--ink-3); margin: 0.4rem 
 .agp-rel-why { font-size: 0.875rem; color: var(--muted); }
 
 /* ---------------------------------------------------------------- tasks */
+
+.agp-task-detail > .agp-section-head { flex-direction: column; align-items: flex-start; }
+.agp-task-detail > p { max-width: none; }
 
 .agp-scores { list-style: none; margin: 0; padding: 0; display: grid; gap: 0.3rem; }
 .agp-score { display: flex; align-items: center; gap: 0.6rem; }
@@ -874,12 +826,12 @@ p.fig-note, p.fig-src { font-size: 0.75rem; color: var(--ink-3); margin: 0.4rem 
 .agp-trial-open:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 .agp-trial-body { display: grid; gap: 0.06rem; margin-top: 0.4rem; }
 .agp-trial-config { font-size: 0.8125rem; font-variation-settings: "wght" 560; line-height: 1.3; }
-.agp-trial-index, .agp-trial-agent { font-family: var(--font-mono); font-size: 0.72rem; color: var(--ink-3); }
+.agp-trial-index { font-family: var(--font-mono); font-size: 0.72rem; color: var(--ink-3); }
 .agp-trial-outcome { font-family: var(--font-mono); font-size: 0.75rem; display: flex;
                      align-items: center; gap: 0.35rem; }
 .agp-trial-outcome[data-outcome="failure"] { color: var(--fail); }
-.agp-trial-outcome .agp-mark-glyph { width: 0.6rem; height: 0.6rem; border: 1.3px solid var(--ink);
-                                     background: var(--ink); }
+.agp-trial-outcome .agp-mark-glyph { width: 0.6rem; height: 0.6rem; border: 1.3px solid var(--success);
+                                     background: var(--success); }
 .agp-spec-tight { border-top: 0; padding-top: 0.25rem; }
 .agp-spec-tight .agp-spec-row { grid-template-columns: 3.4rem 1fr; }
 .agp-spec-tight dt, .agp-spec-tight dd { font-size: 0.72rem; }
@@ -940,7 +892,7 @@ p.fig-note, p.fig-src { font-size: 0.75rem; color: var(--ink-3); margin: 0.4rem 
 .agp-credit { display: grid; grid-template-columns: 1fr; gap: 0.05rem 1.2rem; }
 @media (min-width: 46rem) { .agp-credit { grid-template-columns: 12rem 1fr; } }
 .agp-credit dt { font-variation-settings: "wght" 560; font-size: 0.9375rem; }
-.agp-credit dd { margin: 0; font-size: 0.9375rem; color: var(--muted); }
+.agp-credit dd { white-space: pre-line; margin: 0; font-size: 0.9375rem; color: var(--muted); }
 
 .agp-footer { border-top: 1px solid var(--ink); margin-top: 2.6rem; padding-top: 1rem;
               padding-bottom: 2rem; font-size: 0.875rem; color: var(--muted); }
@@ -1014,8 +966,12 @@ body.agp-page-watch { --board: #fcfcfb; --bg: #fcfcfb; background: #fcfcfb; }
    program that one turn of that loop produced. */
 .agp-methodplate { margin: 1.2rem 0 0.4rem; padding: 20px; }
 .agp-methodplate > .agp-chart { margin: 0; }
+.agp-methodplate .fig-alt :where(p, li) { max-width: none; }
 .agp-codesheet { margin: 0.9rem 0 0; border-top: 1px solid var(--rule); padding-top: 0.7rem; }
-.agp-codesheet .agp-agent-label { margin: 0 0 0.3rem; }
+.agp-methodplate .agp-fig-alt-toggle > summary,
+.agp-codesheet > summary { cursor: pointer; font-family: var(--font-sans); font-size: 0.9375rem; font-weight: 600; color: var(--ink); }
+.agp-codesheet .agp-code-label { margin-top: 1rem; }
+.agp-codesheet > p { max-width: none; }
 .agp-codesheet .agp-code { margin: 0.4rem 0 0; background: var(--mount); padding: 0.8rem 0.9rem;
                            border: 1px solid var(--rule);
                            font-size: 0.8125rem; line-height: 1.6;
@@ -1097,10 +1053,9 @@ body.agp-page-watch { --board: #fcfcfb; --bg: #fcfcfb; background: #fcfcfb; }
              margin: 1.6rem 0 0; border-top: 1px solid var(--rule); padding-top: 0.9rem; }
 .agp-pager button { font: inherit; font-size: 0.875rem; background: none; color: var(--ink);
                     border: 1px solid var(--rule); border-radius: var(--radius);
-                    padding: 0.35rem 0.8rem; min-height: 2.2rem; cursor: pointer; }
+                    padding: 0.35rem 0.8rem; min-width: 2.4rem; min-height: 2.4rem; cursor: pointer; }
 .agp-pager button:hover:not(:disabled) { border-color: var(--ink); }
-.agp-pager button:disabled { color: var(--ink-3); cursor: default; }
-.agp-pager-status { font-size: 0.8125rem; color: var(--muted); }
+.agp-pager button[aria-current="page"] { background: var(--accent); border-color: var(--accent); color: white; }
 
 .agp-tailcols { display: grid; gap: 1.2rem 2.8rem; grid-template-columns: 1fr; }
 @media (min-width: 60rem) { .agp-tailcols { grid-template-columns: 1.35fr 1fr; align-items: start; } }
@@ -1166,3 +1121,161 @@ body.agp-page-watch { --board: #fcfcfb; --bg: #fcfcfb; background: #fcfcfb; }
   }
   .agp-filter[aria-pressed="true"] { outline: 2px solid; }
 }
+/* Task families and their settings share one video player. */
+.agp-showcase {
+  --showcase-surface: #faf9f6;
+  --showcase-muted: #696b64;
+  --showcase-line: #d4d3cb;
+  width: min(1360px, calc(100vw - 2 * var(--pad)));
+  margin-left: calc((100% - min(1360px, calc(100vw - 2 * var(--pad)))) / 2);
+  margin-top: 3.5rem;
+  scroll-margin-top: calc(var(--nav-h) + 1.5rem);
+  color: #1c1d1a;
+}
+.agp-showcase-intro {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1.25rem;
+}
+.agp-showcase-intro p { margin: 0; font-size: .82rem; font-weight: 650; letter-spacing: .12em; text-transform: uppercase; }
+.agp-showcase-board {
+  display: grid;
+  grid-template-columns: clamp(198.4px, 18.4%, 248px) minmax(0, 1fr);
+  border: 1px solid #c9c8c1;
+  background: var(--showcase-surface);
+  box-shadow: 0 24px 65px rgba(39, 41, 36, .06);
+}
+.agp-showcase-nav {
+  display: flex;
+  flex-direction: column;
+  border-right: 1px solid var(--showcase-line);
+  background: #f0efe9;
+}
+.agp-showcase-family {
+  appearance: none;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  width: 100%;
+  min-height: 142px;
+  flex: 1;
+  padding: 23px 21px;
+  border: 0;
+  border-bottom: 1px solid var(--showcase-line);
+  border-left: 4px solid transparent;
+  background: transparent;
+  color: var(--showcase-muted);
+  text-align: left;
+  font: inherit;
+  cursor: pointer;
+  transition: background .18s ease, color .18s ease, border-color .18s ease;
+}
+.agp-showcase-family:last-child { border-bottom: 0; }
+.agp-showcase-index { color: var(--task-color); font-size: .73rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; }
+.agp-showcase-name { display: block; margin-top: .75rem; font-size: 1.55rem; font-weight: 650; letter-spacing: -.025em; line-height: 1.18; }
+.agp-showcase-subtitle { display: block; margin-top: .6rem; font-size: .91rem; line-height: 1.45; }
+.agp-showcase-family[aria-selected="true"] { color: #1c1d1a; background: var(--showcase-surface); border-left-color: var(--task-color); }
+.agp-showcase-family:hover { color: #1c1d1a; background: #f7f6f1; }
+.agp-showcase-family:focus-visible { outline: 2px solid var(--task-color); outline-offset: -7px; }
+.agp-showcase-content { min-width: 0; padding: clamp(24px, 3vw, 42px); }
+.agp-showcase-heading { min-height: 128px; border-bottom: 1px solid var(--showcase-line); }
+.agp-showcase-heading h2 { margin: 0 0 .8rem; max-width: 24ch; font-size: clamp(1.9rem, 2.7vw, 2.65rem); font-weight: 670; line-height: 1.12; letter-spacing: -.035em; }
+.agp-showcase-description { margin: 0 0 1.5rem; color: var(--showcase-muted); font-size: 1.04rem; line-height: 1.5; }
+.agp-showcase-settings { min-height: 66px; padding: 16px 0 20px; }
+.agp-settings-hint { display: none; margin: 0 0 9px; color: var(--showcase-muted); font-size: .8rem; font-weight: 600; }
+.agp-showcase-settings:has([role="tablist"]:not([hidden])) .agp-settings-hint { display: block; }
+.agp-showcase-settings [role="tablist"] { display: flex; flex-wrap: wrap; gap: 8px; width: fit-content; max-width: 100%; padding: 5px; border: 1px solid var(--showcase-line); border-radius: 10px; background: #f0efe9; }
+.agp-showcase-settings button {
+  appearance: none;
+  border: 1px solid var(--showcase-line);
+  border-radius: 6px;
+  min-height: 44px;
+  padding: 9px 16px;
+  background: #fff;
+  color: #454740;
+  font: inherit;
+  font-size: 1rem;
+  font-weight: 650;
+  cursor: pointer;
+}
+.agp-showcase-settings button[aria-selected="true"] { color: #fff; background: var(--task-color); border-color: var(--task-color); }
+.agp-showcase-settings button:hover { border-color: var(--task-color); box-shadow: 0 0 0 1px var(--task-color); }
+.agp-showcase-settings button:focus-visible { outline: 2px solid var(--task-color); outline-offset: 4px; }
+.agp-showcase-input { display: grid; grid-template-columns: minmax(220px, .85fr) minmax(0, 1fr); gap: 24px; align-items: center; margin: 0 0 25px; padding: 20px 22px; background: #f0efe9; border-left: 3px solid var(--task-color); }
+.agp-showcase-input.text-only { display: block; }
+.agp-input-copy { min-width: 0; }
+.agp-input-eyebrow { margin: 0 0 8px; color: var(--task-color); font-size: .71rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; }
+.agp-input-type { margin: 0 0 8px; font-size: 1.13rem; font-weight: 650; line-height: 1.3; }
+.agp-input-summary { max-width: 65ch; margin: 0; font-size: 1rem; line-height: 1.5; }
+.agp-input-note { margin: 9px 0 0; color: var(--showcase-muted); font-size: .72rem; }
+.agp-input-media { display: flex; align-items: center; justify-content: flex-end; gap: 12px; min-width: 0; }
+.agp-input-media figure { margin: 0; min-width: 0; }
+.agp-input-media figcaption { margin-top: 5px; color: var(--showcase-muted); font-size: .69rem; line-height: 1.35; }
+.agp-input-demo { flex: 1; max-width: 290px; }
+.agp-input-demo video { display: block; width: 100%; height: auto; border-radius: 2px; }
+.agp-input-photos { display: flex; justify-content: flex-end; gap: 12px; width: 100%; }
+.agp-input-photos figure { flex: 1; max-width: 180px; text-align: center; }
+.agp-input-image { display: block; width: 100%; height: 130px; padding: 0; border: 0; background: #e7e6df; cursor: zoom-in; }
+.agp-input-image img { display: block; width: 100%; height: 100%; object-fit: contain; }
+.agp-input-image:focus-visible { outline: 2px solid var(--task-color); outline-offset: 3px; }
+.agp-input-media.has-demo .agp-input-photos { flex: 0 0 108px; flex-direction: column; gap: 8px; width: 108px; }
+.agp-input-media.has-demo .agp-input-image { height: 56px; }
+.agp-input-media.has-demo .agp-input-photos figcaption { margin-top: 3px; }
+.agp-input-dialog { max-width: min(1040px, 92vw); max-height: 90vh; padding: 18px; border: 1px solid var(--showcase-line); background: var(--showcase-surface); color: #1c1d1a; box-shadow: 0 25px 80px #0005; }
+.agp-input-dialog::backdrop { background: #141613b8; }
+.agp-input-dialog form { display: flex; justify-content: flex-end; margin: 0 0 10px; }
+.agp-input-dialog button { padding: 7px 16px; border: 1px solid #b5b5ae; background: transparent; font: inherit; cursor: pointer; }
+.agp-input-dialog > img { display: block; max-width: 100%; max-height: 72vh; width: auto; height: auto; margin: auto; }
+.agp-input-dialog > p { margin: 12px 0 0; color: var(--showcase-muted); font-size: .85rem; }
+.agp-showcase-figure { margin: 0; }
+.agp-showcase-view-labels { display: grid; grid-template-columns: 50% minmax(0, 1fr) auto; align-items: baseline; padding: 8px 0; color: var(--showcase-muted); font-size: .8rem; }
+.agp-showcase-speed { text-align: right; white-space: nowrap; }
+.agp-showcase-video { display: block; width: 100%; height: auto; object-fit: cover; border-radius: 2px; }
+.agp-showcase-footer { display: flex; justify-content: space-between; gap: 1rem; margin-top: 20px; font-size: .82rem; color: var(--showcase-muted); }
+.agp-showcase-footer a { color: var(--task-color); text-decoration: none; }
+.agp-showcase-footer a:hover { text-decoration: underline; }
+@media (max-width: 1100px) {
+  .agp-showcase-input { grid-template-columns: minmax(0, 1fr); gap: 18px; }
+  .agp-input-media { justify-content: flex-start; }
+  .agp-input-photos { justify-content: flex-start; }
+}
+@media (max-width: 840px) {
+  .agp-showcase-board { grid-template-columns: minmax(0, 1fr); }
+  .agp-showcase-nav { flex-direction: row; overflow-x: auto; border-right: 0; border-bottom: 1px solid var(--showcase-line); scrollbar-width: thin; scroll-snap-type: x proximity; }
+  .agp-showcase-family { width: 210px; flex: 0 0 210px; min-height: 158px; padding: 21px; border-left: 0; border-bottom: 4px solid transparent; border-right: 1px solid var(--showcase-line); scroll-snap-align: start; }
+  .agp-showcase-family:last-child { border-bottom: 4px solid transparent; border-right: 0; }
+  .agp-showcase-family[aria-selected="true"] { border-bottom-color: var(--task-color); }
+  .agp-showcase-name { font-size: 1.4rem; }
+  .agp-showcase-content { padding: 25px; }
+  .agp-showcase-heading { min-height: 126px; }
+  .agp-showcase-heading h2 { font-size: 2rem; }
+  .agp-showcase-intro { flex-direction: column; gap: .3rem; }
+}
+@media (max-width: 480px) {
+  .agp-showcase-input { padding: 18px 16px; }
+  .agp-input-media.has-demo { flex-wrap: wrap; }
+  .agp-input-demo { flex-basis: 100%; max-width: none; }
+  .agp-input-media.has-demo .agp-input-photos { flex-basis: 100%; flex-direction: row; width: 100%; }
+  .agp-input-media.has-demo .agp-input-image { height: 72px; }
+  .agp-showcase { width: calc(100vw - 24px); margin-left: calc((100% - (100vw - 24px)) / 2); margin-top: 2.5rem; }
+  .agp-showcase-intro { padding-inline: 6px; }
+  .agp-showcase-content { padding: 22px 18px; }
+  .agp-showcase-heading h2 { font-size: 1.8rem; }
+  .agp-showcase-description { font-size: .96rem; }
+  .agp-showcase-settings { min-height: 70px; }
+  .agp-showcase-settings [role="tablist"] { gap: 6px; width: 100%; }
+  .agp-showcase-settings button { flex: 1 1 auto; padding-inline: 10px; font-size: .94rem; }
+  .agp-showcase-footer { gap: .5rem; font-size: .76rem; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .agp-showcase-family { transition: none; }
+}
+
+.agp-trial-browser > .agp-breakdown { max-width: none; gap: .6rem 2rem; font-family: var(--font-sans); }
+.agp-pagehead > .agp-dataset-link { margin: .75rem 0 0; color: var(--ink-2); font-size: .9375rem; }
+
+.agp-category-filters { margin-bottom: 1rem; }
+.agp-category-filters .agp-filter { border-radius: 999px; padding-inline: 1rem; }

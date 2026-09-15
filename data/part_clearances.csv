@@ -1,5 +1,0 @@
-pair,hole_mm,shaft_mm,automate_id,note
-Ridged sleeve and broad round base,37.41,35.86,00081,Nominal print dimensions as recorded by the authors for the four AutoMate pairs used in the four pair assembly task. Radial clearance is not a column here: it is half the diametral clearance and is computed at render time.
-Hexagonal nut and short post,28.18,25.80,00581,Nominal print dimensions as recorded by the authors.
-Smooth sleeve and stepped cylinder,42.86,37.20,00007,Nominal print dimensions as recorded by the authors.
-Long pin and hollow tube,18.01,16.54,00446,Nominal print dimensions as recorded by the authors. This is the tightest pair.

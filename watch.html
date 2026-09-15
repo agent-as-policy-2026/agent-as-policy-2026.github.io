@@ -3,14 +3,14 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="robots" content="noindex, nofollow">
-<title>Watch one run, second by second: Agent as Policy for Robotic Manipulation</title>
+<meta name="robots" content="index, follow">
+<title>Agent as Policy for Robotic Manipulation</title>
 <meta name="description" content="Two complete runs of the same task, each played against the agent&#x27;s own trace: what it looked at, what it said, what it ran, and what the robot answered.">
 <link rel="canonical" href="https://agent-as-policy-2026.github.io/watch.html">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Agent as Policy">
 <meta property="og:locale" content="en_US">
-<meta property="og:title" content="Watch one run, second by second: Agent as Policy for Robotic Manipulation">
+<meta property="og:title" content="Agent as Policy for Robotic Manipulation">
 <meta property="og:description" content="Two complete runs of the same task, each played against the agent&#x27;s own trace: what it looked at, what it said, what it ran, and what the robot answered.">
 <meta property="og:url" content="https://agent-as-policy-2026.github.io/watch.html">
 <meta property="og:image" content="https://agent-as-policy-2026.github.io/img/og.png">
@@ -18,24 +18,24 @@
 <meta property="og:image:height" content="630">
 <meta property="og:image:alt" content="An overhead camera frame of 3D-printed part pairs on the tabletop, with the page title Agent as Policy for Robotic Manipulation beneath it.">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Watch one run, second by second: Agent as Policy for Robotic Manipulation">
+<meta name="twitter:title" content="Agent as Policy for Robotic Manipulation">
 <meta name="twitter:description" content="Two complete runs of the same task, each played against the agent&#x27;s own trace: what it looked at, what it said, what it ran, and what the robot answered.">
 <meta name="twitter:image" content="https://agent-as-policy-2026.github.io/img/og.png">
 <meta name="twitter:image:alt" content="An overhead camera frame of 3D-printed part pairs on the tabletop, with the page title Agent as Policy for Robotic Manipulation beneath it.">
-<link rel="icon" href="img/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="img/favicon.svg?v=68beb0431eb0" type="image/svg+xml">
 <link rel="preload" href="fonts/ubuntu-sans-agp.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="fonts/ubuntu-sans-mono-agp.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="css/site.css">
-<link rel="stylesheet" href="css/viewer.css">
-<script type="module" src="js/autoplay.js"></script>
-<script type="module" src="js/copy.js"></script>
-<script type="module" src="js/viewer.js"></script>
+<link rel="stylesheet" href="css/site.css?v=f5cddcafd923">
+<link rel="stylesheet" href="css/viewer.css?v=e78d3dfc285a">
+<script type="module" src="js/autoplay.js?v=4330abd3f96e"></script>
+<script type="module" src="js/copy.js?v=44a55c9d7aff"></script>
+<script type="module" src="js/viewer.js?v=6aa73581e658"></script>
 <!-- js/viewer-main.js is imported by js/viewer.js on demand -->
 </head>
 <body class="agp-page-watch">
 <a class="agp-skip" href="#main">Skip to the content</a>
 <nav class="agp-nav" aria-label="Sections of this page">
-<a class="agp-nav-home" href="index.html">AGP</a>
+<a class="agp-nav-home" href="index.html">Agent as Policy</a>
 <button type="button" class="agp-pauseall agp-js-only" id="agp-pause-all" hidden aria-pressed="false">Pause clips</button>
 </nav>
 <main class="agp-main" id="main" tabindex="-1">
@@ -70,8 +70,8 @@
 </div>
 <p class="agp-lede">Two complete two pair assembly trials, each with the video lined up against the agent&#x27;s own record: what it said, which images it opened, which commands it ran, and what the robot answered. The overhead camera is the clock for both: every time in the log is a second of that recording, taken from the recorder&#x27;s own frame log, and nothing here is aligned by hand. The overhead view is the only one that ships in this version.</p>
 <div class="ev" data-agp-viewer>
-  <div class="ev-guide">
-    <h3 class="ev-guide-title">How to read this</h3>
+  <details class="ev-guide ev-details">
+    <summary>How to read this</summary>
     <ul class="ev-guide-list">
       <li>The strip under the video shows where the time goes: model generating, local tool runs, robot motion, camera captures, and the moments the agent opened an image.</li>
       <li>Times in the log are seconds of the run. The second episode plays at 2x, so its video is half as long as the run it shows; the page converts before it seeks, and the elapsed clock on screen is always the run clock.</li>
@@ -80,7 +80,7 @@
       <li>The two agents expose different things. Codex CLI publishes short reasoning titles and occasional commentary. Claude Code publishes a one-line intent for each shell command and keeps its reasoning private. That is a difference in what the harness reports, not evidence about how much either model reasoned.</li>
       <li>Text written by the agent is always marked as the agent&#x27;s own words.</li>
     </ul>
-  </div>
+  </details>
   <div class="ev-picker" data-mount="picker"></div>
   <div class="ev-episodes">
   <article class="ev-ep" id="episode-astra" data-ep="e1"
@@ -107,16 +107,16 @@
           <p class="ev-nomedia">This clip needs a browser that plays MP4 video. The poster frame and the caption describe what it shows.</p>
         </video>
       </div>
-      <figcaption class="ev-ep-meta"><span class="ev-trial">Trial 5 of 5</span><span class="ev-sep" aria-hidden="true"></span><span>left arm</span><span class="ev-sep" aria-hidden="true"></span><span>recorded 2026-09-10</span><span class="ev-sep" aria-hidden="true"></span><span>8:33 of recording</span></figcaption>
+      <figcaption class="ev-ep-meta"><span class="ev-trial">Trial 5 of 5</span><span class="ev-sep" aria-hidden="true"></span><span>single arm</span><span class="ev-sep" aria-hidden="true"></span><span>recorded 2026-09-10</span><span class="ev-sep" aria-hidden="true"></span><span>8:33 of recording</span></figcaption>
       </figure>
       <div class="ev-transport" data-mount="transport"></div>
       <div class="ev-strip" data-mount="strip"></div>
     </div>
     <div class="ev-railwrap" data-mount="rail"></div>
     <div class="ev-filmwrap" data-mount="film"></div>
-    <div class="ev-summary">
-      <h4 class="ev-h4">About this run</h4>
-      <p class="ev-caption" id="e1-about">Two pair assembly, trial 5 of 5. GPT-6 Astra at high thinking effort, Codex CLI, left arm. Completion time 7.9 minutes; the overhead recording runs 8 minutes 33 seconds and is shown uncut at 1x, with a speed control. The label along the bottom of the frame and the clock in the top corner do not agree because they count different things: the label gives the paper&#x27;s completion time, from the moment the task is handed over to the final physical check, while the clock keeps counting the recording, which ran on for about 40 seconds after that check. 150 logged events: 9 agent messages, 20 reasoning titles, 31 command runs, 25 image views over 37 distinct images, and 65 robot commands, 45 of which counted against the request budget.</p>
+    <details class="ev-summary ev-details">
+      <summary>About this run</summary>
+      <p class="ev-caption" id="e1-about">Two pair assembly, trial 5 of 5. GPT-6 Astra at high thinking effort, Codex CLI, single arm. Completion time 7.9 minutes; the overhead recording runs 8 minutes 33 seconds and is shown uncut at 1x, with a speed control. Completion time runs from the moment the task is handed over to the final physical check. The recording continues for about 40 seconds after that check. 150 logged events: 9 agent messages, 20 reasoning titles, 31 command runs, 25 image views over 37 distinct images, and 65 robot commands, 45 of which counted against the request budget.</p>
       <div class="ev-budget">
         <h4 class="ev-h4">Where the time went</h4>
         <dl class="ev-dl">
@@ -150,7 +150,7 @@
           <li><span class="ev-num">6</span>Withdraw, verify, report<span class="ev-chtime">7:11</span></li>
         </ol>
       </div>
-    </div>
+    </details>
   </article>
   <article class="ev-ep" id="episode-opus" data-ep="e2"
            data-json="data/viewer/e2.json"
@@ -176,16 +176,16 @@
           <p class="ev-nomedia">This clip needs a browser that plays MP4 video. The poster frame and the caption describe what it shows.</p>
         </video>
       </div>
-      <figcaption class="ev-ep-meta"><span class="ev-trial">Trial 3 of 5</span><span class="ev-sep" aria-hidden="true"></span><span>left arm</span><span class="ev-sep" aria-hidden="true"></span><span>recorded 2026-09-10</span><span class="ev-sep" aria-hidden="true"></span><span>15:18 of recording</span></figcaption>
+      <figcaption class="ev-ep-meta"><span class="ev-trial">Trial 3 of 5</span><span class="ev-sep" aria-hidden="true"></span><span>single arm</span><span class="ev-sep" aria-hidden="true"></span><span>recorded 2026-09-10</span><span class="ev-sep" aria-hidden="true"></span><span>15:18 of recording</span></figcaption>
       </figure>
       <div class="ev-transport" data-mount="transport"></div>
       <div class="ev-strip" data-mount="strip"></div>
     </div>
     <div class="ev-railwrap" data-mount="rail"></div>
     <div class="ev-filmwrap" data-mount="film"></div>
-    <div class="ev-summary">
-      <h4 class="ev-h4">About this run</h4>
-      <p class="ev-caption" id="e2-about">The same task, trial 3 of 5. Claude Opus 5 at high thinking effort, Claude Code, left arm. Completion time 14.4 minutes; the overhead recording runs 15 minutes 18 seconds, nothing removed, played at 2x in 7 minutes 39 seconds. The clock on screen and every time in the log stay on the run. Here too the label along the bottom of the frame and the clock in the top corner count different things: the label gives the paper&#x27;s completion time, from the moment the task is handed over to the final physical check, while the clock keeps counting the recording, which ran on for about a minute after that check. 170 logged events: 62 command runs, 37 image views over 42 distinct images, 2 file reads, 2 file writes, and 64 robot commands, 53 of which counted.</p>
+    <details class="ev-summary ev-details">
+      <summary>About this run</summary>
+      <p class="ev-caption" id="e2-about">The same task, trial 3 of 5. Claude Opus 5 at high thinking effort, Claude Code, single arm. Completion time 14.4 minutes; the overhead recording runs 15 minutes 18 seconds, nothing removed, played at 2x in 7 minutes 39 seconds. The clock on screen and every time in the log stay on the run. Completion time runs from the moment the task is handed over to the final physical check. The recording continues for about a minute after that check. 170 logged events: 62 command runs, 37 image views over 42 distinct images, 2 file reads, 2 file writes, and 64 robot commands, 53 of which counted.</p>
       <div class="ev-budget">
         <h4 class="ev-h4">Where the time went</h4>
         <dl class="ev-dl">
@@ -219,10 +219,10 @@
           <li><span class="ev-num">6</span>Withdraw, verify, report<span class="ev-chtime">13:16</span></li>
         </ol>
       </div>
-    </div>
+    </details>
   </article>
   </div>
-  <p class="ev-note">The published timeline carries only whitelisted fields. Account, rate-limit, cost and session identifiers, absolute paths, host and network addresses and embedded images are removed before anything is written to the site, and the thumbnails are regenerated from the saved camera frames.</p>
+  <details class="ev-details ev-data-note"><summary>About the published data</summary><p class="ev-note">The published timeline carries only whitelisted fields. Account, rate-limit, cost and session identifiers, absolute paths, host and network addresses and embedded images are removed before anything is written to the site, and the thumbnails are regenerated from the saved camera frames.</p></details>
   <p class="ev-note ev-note--nojs">Without JavaScript the section falls back to a poster strip and the agent&#x27;s own words as video captions.</p>
 </div>
 </section>
@@ -236,27 +236,24 @@
 <pre class="agp-bibtex agp-scroller" id="agp-bibtex" tabindex="0" role="group" aria-label="Cite this work"><code>@article{jia2026agentaspolicy,
   title   = {Agent as Policy for Robotic Manipulation},
   author  = {Jia, Mengzhao and Lin, Yang and Zhang, Xixin and Zhang, Zhihan and Liu, Xiaobai and Jiang, Meng},
-  journal = {arXiv preprint, 2026},
+  journal = {arXiv preprint arXiv:2609.12541},
   year    = {2026}
 }</code></pre>
 <button type="button" class="agp-btn agp-copy agp-js-only" id="agp-copy-bibtex" hidden data-label="Copy BibTeX" data-done="Copied">Copy BibTeX</button>
 </div>
-<p class="agp-note">The arXiv identifier is not assigned yet, so the entry above cites the preprint by year.</p>
 </div>
 <div>
-<h3 class="agp-h3">Credits</h3><dl class="agp-credits"><div class="agp-credit"><dt>Assembly part geometry</dt><dd>Adapted from the AutoMate dataset. Tang et al., AutoMate: Specialist and Generalist Assembly Policies over Diverse Geometries, 2024, arXiv:2407.08028. The parts on this page are 3D prints of those meshes, scaled with their aspect ratios preserved.</dd></div><div class="agp-credit"><dt>Robot arm</dt><dd>I2RT YAM arm and the I2RT robot software.</dd></div><div class="agp-credit"><dt>Inverse kinematics</dt><dd>Mink, by Kevin Zakka: Python inverse kinematics based on MuJoCo.</dd></div><div class="agp-credit"><dt>Coding agent</dt><dd>Codex CLI, by OpenAI.</dd></div><div class="agp-credit"><dt>Coding agent</dt><dd>Claude Code, by Anthropic.</dd></div></dl>
-<p class="agp-note">Model names are the ones the paper reports.</p>
+<h3 class="agp-h3">Credits</h3><dl class="agp-credits"><div class="agp-credit"><dt>Assembly part geometry</dt><dd>Adapted from the AutoMate dataset. Tang et al., AutoMate: Specialist and Generalist Assembly Policies over Diverse Geometries, 2024, arXiv:2407.08028. The parts on this page are 3D prints of those meshes, scaled with their aspect ratios preserved.</dd></div><div class="agp-credit"><dt>Robot arm</dt><dd>I2RT YAM arm and the I2RT robot software.</dd></div><div class="agp-credit"><dt>Inverse kinematics</dt><dd>Mink, by Kevin Zakka: Python inverse kinematics based on MuJoCo.</dd></div><div class="agp-credit"><dt>Coding agent</dt><dd>Codex CLI, by OpenAI.
+Claude Code, by Anthropic.</dd></div></dl>
 </div>
 </div>
 </section>
 </main>
 <footer class="agp-footer">
 <p>Mengzhao Jia and Zhihan Zhang and Meng Jiang are at the University of Notre Dame. Yang Lin is at the University of California San Diego. Xixin Zhang and Xiaobai Liu are at San Diego State University. Mengzhao Jia, Yang Lin and Xixin Zhang are core contributors.</p>
-<p>Correspondence to Mengzhao Jia, mjia2@nd.edu.</p>
-<p>Page text and media are released under CC BY 4.0 unless a file says otherwise. The assembly part geometry is adapted from the AutoMate dataset and keeps its own terms.</p>
-<p>Page text, figures and video edits by the authors. No analytics, no trackers, no content delivery network.</p>
-<p class="agp-footer-type">Set in Ubuntu Sans and Ubuntu Sans Mono, subset for this page and self-hosted under the <a href="fonts/UBUNTU-FONT-LICENCE-1.0.txt">Ubuntu Font Licence 1.0</a>.</p>
-<p class="agp-footer-updated">Page last updated 2026-09-11.</p>
+<p>Contact Mengzhao Jia at <a href="mailto:mjia2@nd.edu">mjia2@nd.edu</a>.</p>
+<p>Text and media licensed under CC BY 4.0 unless otherwise noted. AutoMate geometry retains its original terms.</p>
+<p class="agp-footer-type">Ubuntu Sans and Ubuntu Sans Mono · <a href="fonts/UBUNTU-FONT-LICENCE-1.0.txt">Ubuntu Font Licence 1.0</a></p>
 </footer>
 </body>
 </html>

@@ -340,7 +340,7 @@ class Episode {
       spark.appendChild(el('span', 'ev-lane-name', 'Context tokens'));
       spark.appendChild(el('div', null,
         '<svg viewBox="0 0 1000 34" preserveAspectRatio="none" role="img" aria-label="' +
-        'Context window growing to ' + Math.round(max / 1000) + ' thousand tokens over the run">' +
+        'Context window growing to ' + (max / 1000000).toFixed(2) + ' million tokens over the run">' +
         '<polygon class="ev-spark-fill" points="' +
         first[0].toFixed(2) + ',34 ' + line + ' ' + last[0].toFixed(2) + ',34"/>' +
         '<polyline class="ev-spark-line" vector-effect="non-scaling-stroke" points="' +
@@ -435,7 +435,7 @@ class Episode {
     });
     if (this.tokenTimes) {
       const i = lastAtOrBefore(this.tokenTimes, t);
-      if (i >= 0) here.push(Math.round(this.tokenSeries[i][1] / 1000) + 'k context tokens');
+      if (i >= 0) here.push((this.tokenSeries[i][1] / 1000000).toFixed(2) + 'M context tokens');
     }
     const plotRect = this.plot.getBoundingClientRect();
     this.tip.innerHTML = '<b>' + mmss(t) + '</b>' + (here.length ? ' &nbsp;' + esc(here.join(', ')) : '');

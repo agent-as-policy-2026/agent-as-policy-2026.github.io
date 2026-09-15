@@ -6,7 +6,7 @@ NOTE Captions are the agent's own words, taken from its trace.
 00:00:01.040 --> 00:00:21.040
 <c.say>I’ll read the interface and study the demonstration
 first, then inspect the live scene and assemble the two
-pairs on the left side.</c>
+pairs in the workspace.</c>
 
 2
 00:00:36.300 --> 00:00:41.320
@@ -83,7 +83,7 @@ wrist camera before grasping.</c>
 00:05:14.870 --> 00:05:34.870
 <c.say>The circular ring is gripped, with a 51.9 mm opening
 after closing. I’ll lift it and carry it to the wider
-cylinder in two short moves within the left workspace.</c>
+cylinder in two short moves within the workspace.</c>
 
 18
 00:05:52.510 --> 00:06:12.510
@@ -121,5 +121,5 @@ remain stable.</c>
 
 25
 00:08:23.490 --> 00:08:33.333
-<c.say>Both left-side pairs are assembled and stable, confirmed
+<c.say>Both pairs are assembled and stable, confirmed
 in the final overhead image.</c>

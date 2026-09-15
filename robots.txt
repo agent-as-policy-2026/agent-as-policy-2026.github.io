@@ -1,5 +1,2 @@
-# Not listed yet. The arXiv listing goes live first; the launch commit sets
-# LAUNCH = True in build/build_site.py, which rewrites this file and drops
-# the noindex meta in the same build.
 User-agent: *
-Disallow: /
+Allow: /

@@ -2,12 +2,12 @@
  "schema": "agp-viewer/1.1",
  "id": "e1",
  "task": "Two-pair assembly from a demonstration video",
- "task_long": "Watch a demonstration video of a person assembling two part pairs, then assemble the same two pairs on the left half of the table and leave each one stable after release.",
+ "task_long": "Watch a demonstration video of a person assembling two part pairs, then assemble the same two pairs in the workspace and leave each one stable after release.",
  "agent": {
   "harness": "Codex CLI",
   "model": "GPT-6 Astra",
   "effort": "high",
-  "arm": "left"
+  "arm": "single"
  },
  "trial": {
   "k": 5,
@@ -1412,7 +1412,7 @@
    "i": 0,
    "t": 1.04,
    "type": "say",
-   "text": "I\u2019ll read the interface and study the demonstration first, then inspect the live scene and assemble the two pairs on the left side."
+   "text": "I\u2019ll read the interface and study the demonstration first, then inspect the live scene and assemble the two pairs in the workspace."
   },
   {
    "i": 1,
@@ -2808,7 +2808,7 @@
    "i": 102,
    "t": 314.87,
    "type": "say",
-   "text": "The circular ring is gripped, with a 51.9 mm opening after closing. I\u2019ll lift it and carry it to the wider cylinder in two short moves within the left workspace."
+   "text": "The circular ring is gripped, with a 51.9 mm opening after closing. I\u2019ll lift it and carry it to the wider cylinder in two short moves within the workspace."
   },
   {
    "i": 103,
@@ -3400,14 +3400,14 @@
    "type": "run",
    "t1": 498.05,
    "label": "write report (RESULT.md)",
-   "cmd": "cat > scratch/RESULT.md <<'EOF'\n# Result: both left-side assemblies completed\n\n## Demonstration and pairings\nI studied goal/demo_start.png, goal/top_camera.png, and the demonstration video after extracting one frame per second into scratch/demo_001.png through scratch/demo_014.png. The contact sheet is scratch/demo_sheet.jpg.\n\nThe blue hexagonal ring goes over the narrow upright white post with a hexagonal foot. The \u2026 [+2703 chars]",
+   "cmd": "cat > scratch/RESULT.md <<'EOF'\n# Result: both assemblies completed\n\n## Demonstration and pairings\nI studied goal/demo_start.png, goal/top_camera.png, and the demonstration video after extracting one frame per second into scratch/demo_001.png through scratch/demo_014.png. The contact sheet is scratch/demo_sheet.jpg.\n\nThe blue hexagonal ring goes over the narrow upright white post with a hexagonal foot. The \u2026 [+2703 chars]",
    "kind": "shell"
   },
   {
    "i": 149,
    "t": 503.49,
    "type": "final",
-   "text": "Both left-side pairs are assembled and stable, confirmed in the final overhead image. The gripper is open and the arm withdrawn.\n\nResults recorded in [scratch/RESULT.md](scratch/RESULT.md). Used 45 counted commands."
+   "text": "Both pairs are assembled and stable, confirmed in the final overhead image. The gripper is open and the arm withdrawn.\n\nResults recorded in [scratch/RESULT.md](scratch/RESULT.md). Used 45 counted commands."
   }
  ],
  "images": [

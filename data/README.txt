@@ -10,11 +10,11 @@ Tables as printed in the paper
   table6_summary.csv    where the execution time goes, per configuration
 
 Per trial
-  table1_metrics.csv    the 37 main-results trials
+  table1_metrics.csv    the 62 main-results trials
   table2_metrics.csv    the 40 model-comparison slots (blank resource cells where the
                         study reports no accounting for a trial)
   transfer_metrics.csv  the 10 experience-transfer trials
-  trials.csv            all 87 counted slots in one table
+  trials.csv            all 112 counted slots in one table
   trials.json           the same, with the definitions and the summary counts
 
 Experience reuse
@@ -47,3 +47,9 @@ corresponding figure in the paper.
 Resource values are machine-checked against the paper's own tables. The Success
 counts for GPT-5.6 Terra, GPT-5.6 Luna and Claude Fable 5.1 are author attestations:
 those runs have no per-trial accounting on file.
+
+Table 1 selection updated 13 September 2026. Four pair assembly uses trials 01 through
+10 from the single-arm batch, with the second execution of trial 09. Trial 05 ended
+at the time limit and counts as unsuccessful. Failed-trial times end at the final
+report boundary or termination. Resource summaries use successful trials only.
+The source CSV stores tokens in thousands, as indicated by tokens_k.
