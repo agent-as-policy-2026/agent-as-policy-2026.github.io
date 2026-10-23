@@ -1,0 +1,67 @@
+{
+  "cycle": 4,
+  "available_experience_version": 3,
+  "lesson": {
+    "geometry": "Demo: hex blue collar over narrow hex-foot white peg, round blue collar over wide stepped white cylinder; shafts protrude. Left base metres, table z=-.045. Inherited checkpoint1 triangulated heights hex.014,round.027,narrow.076,wide.080 (+/-.003), textureless white depth unreliable. Approx hole/peg diameters hex.029/.026,round.045/.040, not precision metrology. Use top-ray planes -.031,-.018,.031,.035 respectively for fresh centers. Cycle4 XY hex(.1475,-.1239),round(.3107,.1631),narrow(.131,.0854),wide(.2971,-.0331), historical only. Grasp z hex-.031,round-.022; down wxyz=(0,1,0,0). Held widths cycles1/2/3/4 hex53.4/47.1/47.9/47.8mm (yaw dependent), round52.2/52.0/52.1/51.9mm.",
+    "recipe": "Actually reused checkpoint3 operate.py unchanged and height recipe. Run python3 scratch/operate.py COMMAND JSON_ARGS; stdlib plus provided robot_client.py. It logs and captures after each action; MUST await completion and inspect returned image before next action. cycle_04_recipe.json preserves exact historical commands/feedback, never blindly replay XY. From home about(.350,.015,.358), clear planned approach(.23,-.06,.16); remaining canonical-down linear moves. Hex source approach .025,grasp-.031,close,lift.09,transfer fresh narrow XY .09,descend .052,.030,-.018,open,withdraw.12. Round source approach.12,.025,grasp-.022,close,lift.10,transfer fresh wide XY .10,descend .065,.032,-.008,open,withdraw.12,home. Both held lifts/shaft entries visually confirmed; both pairs stable after release/withdrawal/home/later capture, open empty fraction.9991. No explicit joint targets; actual joints in capture metadata. Measurement script uses operate.py/stdlb; view/report require Pillow. Stage seconds cycles1/2/3/4=512.465/467.965/410.864/395.131; cycle4 23 motion+25 capture=48 counted.",
+    "corrections": "Cycle1 initial two linear approaches rejected IK; clear planned approach worked. Wide receiver shifted about1cm during hex pickup, remeasured: check full open finger envelope. Narrow preshape untested. Cycle2 hex final target-.020 SETTLE_MISS3.9mm at achieved z=-.018; visually engaged, released there successfully, never repeat push. Cycle3 changed hex target to-.018, achieved-.01765 and stable; assembly shifted roughly1-2cm during release but stayed engaged, cause uncertain. Cycle4 retained-.018, achieved-.01689, no obvious lateral hex shift. Round final target-.008 achieved-.00964 and visibly settled on release, stable afterward. Round grasp target-.022 achieved-.02568, held lift verified, no observed table contact. No failed commands/regrasp/insertion retries cycles3/4. Earlier cycle2/cycle4 view helper race: shell can return session ID before image update; wait for process completion then inspect actual new image. No cycle4 action used stale image.",
+    "next_cycle": "Reuse checkpoint4 cumulative procedure (actually based on checkpoint3), measuring NEW source/receiver XY. Fresh upright poses, clear finger envelope, retained hold and shaft entry validated reuse this cycle; all XY changed, no physical recipe heights changed. Recheck orientation/heights, full gripper clearance, grip offsets, receiver movement and stable release. Remeasure any moved part. Same motion limits; first home-to-approach must be<=.25m; plan only on verified clear path. Efficiency through solved geometry and avoiding rejected approaches/settle miss, preserving per-action visual inspection. Timings describe one ordered sequence, not controlled evidence of experience benefit. Cycle4 ended with both pairs stable, hand open/empty/withdrawn; only next assigned agent starts cycle5. Cycle5 must checkpoint and report all five measured times/outcomes/retries/procedure changes."
+  },
+  "artifacts": [
+    {
+      "source": "scratch/operate.py",
+      "sha256": "f3867c5a4e934f90443b880bcd24cf674573997a4e318bdd7074976ae7d44499",
+      "snapshot": "experience/cycle_04/artifacts/scratch/operate.py"
+    },
+    {
+      "source": "scratch/cycle_04_measure.py",
+      "sha256": "37143065c835bf1a6e5aa31bc68ca292a76741bf17c5a349760b7b64e2458d40",
+      "snapshot": "experience/cycle_04/artifacts/scratch/cycle_04_measure.py"
+    },
+    {
+      "source": "scratch/cycle_04_view.py",
+      "sha256": "76a38079871c63a3de1d0c6a738ec3b36c5aca8b167461e7eb075d5b49edd73e",
+      "snapshot": "experience/cycle_04/artifacts/scratch/cycle_04_view.py"
+    },
+    {
+      "source": "scratch/cycle_04_measurements.json",
+      "sha256": "7dd9da34ce149e79ce2f79c6fcf82df481bc753cf77577c67361b91e6847721f",
+      "snapshot": "experience/cycle_04/artifacts/scratch/cycle_04_measurements.json"
+    },
+    {
+      "source": "scratch/cycle_04_recipe.json",
+      "sha256": "e5e52f245fc98a87a9b4703089add975f1a1bf5f948fafc9f14b5ce919783c7a",
+      "snapshot": "experience/cycle_04/artifacts/scratch/cycle_04_recipe.json"
+    },
+    {
+      "source": "scratch/cycle_04_commands.jsonl",
+      "sha256": "4867a0e7a08985a5440f60229ea9693774c17993bbb86fc93f49f378eb03b156",
+      "snapshot": "experience/cycle_04/artifacts/scratch/cycle_04_commands.jsonl"
+    },
+    {
+      "source": "scratch/cycle_04_report.py",
+      "sha256": "bc5b89b3a920cbce8ef34d1bceb02f172e8333484bf32b161273c42d729d1830",
+      "snapshot": "experience/cycle_04/artifacts/scratch/cycle_04_report.py"
+    },
+    {
+      "source": "scratch/cycle_04_checkpoint.py",
+      "sha256": "52f406240e1813d5c249143a797f9e9835a5f85dfc6ca73d00a2bbcef6c90e8c",
+      "snapshot": "experience/cycle_04/artifacts/scratch/cycle_04_checkpoint.py"
+    },
+    {
+      "source": "scratch/attempts.md",
+      "sha256": "cdbbfcdc67dcc56c245360b9666d9ad78cc0d9a9804d84eed693d5865d8919ac",
+      "snapshot": "experience/cycle_04/artifacts/scratch/attempts.md"
+    },
+    {
+      "source": "scratch/cycle_04_RESULT.md",
+      "sha256": "26447c343f6fef3e3f4b1733f06449ed423f8fe7208191b82bb325834f628ddf",
+      "snapshot": "experience/cycle_04/artifacts/scratch/cycle_04_RESULT.md"
+    },
+    {
+      "source": "scratch/cycle_04_final_pairs.png",
+      "sha256": "d5ca655e63b5901c7f32af164798830d1d010b790b5706b100913e3231c442c6",
+      "snapshot": "experience/cycle_04/artifacts/scratch/cycle_04_final_pairs.png"
+    }
+  ]
+}

@@ -1,0 +1,31 @@
+{
+  "study": "twopairs_full_high_mx_6astra",
+  "description": "Original lesson fields and artifact manifest from each saved memory.json. Website summaries are separate from the verbatim records.",
+  "records": [
+    {
+      "cycle": 1,
+      "source": "cycle_01/memory.json",
+      "sha256": "5592fd1767ba1534a2f9a05a9afb54584ee394001938d32f8af27af4e84cdedc"
+    },
+    {
+      "cycle": 2,
+      "source": "cycle_02/memory.json",
+      "sha256": "e24f8f1e0d80a4db7254a2d645a57c81c165cb1c716ff96543924f24c96ec3eb"
+    },
+    {
+      "cycle": 3,
+      "source": "cycle_03/memory.json",
+      "sha256": "56e5bacba441c693d24569e27050da746e326dd120582d48e909bef3bf1b2772"
+    },
+    {
+      "cycle": 4,
+      "source": "cycle_04/memory.json",
+      "sha256": "e3efac8fe37eab635b21e05b866d9343602ac5e7a918145d25513e35d12a54f9"
+    },
+    {
+      "cycle": 5,
+      "source": "cycle_05/memory.json",
+      "sha256": "ca2461a3379ebce587687471f557477b7c5f29435cb666a0632fbcba28e5e588"
+    }
+  ]
+}

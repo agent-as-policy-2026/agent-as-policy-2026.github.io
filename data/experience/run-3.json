@@ -1,0 +1,67 @@
+{
+  "cycle": 3,
+  "available_experience_version": 2,
+  "lesson": {
+    "geometry": "Demo mapping: blue hex collar over narrow hex-foot white peg, blue round collar over wide stepped white cylinder; stems protrude. Left base metres, table z=-.045. Checkpoint1 approximate triangulated heights: hex .014, round .027, narrow .076, wide .080 (+/- .003); white textureless depth unreliable. Approx diameters hole/peg: hex .029/.026, round .045/.040, not precision metrology. Cycle3 fresh top-plane centers: hex(.1522,-.1285), round(.3352,.1540), narrow(.1446,.0755), wide(.3104,-.0342). Grasp z hex=-.031, round=-.022, canonical down wxyz=(0,1,0,0). Held widths cycles1/2/3 hex53.4/47.1/47.9mm (yaw dependent), round52.2/52.0/52.1mm.",
+    "recipe": "Use python3 scratch/operate.py COMMAND JSON_ARGS (Python3 stdlib and provided robot_client.py); logs and captures after each action. Operator MUST inspect each returned capture before next action. cycle_03_recipe.json contains historical actual commands/feedback, not a blind replay. Fresh home about(.351,.0155,.355): clear planned approach(.23,-.06,.16) succeeded, all subsequent targets linear canonical down. Hex source XY approach z=.025, grasp -.031, close, lift .09, transfer fresh narrow XY .09, descend .052,.030,-.018, open, withdraw .12. Round source XY approach .12,.025, grasp -.022, close, lift .10, transfer fresh wide XY .10, descend .065,.032,-.008, open, withdraw .12, home. Cycle3 holds and shaft entries visibly confirmed, both assemblies engaged and stable after release/withdrawal/home/later capture; empty open fraction .9990. No explicit joint targets; achieved joints in capture metadata. Stage times cycles1/2/3:512.465/467.965/410.864s; cycle3 23 motion and25 capture calls,48 counted.",
+    "corrections": "Cycle1 two initial linear approaches failed IK without motion; clear planned approach worked. Cycle1 wide receiver shifted about1cm during hex pickup, remeasured before round insertion; check complete open finger envelope. Narrow preshape remains untested. Cycle2 hex final target-.020 returned SETTLE_MISS3.9mm at achieved z=-.0180; peg visibly through collar, released there and confirmed stable rather than repeating/pushing. That failed command is not a reusable successful action. Cycle3 intentionally raised hex final target to-.018; achieved-.01765 and ok, then stable release. Hex assembly shifted roughly1-2cm during opening but remained upright/engaged; possible finger contact not established, inspect and remeasure if further manipulation. No cycle3 failed commands, regrasp or insertion retries. Round receiver visually unchanged before transfer. Earlier cycle2 view helper race: ensure motion/capture process has completed before opening new frame.",
+    "next_cycle": "Actually reused checkpoint2 operate.py unchanged and cumulative geometry, grasp heights and approach recipe; fresh top-plane measurements and wrist checks validated upright parts, finger clearance, holds and entry. Changed all XY and hex final z to-.018. Reuse this checkpoint3 procedure with NEW observed source and receiver centers, never replay historical XY. Recheck orientation/heights, full finger envelope, grip offsets, peg entry and stable release; remeasure moved parts. Keep same motion limits and per-action images. First home-to-approach must be <=.25m; use plan only with clear path. Efficiency from solved geometry and avoiding prior rejected approaches/settle miss, not skipped verification. Timings are one ordered sequence, not controlled evidence of memory benefit. Current cycle3 ended, hand open/empty/withdrawn; next assigned agent alone starts cycle4."
+  },
+  "artifacts": [
+    {
+      "source": "scratch/operate.py",
+      "sha256": "f3867c5a4e934f90443b880bcd24cf674573997a4e318bdd7074976ae7d44499",
+      "snapshot": "experience/cycle_03/artifacts/scratch/operate.py"
+    },
+    {
+      "source": "scratch/cycle_03_measure.py",
+      "sha256": "4b2b0213feaa4486b668522715ae90861387a6c4035f36df76722bd703090dab",
+      "snapshot": "experience/cycle_03/artifacts/scratch/cycle_03_measure.py"
+    },
+    {
+      "source": "scratch/cycle_03_view.py",
+      "sha256": "2690d4d3b7da2a0e3954f27eb01d21c2939da38595a791ec72fcb6bf722ebe6f",
+      "snapshot": "experience/cycle_03/artifacts/scratch/cycle_03_view.py"
+    },
+    {
+      "source": "scratch/cycle_03_measurements.json",
+      "sha256": "26ef48d38144e40c1d96878c3fafad845743ddecf1db200e46f8a79cc991d7f7",
+      "snapshot": "experience/cycle_03/artifacts/scratch/cycle_03_measurements.json"
+    },
+    {
+      "source": "scratch/cycle_03_recipe.json",
+      "sha256": "c6917c1d55c8cee42701a5fc98d2496d6f92e2ff68179a66e5be58e260de9332",
+      "snapshot": "experience/cycle_03/artifacts/scratch/cycle_03_recipe.json"
+    },
+    {
+      "source": "scratch/cycle_03_commands.jsonl",
+      "sha256": "944139738f6592a6ea15221088d485c8312016445303b52da0716ba1dc36d41d",
+      "snapshot": "experience/cycle_03/artifacts/scratch/cycle_03_commands.jsonl"
+    },
+    {
+      "source": "scratch/cycle_03_report.py",
+      "sha256": "c4efda4a0b73eb730c59dcd100634a905e318371d3e8f7dc733ba4781786e57e",
+      "snapshot": "experience/cycle_03/artifacts/scratch/cycle_03_report.py"
+    },
+    {
+      "source": "scratch/cycle_03_checkpoint.py",
+      "sha256": "e02c523915abd932b234e1b18befc3e5d7d3c13131fb74f2de112cdd24249d6f",
+      "snapshot": "experience/cycle_03/artifacts/scratch/cycle_03_checkpoint.py"
+    },
+    {
+      "source": "scratch/attempts.md",
+      "sha256": "52d59cb1dbe5a28714d2317930b1b0c69fdfb655dc5af8616a806d5859b976e4",
+      "snapshot": "experience/cycle_03/artifacts/scratch/attempts.md"
+    },
+    {
+      "source": "scratch/cycle_03_RESULT.md",
+      "sha256": "99159eb89e38c5e466ada0dd11375d436cece7d7954cb4032d72c4aa22ddbb6e",
+      "snapshot": "experience/cycle_03/artifacts/scratch/cycle_03_RESULT.md"
+    },
+    {
+      "source": "scratch/cycle_03_final_pairs.png",
+      "sha256": "5368dc460d4eb8200e8d721fb8a2b4cee1a7471ad086f5c81c141a5e390943d9",
+      "snapshot": "experience/cycle_03/artifacts/scratch/cycle_03_final_pairs.png"
+    }
+  ]
+}

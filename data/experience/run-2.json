@@ -1,0 +1,57 @@
+{
+  "cycle": 2,
+  "available_experience_version": 1,
+  "lesson": {
+    "geometry": "Demo: hex blue collar over narrow white hex-foot peg; round blue collar over wide stepped white cylinder, stems protruding. Metres in left base, table z=-.045; checkpoint1 triangulated approximate heights hex .014, round .027, narrow .076, wide .080 (+/- .003); textureless white depth unreliable. Cycle2 fresh top-plane centers and wrist alignment checks validated reuse: hex(.1598,-.1248), round(.3502,.1698), narrow(.1510,.0781), wide(.3231,-.0359). Canonical down wxyz=(0,1,0,0). Hex grasp z=-.031, round=-.022. Held widths cycle1 hex53.4mm/round52.2mm, cycle2 hex47.1mm/round52.0mm; hex width varies with yaw. Dimensions/diameters approximate, not precision metrology.",
+    "recipe": "Reuse python3 scratch/operate.py COMMAND JSON_ARGS (Python3 stdlib, provided robot_client.py). It logs and captures after each action; operator must inspect before next action. Historical exact cycle2 commands/feedback in cycle_02_recipe.json; NEVER blind replay XY. From observed home ~(.350,.0156,.358), clear planned approach(.23,-.06,.16) succeeded; remaining moves linear. Hex source XY: approach .025, grasp -.031, close, lift .09, transfer fresh narrow XY at .09, descend .052,.030,-.020, open, withdraw .12. Round source XY: approach .12 then .025, grasp -.022, close, lift .10, transfer fresh wide XY at .10, descend .065,.032,-.008, open, withdraw .12, home. Both lifted holds and shaft entries visually confirmed; both collars remained engaged/stable after release, withdrawal, home and later capture; open empty gripper fraction .9991. No explicit joint targets; actual joints in capture metadata. Cycle1 stage512.465s; cycle2 467.965s, 48 counted commands.",
+    "corrections": "Cycle1 initial two linear observation approaches failed IK without motion; planned clear approach worked. Wide receiver shifted ~1cm during hex pickup, likely finger contact; remeasured before round insertion. Check full open-finger clearance. Narrow preshape remains untested. Cycle2 no IK rejection, no observed receiver shift, no regrasp/insertion retry, one marked attempt. Hex final descent returned SETTLE_MISS3.9mm, achieved(.153871,.079752,-.018035); shaft visibly through collar. Opened at achieved pose without repeating/pushing; collar settled and stable after withdrawal. Error cause not established. This failed command is not a generally reusable successful action; release decision requires actual supported engagement evidence. Analysis view helper twice ran before new capture existed; waited for action completion then inspected actual fresh captures, no intervening action.",
+    "next_cycle": "Actually reused checkpoint1 operate.py and grasp/insertion heights; new top-plane measurements and wrist observations validated upright poses, approach clearance and holds. Changed XY and initial planned approach; omitted repeated triangulation and failed linear approaches. Reuse cumulative checkpoint2 geometry, operate.py, and historical cycle_02_recipe.json with NEW observed source/receiver centers. Recheck upright orientation, estimated heights, complete finger envelope, held offsets, actual peg entry and stable release; remeasure any shifted part. Keep motion limits and per-action images. Home~(.350,.0156,.358): ensure first approach <=.25m, split if needed and plan only in clear space. Efficiency from prior solved geometry and direct clear approach, not skipped verification. Two ordered timings do not establish a controlled benefit. Only next assigned agent starts cycle3; current arm empty/open/withdrawn and cycle2 ended."
+  },
+  "artifacts": [
+    {
+      "source": "scratch/operate.py",
+      "sha256": "f3867c5a4e934f90443b880bcd24cf674573997a4e318bdd7074976ae7d44499",
+      "snapshot": "experience/cycle_02/artifacts/scratch/operate.py"
+    },
+    {
+      "source": "scratch/cycle_02_measure.py",
+      "sha256": "1eeb91b829888f438fed8b6c4b239fa019c80042af958cb996924bf71c60bdcb",
+      "snapshot": "experience/cycle_02/artifacts/scratch/cycle_02_measure.py"
+    },
+    {
+      "source": "scratch/cycle_02_view.py",
+      "sha256": "16267457053c375f399ef6d2475611d76031422ed722342364d26c7c6bcda3fb",
+      "snapshot": "experience/cycle_02/artifacts/scratch/cycle_02_view.py"
+    },
+    {
+      "source": "scratch/cycle_02_measurements.json",
+      "sha256": "d050b03a600cf2118a3589890ce91a548a1437f252006c2635ef2c9776d9f933",
+      "snapshot": "experience/cycle_02/artifacts/scratch/cycle_02_measurements.json"
+    },
+    {
+      "source": "scratch/cycle_02_recipe.json",
+      "sha256": "7552bae41ffb22eed6a7fda51a59fed4532509fb311944ad414b074c6a02b86e",
+      "snapshot": "experience/cycle_02/artifacts/scratch/cycle_02_recipe.json"
+    },
+    {
+      "source": "scratch/cycle_02_commands.jsonl",
+      "sha256": "2dded24fd07977ca9438959e799fd0d8ebbbf905ee34a81083c969b68c1287bd",
+      "snapshot": "experience/cycle_02/artifacts/scratch/cycle_02_commands.jsonl"
+    },
+    {
+      "source": "scratch/attempts.md",
+      "sha256": "69fde0bab84024c883bb85fdea9cf54222c7fe9368926d783a79cb09b182ff03",
+      "snapshot": "experience/cycle_02/artifacts/scratch/attempts.md"
+    },
+    {
+      "source": "scratch/cycle_02_RESULT.md",
+      "sha256": "6da5c3d7bb3c620e851b4233741ba6bd0ee43650a8647a9da65c58bad11416b4",
+      "snapshot": "experience/cycle_02/artifacts/scratch/cycle_02_RESULT.md"
+    },
+    {
+      "source": "scratch/cycle_02_final_pairs.png",
+      "sha256": "ef291445677bd9ca57a432a62a2d49a3ef5ac99a4f52335a9ca01a056a023268",
+      "snapshot": "experience/cycle_02/artifacts/scratch/cycle_02_final_pairs.png"
+    }
+  ]
+}

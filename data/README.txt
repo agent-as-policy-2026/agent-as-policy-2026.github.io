@@ -53,3 +53,10 @@ Table 1 selection updated 13 September 2026. Four pair assembly uses trials 01 t
 at the time limit and counts as unsuccessful. Failed-trial times end at the final
 report boundary or termination. Resource summaries use successful trials only.
 The source CSV stores tokens in thousands, as indicated by tokens_k.
+
+Throwing update (2026-10-22)
+  throwing-source.json records the 10-trial public batch and its source shards.
+  trials.json contains 120 slots, including 70 main-result trials.
+  Throwing time uses public session wall clock. Its cost field is blank.
+
+2026-10-23: Main-table throwing aggregates follow arXiv v3 Table 1 over all 10 trials: 17.71 min, 5.71M tokens, USD 8.16. Individual cost records remain unavailable in the public dataset. See throwing-source.json for provenance.

@@ -39,7 +39,7 @@
      label and the legend as well as by hue. The same seven values are the chart
      palette in site.css (html .agpc) and build/figures/chartlib.py. */
   --ev-model: #3a82dc;
-  --ev-tool: #cf5a24;
+  --ev-tool: #cf4e41;
   --ev-motion: #12855c;
   --ev-motion-bad: var(--fail, #d03b3b);
   --ev-capture: #8a6100;
@@ -47,7 +47,7 @@
   --ev-say: #c9567f;
   --ev-neutral: var(--ink-3, #6b6a65);
 
-  --ev-track: #e6e4dc;
+  --ev-track: #e7ecf3;
   --ev-ring: rgba(0, 0, 0, 0.13);
   --ev-lane-h: 11px;
   --ev-gutter: 8.5rem;
@@ -185,11 +185,12 @@
 
 /* the player and its caption: the same figure + figcaption every other clip on the page
    uses, so the trial line is programmatically the video's caption */
-.ev-figure { margin: 0; max-width: 48rem; }
+.ev-figure { margin: 0; max-width: none; }
 .ev-figure > .ev-ep-meta { margin-top: 0.45rem; }
 
 .ev-frame {
-  max-width: 48rem;
+  position: relative;
+  max-width: none;
   background: #0e1013;
   border-radius: var(--ev-radius);
   overflow: hidden;
@@ -199,7 +200,7 @@
   display: block;
   width: 100%;
   height: auto;
-  max-height: min(70vh, 34rem);
+  max-height: none;
   aspect-ratio: 4 / 3;
   background: #0e1013;
   object-fit: contain;
@@ -314,7 +315,7 @@
    title only where the whole title fits; the rest show the number alone, with the title
    on the button as its accessible name and spelled out in the Chapters list below. */
 .ev-chap-title { white-space: nowrap; }
-.ev-chap:hover { background: #dcd9cd; color: var(--ev-ink); }
+.ev-chap:hover { background: #dce4ef; color: var(--ev-ink); }
 .ev-chap[aria-current="true"] {
   background: var(--ev-ink);
   color: var(--ev-bg);
@@ -403,7 +404,14 @@
 .ev-spark { display: grid; grid-template-columns: var(--ev-gutter) minmax(0, 1fr); align-items: center; }
 .ev-spark svg { display: block; width: 100%; height: 34px; overflow: visible; }
 .ev-spark-line { fill: none; stroke: var(--ev-muted); stroke-width: 1.5; }
-.ev-spark-fill { fill: #dcd9cd; }
+.ev-spark-fill { fill: #dce4ef; }
+
+/* Cursor percentages share the tracks' time axis, excluding the label gutter. */
+.ev-cursors {
+  position: absolute;
+  inset: 0 0 0 var(--ev-gutter);
+  pointer-events: none;
+}
 
 .ev-playhead {
   position: absolute;
@@ -511,7 +519,7 @@
   list-style: none;
   background: var(--ev-surface);
   border-radius: var(--ev-radius);
-  max-height: min(72vh, 620px);
+  max-height: 44rem;
   overflow-y: auto;
   overscroll-behavior: contain;
   scrollbar-gutter: stable;
@@ -543,7 +551,7 @@
   background: var(--ev-bg);
   box-shadow: inset 0 0 0 1px var(--ev-rule), 0 1px 2px rgba(22, 25, 29, 0.06);
 }
-.ev-e--child { margin-left: 1.15rem; }
+
 .ev-e--say, .ev-e--final { border-left-color: var(--ev-say); }
 .ev-e--think { border-left-color: var(--ev-model); }
 .ev-e--run { border-left-color: var(--ev-tool); }
@@ -833,16 +841,19 @@
 .ev-dl {
   margin: 0;
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(11rem, 1fr));
-  gap: 0.1rem 1.2rem;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 1rem;
   font-size: 0.8125rem;
 }
 .ev-dl > div {
   display: flex;
+  flex-direction: column;
   justify-content: space-between;
-  gap: 0.6rem;
-  padding: 0.14rem 0;
-  border-bottom: 1px solid var(--ev-rule);
+  gap: 0.8rem;
+  padding: 1rem 1.2rem;
+  border: 1px solid var(--ev-rule);
+  border-radius: 10px;
+  background: #fff;
 }
 .ev-dl dt { color: var(--ev-muted); }
 .ev-dl dd {
@@ -865,7 +876,7 @@
   padding: 0;
   list-style: none;
   font-size: 0.8125rem;
-  max-width: 48rem;
+  max-width: none;
 }
 .ev-chlist li {
   display: flex;
@@ -917,7 +928,7 @@
 @media (min-width: 62rem) {
   .ev--js .ev-ep:not([hidden]) {
     display: grid;
-    grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr);
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     column-gap: 1.4rem;
     align-items: start;
   }
@@ -925,7 +936,7 @@
   .ev--js .ev-filmwrap,
   .ev--js .ev-summary { grid-column: 1 / -1; }
   .ev--js .ev-railwrap { align-self: stretch; }
-  .ev--js .ev-video { max-height: min(58vh, 460px); }
+
   .ev--js .ev-frame { display: grid; place-items: center; }
 }
 
@@ -964,3 +975,23 @@
 .ev-details > summary { cursor: pointer; font-size: 0.9375rem; font-weight: 600; color: var(--ev-ink, #181818); }
 .ev-details[open] > summary { margin-bottom: 0.9rem; }
 .ev-data-note { margin-top: 1rem; }
+
+.ev-dl dd { font-size:1.5rem;line-height:1.2;font-weight:600; }
+.ev-budget .ev-dl>div { position:relative;padding-bottom:1.4rem;border-top:3px solid var(--metric-color); }
+.ev-budget .ev-dl>div::after { content:'';position:absolute;left:0;bottom:0;height:5px;width:var(--metric-width);max-width:100%;background:var(--metric-color);border-radius:0 0 0 8px; }
+.ev-budget-overlap { font-size:0.8rem;color:var(--ev-muted);margin:0.8rem 0; }
+.ev-budget,.ev-counts,.ev-chapters-static{margin-top:1.5rem;margin-bottom:1.5rem}
+.ev-h4{font-size:1rem;margin-bottom:0.8rem;color:var(--ev-ink)}
+.ev-caption,.ev-budget-note{line-height:1.7}
+@container(max-width:950px){.ev--js .ev-ep:not([hidden]){display:block}.ev-railwrap{margin-top:1.5rem}.ev-rail{max-height:30rem}}
+@media(max-width:480px){.ev-video-progress{padding:1.3rem 0.5rem 0.4rem;gap:0.35rem}.ev-video-progress .ev-btn--play{width:30px;height:30px}.ev-video-seek-clock{font-size:0.6rem}.ev-video-progress .ev-speed select{font-size:0.7rem}.ev-dl{grid-template-columns:repeat(2,minmax(0,1fr))}}
+
+agp-video-player {display:contents}video-neutral-skin {position:relative;width:100%;--media-accent:#fff;--media-color-primary:#fff}.ev-frame{display:block!important}.ev-video{padding:0!important}
+.ev-activity-caption{position:absolute;left:4%;right:4%;top:10px;z-index:2;display:grid;gap:4px;pointer-events:none;line-height:1.35;font-size:clamp(11px,1vw,14px);overflow:hidden}
+.ev-activity-caption[hidden]{display:none}.ev-activity-line{max-width:100%;padding:7px 12px;color:#fff;border-radius:5px;background:#334155e8;text-align:center;box-shadow:0 2px 8px #0002}.ev-activity-line strong{margin-right:8px;font-weight:650}.ev-activity-line span{overflow-wrap:anywhere}.ev-activity--stage{background:#334155ef}.ev-activity--model{background:#215abceF}.ev-activity--tool{background:#b43d32ef}.ev-activity--motion{background:#087653ef}.ev-activity--look{background:#5941a3ef}.ev-activity--say{background:#9e3865ef}.ev-highlights{grid-template-columns:repeat(3,minmax(0,1fr))}.ev-highlights>div{border-top:3px solid var(--metric-color)}
+@media(max-width:600px){.ev-activity-caption{top:6px;left:2%;right:2%;font-size:11px}.ev-activity-line{padding:4px 7px}.ev-highlights{grid-template-columns:1fr}.ev-highlights>div{flex-direction:row;align-items:center}.ev-highlights dd{font-size:1.2rem}}
+
+.ev-activity-lane{position:relative;height:3.3em;min-width:0}.ev-activity-line{position:absolute;inset:0 auto auto 0;max-width:100%;max-height:3.3em;padding:5px 9px;text-align:left;box-sizing:border-box;overflow:hidden}.ev-activity-line span{display:inline;overflow-wrap:anywhere}.ev-activity-line small{margin-left:6px;font-size:.75em;opacity:.9}.ev-activity-line small[hidden]{display:none}.ev-activity-ended{animation:ev-activity-depart 2.2s ease-out forwards}
+@keyframes ev-activity-depart{0%,30%{opacity:.85}100%{opacity:0}}
+@media(prefers-reduced-motion:reduce){@keyframes ev-activity-depart{0%,30%{opacity:.85}100%{opacity:0}}}
+@media(max-width:600px){.ev-activity-lane{height:calc(2.7em + 10px)}.ev-activity-lane:first-child{height:calc(4.05em + 10px)}.ev-activity-line{max-height:100%}}

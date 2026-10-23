@@ -1412,7 +1412,7 @@
    "i": 0,
    "t": 1.04,
    "type": "say",
-   "text": "I\u2019ll read the interface and study the demonstration first, then inspect the live scene and assemble the two pairs in the workspace."
+   "text": "I’ll read the interface and study the demonstration first, then inspect the live scene and assemble the two pairs in the workspace."
   },
   {
    "i": 1,
@@ -1473,7 +1473,7 @@
    "t": 22.36,
    "type": "run",
    "t1": 23.4,
-   "label": "robot: status \u2192 state \u2192 frames",
+   "label": "robot: status → state → frames",
    "cmd": "python3 robot_client.py . status && python3 robot_client.py . state && python3 robot_client.py . frames",
    "kind": "shell"
   },
@@ -1523,7 +1523,7 @@
    "i": 12,
    "t": 36.3,
    "type": "say",
-   "text": "The demonstration shows the blue hexagonal ring sliding over the narrow white post, and the blue circular ring sliding over the wider white cylinder. I\u2019ll do the hexagonal pair first, then the circular pair, using slow vertical placement and checking alignment before release."
+   "text": "The demonstration shows the blue hexagonal ring sliding over the narrow white post, and the blue circular ring sliding over the wider white cylinder. I’ll do the hexagonal pair first, then the circular pair, using slow vertical placement and checking alignment before release."
   },
   {
    "i": 13,
@@ -1554,7 +1554,7 @@
    "t": 40.96,
    "type": "run",
    "t1": 41.87,
-   "label": "robot: deproject\u00d74",
+   "label": "robot: deproject×4",
    "cmd": "python3 robot_client.py . deproject '{\"capture\":1,\"cam\":\"top\",\"u\":622,\"v\":510,\"plane_z\":-0.03}' && python3 robot_client.py . deproject '{\"capture\":1,\"cam\":\"top\",\"u\":617,\"v\":674,\"plane_z\":0.005}' && python3 robot_client.py . deproject '{\"capture\":1,\"cam\":\"top\",\"u\":819,\"v\":580,\"plane_z\":-0.025}' && python3 robot_client.py . deproject '{\"capture\":1,\"cam\":\"wrist\",\"u\":330,\"v\":245}'",
    "kind": "shell"
   },
@@ -1668,7 +1668,7 @@
    "t": 47.4,
    "type": "run",
    "t1": 51.58,
-   "label": "robot: move_ee \u2192 frames",
+   "label": "robot: move_ee → frames",
    "cmd": "python3 robot_client.py . move_ee '{\"position\":{\"x\":0.3271,\"y\":-0.0696,\"z\":0.15},\"rotation\":{\"w\":0,\"x\":1,\"y\":0,\"z\":0},\"mode\":\"plan\"}' && python3 robot_client.py . frames",
    "kind": "shell"
   },
@@ -1732,8 +1732,8 @@
    "t": 66.71,
    "type": "run",
    "t1": 67.87,
-   "label": "robot: deproject\u00d75",
-   "cmd": "python3 robot_client.py . deproject '{\"capture\":2,\"cam\":\"wrist\",\"u\":321,\"v\":107}' && python3 robot_client.py . deproject '{\"capture\":2,\"cam\":\"wrist\",\"u\":295,\"v\":136}' && python3 robot_client.py . deproject '{\"capture\":2,\"cam\":\"wrist\",\"u\":355,\"v\":322}' && python3 robot_client.py . deproject '{\"capture\":2,\"cam\":\"wrist\",\"u\":99,\"v\":131}' && python3 robot_client.py . deproject '{\"capture\":2,\"cam\":\"wrist\",\"u\":322,\"v\":130,\" \u2026 [+17 chars]",
+   "label": "robot: deproject×5",
+   "cmd": "python3 robot_client.py . deproject '{\"capture\":2,\"cam\":\"wrist\",\"u\":321,\"v\":107}' && python3 robot_client.py . deproject '{\"capture\":2,\"cam\":\"wrist\",\"u\":295,\"v\":136}' && python3 robot_client.py . deproject '{\"capture\":2,\"cam\":\"wrist\",\"u\":355,\"v\":322}' && python3 robot_client.py . deproject '{\"capture\":2,\"cam\":\"wrist\",\"u\":99,\"v\":131}' && python3 robot_client.py . deproject '{\"capture\":2,\"cam\":\"wrist\",\"u\":322,\"v\":130,\" … [+17 chars]",
    "kind": "shell"
   },
   {
@@ -1868,7 +1868,7 @@
    "t": 75.44,
    "type": "run",
    "t1": 88.42,
-   "label": "robot: move_ee \u2192 frames",
+   "label": "robot: move_ee → frames",
    "cmd": "python3 robot_client.py . move_ee '{\"position\":{\"x\":0.331,\"y\":-0.07,\"z\":-0.026},\"rotation\":{\"w\":0,\"x\":1,\"y\":0,\"z\":0},\"mode\":\"linear\"}' && python3 robot_client.py . frames",
    "kind": "shell"
   },
@@ -1920,7 +1920,7 @@
    "t": 97.93,
    "type": "run",
    "t1": 101.1,
-   "label": "robot: gripper \u2192 frames",
+   "label": "robot: gripper → frames",
    "cmd": "python3 robot_client.py . gripper '{\"action\":\"close\"}' && python3 robot_client.py . frames",
    "kind": "shell"
   },
@@ -1975,7 +1975,7 @@
    "t": 108.31,
    "type": "run",
    "t1": 118.68,
-   "label": "robot: move_delta \u2192 frames",
+   "label": "robot: move_delta → frames",
    "cmd": "python3 robot_client.py . move_delta '{\"dpos\":[0,0,0.13]}' && python3 robot_client.py . frames",
    "kind": "shell"
   },
@@ -1989,7 +1989,7 @@
    "i": 42,
    "t": 115.49,
    "type": "say",
-   "text": "The hexagonal ring is between the fingers; the gripper reports a 46.5 mm opening after closing. I\u2019m lifting it to verify the grip, then I\u2019ll align its hole with the narrow post."
+   "text": "The hexagonal ring is between the fingers; the gripper reports a 46.5 mm opening after closing. I’m lifting it to verify the grip, then I’ll align its hole with the narrow post."
   },
   {
    "i": 43,
@@ -2085,7 +2085,7 @@
    "t": 136.8,
    "type": "run",
    "t1": 147.04,
-   "label": "robot: deproject \u2192 move_ee \u2192 frames",
+   "label": "robot: deproject → move_ee → frames",
    "cmd": "python3 robot_client.py . deproject '{\"capture\":5,\"cam\":\"top\",\"u\":556,\"v\":459,\"plane_z\":0.108}' && python3 robot_client.py . move_ee '{\"position\":{\"x\":0.198,\"y\":-0.09,\"z\":0.09},\"rotation\":{\"w\":0,\"x\":1,\"y\":0,\"z\":0},\"mode\":\"linear\"}' && python3 robot_client.py . frames",
    "kind": "shell"
   },
@@ -2183,7 +2183,7 @@
    "t": 160.64,
    "type": "run",
    "t1": 165.08,
-   "label": "robot: deproject \u2192 move_ee \u2192 frames",
+   "label": "robot: deproject → move_ee → frames",
    "cmd": "python3 robot_client.py . deproject '{\"capture\":6,\"cam\":\"wrist\",\"u\":326,\"v\":209}' && python3 robot_client.py . move_ee '{\"position\":{\"x\":0.198,\"y\":-0.09,\"z\":0.050},\"rotation\":{\"w\":0,\"x\":1,\"y\":0,\"z\":0},\"mode\":\"linear\"}' && python3 robot_client.py . frames",
    "kind": "shell"
   },
@@ -2279,7 +2279,7 @@
    "t": 175.2,
    "type": "run",
    "t1": 178.17,
-   "label": "robot: move_ee \u2192 frames",
+   "label": "robot: move_ee → frames",
    "cmd": "python3 robot_client.py . move_ee '{\"position\":{\"x\":0.201,\"y\":-0.09,\"z\":0.025},\"rotation\":{\"w\":0,\"x\":1,\"y\":0,\"z\":0},\"mode\":\"linear\"}' && python3 robot_client.py . frames",
    "kind": "shell"
   },
@@ -2318,7 +2318,7 @@
    "i": 66,
    "t": 187.8,
    "type": "say",
-   "text": "The narrow post is visibly through the hexagonal ring. I\u2019ll lower the ring to the white base, release it, and withdraw to check that it stays seated."
+   "text": "The narrow post is visibly through the hexagonal ring. I’ll lower the ring to the white base, release it, and withdraw to check that it stays seated."
   },
   {
    "i": 67,
@@ -2353,7 +2353,7 @@
    "t": 190.26,
    "type": "run",
    "t1": 194.64,
-   "label": "robot: move_ee \u2192 frames",
+   "label": "robot: move_ee → frames",
    "cmd": "python3 robot_client.py . move_ee '{\"position\":{\"x\":0.201,\"y\":-0.09,\"z\":-0.018},\"rotation\":{\"w\":0,\"x\":1,\"y\":0,\"z\":0},\"mode\":\"linear\"}' && python3 robot_client.py . frames",
    "kind": "shell"
   },
@@ -2404,7 +2404,7 @@
    "t": 200.51,
    "type": "run",
    "t1": 203.28,
-   "label": "robot: gripper \u2192 frames",
+   "label": "robot: gripper → frames",
    "cmd": "python3 robot_client.py . gripper '{\"action\":\"open\"}' && python3 robot_client.py . frames",
    "kind": "shell"
   },
@@ -2459,7 +2459,7 @@
    "t": 212.28,
    "type": "run",
    "t1": 223.86,
-   "label": "robot: move_delta \u2192 frames",
+   "label": "robot: move_delta → frames",
    "cmd": "python3 robot_client.py . move_delta '{\"dpos\":[0,0,0.15]}' && python3 robot_client.py . frames",
    "kind": "shell"
   },
@@ -2528,7 +2528,7 @@
    "t": 239.18,
    "type": "run",
    "t1": 250.16,
-   "label": "robot: move_ee \u2192 frames",
+   "label": "robot: move_ee → frames",
    "cmd": "python3 robot_client.py . move_ee '{\"position\":{\"x\":0.27,\"y\":-0.214,\"z\":0.13},\"rotation\":{\"w\":0,\"x\":1,\"y\":0,\"z\":0},\"mode\":\"linear\"}' && python3 robot_client.py . frames",
    "kind": "shell"
   },
@@ -2559,7 +2559,7 @@
    "i": 84,
    "t": 254.01,
    "type": "say",
-   "text": "The hexagonal assembly remains seated after release. I\u2019m moving to the circular ring and measuring it from the wrist camera before grasping."
+   "text": "The hexagonal assembly remains seated after release. I’m moving to the circular ring and measuring it from the wrist camera before grasping."
   },
   {
    "i": 85,
@@ -2598,7 +2598,7 @@
    "t": 267.88,
    "type": "run",
    "t1": 268.73,
-   "label": "robot: deproject\u00d73",
+   "label": "robot: deproject×3",
    "cmd": "python3 robot_client.py . deproject '{\"capture\":12,\"cam\":\"wrist\",\"u\":329,\"v\":108}' && python3 robot_client.py . deproject '{\"capture\":12,\"cam\":\"wrist\",\"u\":363,\"v\":146}' && python3 robot_client.py . deproject '{\"capture\":12,\"cam\":\"wrist\",\"u\":329,\"v\":142,\"plane_z\":-0.019}'",
    "kind": "shell"
   },
@@ -2688,7 +2688,7 @@
    "t": 275.02,
    "type": "run",
    "t1": 286.4,
-   "label": "robot: move_ee \u2192 frames",
+   "label": "robot: move_ee → frames",
    "cmd": "python3 robot_client.py . move_ee '{\"position\":{\"x\":0.271,\"y\":-0.216,\"z\":-0.020},\"rotation\":{\"w\":0,\"x\":1,\"y\":0,\"z\":0},\"mode\":\"linear\"}' && python3 robot_client.py . frames",
    "kind": "shell"
   },
@@ -2739,7 +2739,7 @@
    "t": 294.94,
    "type": "run",
    "t1": 297.72,
-   "label": "robot: gripper \u2192 frames",
+   "label": "robot: gripper → frames",
    "cmd": "python3 robot_client.py . gripper '{\"action\":\"close\"}' && python3 robot_client.py . frames",
    "kind": "shell"
   },
@@ -2794,7 +2794,7 @@
    "t": 306.77,
    "type": "run",
    "t1": 316.95,
-   "label": "robot: move_delta \u2192 frames",
+   "label": "robot: move_delta → frames",
    "cmd": "python3 robot_client.py . move_delta '{\"dpos\":[0,0,0.13]}' && python3 robot_client.py . frames",
    "kind": "shell"
   },
@@ -2808,7 +2808,7 @@
    "i": 102,
    "t": 314.87,
    "type": "say",
-   "text": "The circular ring is gripped, with a 51.9 mm opening after closing. I\u2019ll lift it and carry it to the wider cylinder in two short moves within the workspace."
+   "text": "The circular ring is gripped, with a 51.9 mm opening after closing. I’ll lift it and carry it to the wider cylinder in two short moves within the workspace."
   },
   {
    "i": 103,
@@ -2869,7 +2869,7 @@
    "t": 324.54,
    "type": "run",
    "t1": 340.53,
-   "label": "robot: move_ee \u2192 frames",
+   "label": "robot: move_ee → frames",
    "cmd": "python3 robot_client.py . move_ee '{\"position\":{\"x\":0.33,\"y\":-0.08,\"z\":0.11},\"rotation\":{\"w\":0,\"x\":1,\"y\":0,\"z\":0},\"mode\":\"linear\"}' && python3 robot_client.py . frames",
    "kind": "shell"
   },
@@ -2938,7 +2938,7 @@
    "t": 353.53,
    "type": "run",
    "t1": 365.71,
-   "label": "robot: move_ee \u2192 frames",
+   "label": "robot: move_ee → frames",
    "cmd": "python3 robot_client.py . move_ee '{\"position\":{\"x\":0.356,\"y\":0.054,\"z\":0.105},\"rotation\":{\"w\":0,\"x\":1,\"y\":0,\"z\":0},\"mode\":\"linear\"}' && python3 robot_client.py . frames",
    "kind": "shell"
   },
@@ -3002,7 +3002,7 @@
    "t": 383.31,
    "type": "run",
    "t1": 387.75,
-   "label": "robot: deproject \u2192 move_ee \u2192 frames",
+   "label": "robot: deproject → move_ee → frames",
    "cmd": "python3 robot_client.py . deproject '{\"capture\":17,\"cam\":\"wrist\",\"u\":321,\"v\":195}' && python3 robot_client.py . move_ee '{\"position\":{\"x\":0.356,\"y\":0.054,\"z\":0.063},\"rotation\":{\"w\":0,\"x\":1,\"y\":0,\"z\":0},\"mode\":\"linear\"}' && python3 robot_client.py . frames",
    "kind": "shell"
   },
@@ -3069,7 +3069,7 @@
    "i": 121,
    "t": 400.91,
    "type": "say",
-   "text": "The ring is above the wider cylinder. One transit move stopped 3.5 mm short; fresh images showed the ring still held and clear of the table. I\u2019m now making a small alignment correction before lowering it onto the cylinder."
+   "text": "The ring is above the wider cylinder. One transit move stopped 3.5 mm short; fresh images showed the ring still held and clear of the table. I’m now making a small alignment correction before lowering it onto the cylinder."
   },
   {
    "i": 122,
@@ -3104,7 +3104,7 @@
    "t": 403.07,
    "type": "run",
    "t1": 406.24,
-   "label": "robot: move_ee \u2192 frames",
+   "label": "robot: move_ee → frames",
    "cmd": "python3 robot_client.py . move_ee '{\"position\":{\"x\":0.360,\"y\":0.054,\"z\":0.035},\"rotation\":{\"w\":0,\"x\":1,\"y\":0,\"z\":0},\"mode\":\"linear\"}' && python3 robot_client.py . frames",
    "kind": "shell"
   },
@@ -3172,7 +3172,7 @@
    "t": 418.66,
    "type": "run",
    "t1": 422.64,
-   "label": "robot: move_ee \u2192 frames",
+   "label": "robot: move_ee → frames",
    "cmd": "python3 robot_client.py . move_ee '{\"position\":{\"x\":0.360,\"y\":0.054,\"z\":-0.007},\"rotation\":{\"w\":0,\"x\":1,\"y\":0,\"z\":0},\"mode\":\"linear\"}' && python3 robot_client.py . frames",
    "kind": "shell"
   },
@@ -3223,7 +3223,7 @@
    "t": 429.59,
    "type": "run",
    "t1": 432.17,
-   "label": "robot: gripper \u2192 frames",
+   "label": "robot: gripper → frames",
    "cmd": "python3 robot_client.py . gripper '{\"action\":\"open\"}' && python3 robot_client.py . frames",
    "kind": "shell"
   },
@@ -3278,7 +3278,7 @@
    "t": 441.06,
    "type": "run",
    "t1": 452.64,
-   "label": "robot: move_delta \u2192 frames",
+   "label": "robot: move_delta → frames",
    "cmd": "python3 robot_client.py . move_delta '{\"dpos\":[0,0,0.15]}' && python3 robot_client.py . frames",
    "kind": "shell"
   },
@@ -3292,7 +3292,7 @@
    "i": 138,
    "t": 450.6,
    "type": "say",
-   "text": "The circular ring is around its cylinder and has settled after release. I\u2019ll withdraw to the observation posture and capture final images to confirm both assemblies remain stable."
+   "text": "The circular ring is around its cylinder and has settled after release. I’ll withdraw to the observation posture and capture final images to confirm both assemblies remain stable."
   },
   {
    "i": 139,
@@ -3338,7 +3338,7 @@
    "t": 460.19,
    "type": "run",
    "t1": 464.69,
-   "label": "robot: home \u2192 frames \u2192 state \u2192 status",
+   "label": "robot: home → frames → state → status",
    "cmd": "python3 robot_client.py . home && python3 robot_client.py . frames && python3 robot_client.py . state && python3 robot_client.py . status",
    "kind": "shell"
   },
@@ -3400,7 +3400,7 @@
    "type": "run",
    "t1": 498.05,
    "label": "write report (RESULT.md)",
-   "cmd": "cat > scratch/RESULT.md <<'EOF'\n# Result: both assemblies completed\n\n## Demonstration and pairings\nI studied goal/demo_start.png, goal/top_camera.png, and the demonstration video after extracting one frame per second into scratch/demo_001.png through scratch/demo_014.png. The contact sheet is scratch/demo_sheet.jpg.\n\nThe blue hexagonal ring goes over the narrow upright white post with a hexagonal foot. The \u2026 [+2703 chars]",
+   "cmd": "cat > scratch/RESULT.md <<'EOF'\n# Result: both assemblies completed\n\n## Demonstration and pairings\nI studied goal/demo_start.png, goal/top_camera.png, and the demonstration video after extracting one frame per second into scratch/demo_001.png through scratch/demo_014.png. The contact sheet is scratch/demo_sheet.jpg.\n\nThe blue hexagonal ring goes over the narrow upright white post with a hexagonal foot. The … [+2703 chars]",
    "kind": "shell"
   },
   {
@@ -4164,5 +4164,927 @@
   "frames/0019_top.png",
   "frames/0020_top.png",
   "frames/0021_top.png"
- ]
+ ],
+ "presentation_captions": {
+  "description": "Complete model, tool and motion tracks. Model-generation intervals separated by at most 0.8 run seconds are grouped into readable summaries. Messages describe recorded updates. Display priority is resolved before filtering fragments shorter than 3 screen seconds. Original event times remain unchanged.",
+  "minimum_screen_seconds": 3,
+  "cues": [
+   {
+    "kind": "model",
+    "start": 0.0,
+    "end": 21.92,
+    "source_lane_indices": [
+     0,
+     1,
+     2
+    ],
+    "text": "Reading the interface and analysing the demonstration"
+   },
+   {
+    "kind": "say",
+    "start": 1.04,
+    "end": 11.04,
+    "text": "Read the interface and demonstration, then assemble the two pairs.",
+    "source_event": 0
+   },
+   {
+    "kind": "tool",
+    "start": 1.92,
+    "end": 1.92,
+    "text": "pwd",
+    "source_lane_index": 0,
+    "source_event": 1
+   },
+   {
+    "kind": "tool",
+    "start": 10.15,
+    "end": 10.3,
+    "text": "extract demo-video frames",
+    "source_lane_index": 1,
+    "source_event": 2
+   },
+   {
+    "kind": "tool",
+    "start": 22.08,
+    "end": 22.19,
+    "text": "python analysis",
+    "source_lane_index": 2,
+    "source_event": 4
+   },
+   {
+    "kind": "tool",
+    "start": 22.36,
+    "end": 23.4,
+    "text": "Run status → state → frames",
+    "source_lane_index": 3,
+    "source_event": 7
+   },
+   {
+    "kind": "model",
+    "start": 23.41,
+    "end": 40.79,
+    "source_lane_indices": [
+     3,
+     4
+    ],
+    "text": "Matching the parts and planning the assembly"
+   },
+   {
+    "kind": "say",
+    "start": 36.3,
+    "end": 47.24,
+    "text": "Assemble the hexagonal pair first, then the circular pair.",
+    "source_event": 12
+   },
+   {
+    "kind": "tool",
+    "start": 40.96,
+    "end": 41.87,
+    "text": "Run deproject×4",
+    "source_lane_index": 4,
+    "source_event": 14
+   },
+   {
+    "kind": "model",
+    "start": 41.87,
+    "end": 47.24,
+    "source_lane_indices": [
+     5
+    ],
+    "text": "Planning the gripper orientation"
+   },
+   {
+    "kind": "motion",
+    "start": 47.26,
+    "end": 50.84,
+    "text": "Move the gripper to the commanded pose",
+    "source_lane_index": 0,
+    "source_event": 19
+   },
+   {
+    "kind": "tool",
+    "start": 47.4,
+    "end": 51.58,
+    "text": "Run move_ee → frames",
+    "source_lane_index": 5,
+    "source_event": 20
+   },
+   {
+    "kind": "model",
+    "start": 48.41,
+    "end": 66.54,
+    "source_lane_indices": [
+     6,
+     7,
+     8
+    ],
+    "text": "Estimating the post position and approach"
+   },
+   {
+    "kind": "tool",
+    "start": 66.71,
+    "end": 67.87,
+    "text": "Run deproject×5",
+    "source_lane_index": 6,
+    "source_event": 25
+   },
+   {
+    "kind": "model",
+    "start": 67.87,
+    "end": 75.28,
+    "source_lane_indices": [
+     9
+    ],
+    "text": "Checking wrist-camera geometry"
+   },
+   {
+    "kind": "motion",
+    "start": 75.3,
+    "end": 87.64,
+    "text": "Move the gripper to the commanded pose",
+    "source_lane_index": 1,
+    "source_event": 31
+   },
+   {
+    "kind": "tool",
+    "start": 75.44,
+    "end": 88.42,
+    "text": "Run move_ee + frames",
+    "source_lane_index": 7,
+    "source_event": 32
+   },
+   {
+    "kind": "model",
+    "start": 76.44,
+    "end": 79.36,
+    "source_lane_indices": [
+     10
+    ],
+    "text": "Planning the gripper approach"
+   },
+   {
+    "kind": "model",
+    "start": 84.36,
+    "end": 87.05,
+    "source_lane_indices": [
+     11
+    ],
+    "text": "Checking the approach"
+   },
+   {
+    "kind": "model",
+    "start": 88.43,
+    "end": 97.76,
+    "source_lane_indices": [
+     12,
+     13
+    ],
+    "text": "Inspecting the grasp position"
+   },
+   {
+    "kind": "look",
+    "start": 92.31,
+    "end": 97.79,
+    "text": "Opened two camera images",
+    "source_event": 34
+   },
+   {
+    "kind": "motion",
+    "start": 97.79,
+    "end": 100.34,
+    "text": "Open or close the gripper",
+    "source_lane_index": 2,
+    "source_event": 35
+   },
+   {
+    "kind": "tool",
+    "start": 97.93,
+    "end": 101.1,
+    "text": "Run gripper → frames",
+    "source_lane_index": 8,
+    "source_event": 36
+   },
+   {
+    "kind": "model",
+    "start": 98.93,
+    "end": 108.13,
+    "source_lane_indices": [
+     14,
+     15
+    ],
+    "text": "Planning the lift after closing the gripper"
+   },
+   {
+    "kind": "motion",
+    "start": 108.16,
+    "end": 117.84,
+    "text": "Apply a relative gripper-position adjustment",
+    "source_lane_index": 3,
+    "source_event": 39
+   },
+   {
+    "kind": "tool",
+    "start": 108.31,
+    "end": 118.68,
+    "text": "Run move_delta + frames",
+    "source_lane_index": 9,
+    "source_event": 40
+   },
+   {
+    "kind": "model",
+    "start": 109.31,
+    "end": 115.56,
+    "source_lane_indices": [
+     16
+    ],
+    "text": "Checking the hexagonal-ring grasp"
+   },
+   {
+    "kind": "say",
+    "start": 115.49,
+    "end": 125.49,
+    "text": "The hexagonal ring is gripped. Next, check its alignment with the post.",
+    "source_event": 42
+   },
+   {
+    "kind": "model",
+    "start": 118.69,
+    "end": 136.64,
+    "source_lane_indices": [
+     17,
+     18
+    ],
+    "text": "Estimating alignment above the narrow post"
+   },
+   {
+    "kind": "tool",
+    "start": 126.98,
+    "end": 127.1,
+    "text": "Run deproject",
+    "source_lane_index": 10,
+    "source_event": 46
+   },
+   {
+    "kind": "tool",
+    "start": 136.8,
+    "end": 147.04,
+    "text": "Run deproject + move_ee + frames",
+    "source_lane_index": 11,
+    "source_event": 49
+   },
+   {
+    "kind": "motion",
+    "start": 136.92,
+    "end": 146.24,
+    "text": "Move the gripper to the commanded pose",
+    "source_lane_index": 4,
+    "source_event": 50
+   },
+   {
+    "kind": "model",
+    "start": 137.8,
+    "end": 143.61,
+    "source_lane_indices": [
+     19
+    ],
+    "text": "Checking the ring and post alignment"
+   },
+   {
+    "kind": "model",
+    "start": 147.04,
+    "end": 160.47,
+    "source_lane_indices": [
+     20,
+     21
+    ],
+    "text": "Adjusting the ring and post alignment"
+   },
+   {
+    "kind": "tool",
+    "start": 160.64,
+    "end": 165.08,
+    "text": "Run deproject → move_ee → frames",
+    "source_lane_index": 12,
+    "source_event": 56
+   },
+   {
+    "kind": "motion",
+    "start": 160.76,
+    "end": 164.38,
+    "text": "Move the gripper to the commanded pose",
+    "source_lane_index": 5,
+    "source_event": 57
+   },
+   {
+    "kind": "model",
+    "start": 161.64,
+    "end": 175.03,
+    "source_lane_indices": [
+     22,
+     23,
+     24
+    ],
+    "text": "Checking alignment before lowering"
+   },
+   {
+    "kind": "motion",
+    "start": 175.06,
+    "end": 177.34,
+    "text": "Move the gripper to the commanded pose",
+    "source_lane_index": 6,
+    "source_event": 61
+   },
+   {
+    "kind": "tool",
+    "start": 175.2,
+    "end": 178.17,
+    "text": "Run move_ee → frames",
+    "source_lane_index": 13,
+    "source_event": 62
+   },
+   {
+    "kind": "model",
+    "start": 176.2,
+    "end": 190.1,
+    "source_lane_indices": [
+     25,
+     26,
+     27
+    ],
+    "text": "Planning the descent along the post"
+   },
+   {
+    "kind": "say",
+    "start": 187.8,
+    "end": 200.34,
+    "text": "The post is through the ring. Lower, release and verify the assembly.",
+    "source_event": 66
+   },
+   {
+    "kind": "motion",
+    "start": 190.12,
+    "end": 193.77,
+    "text": "Move the gripper to the commanded pose",
+    "source_lane_index": 7,
+    "source_event": 67
+   },
+   {
+    "kind": "tool",
+    "start": 190.26,
+    "end": 194.64,
+    "text": "Run move_ee → frames",
+    "source_lane_index": 14,
+    "source_event": 68
+   },
+   {
+    "kind": "model",
+    "start": 191.26,
+    "end": 200.34,
+    "source_lane_indices": [
+     28,
+     29
+    ],
+    "text": "Checking placement before release"
+   },
+   {
+    "kind": "motion",
+    "start": 200.37,
+    "end": 202.52,
+    "text": "Open or close the gripper",
+    "source_lane_index": 8,
+    "source_event": 71
+   },
+   {
+    "kind": "tool",
+    "start": 200.51,
+    "end": 203.28,
+    "text": "Run gripper → frames",
+    "source_lane_index": 15,
+    "source_event": 72
+   },
+   {
+    "kind": "model",
+    "start": 201.51,
+    "end": 212.11,
+    "source_lane_indices": [
+     30,
+     31
+    ],
+    "text": "Checking placement and planning the next adjustment"
+   },
+   {
+    "kind": "motion",
+    "start": 212.14,
+    "end": 223.04,
+    "text": "Apply a relative gripper-position adjustment",
+    "source_lane_index": 9,
+    "source_event": 75
+   },
+   {
+    "kind": "tool",
+    "start": 212.28,
+    "end": 223.86,
+    "text": "Run move_delta + frames",
+    "source_lane_index": 16,
+    "source_event": 76
+   },
+   {
+    "kind": "model",
+    "start": 213.28,
+    "end": 218.75,
+    "source_lane_indices": [
+     32
+    ],
+    "text": "Checking the adjustment"
+   },
+   {
+    "kind": "model",
+    "start": 223.76,
+    "end": 239.02,
+    "source_lane_indices": [
+     33,
+     34,
+     35
+    ],
+    "text": "Planning withdrawal and the circular-ring approach"
+   },
+   {
+    "kind": "motion",
+    "start": 239.04,
+    "end": 249.41,
+    "text": "Move the gripper to the commanded pose",
+    "source_lane_index": 10,
+    "source_event": 80
+   },
+   {
+    "kind": "tool",
+    "start": 239.18,
+    "end": 250.16,
+    "text": "Run move_ee + frames",
+    "source_lane_index": 17,
+    "source_event": 81
+   },
+   {
+    "kind": "model",
+    "start": 240.18,
+    "end": 244.1,
+    "source_lane_indices": [
+     36
+    ],
+    "text": "Checking the first assembly"
+   },
+   {
+    "kind": "model",
+    "start": 249.11,
+    "end": 267.72,
+    "source_lane_indices": [
+     37,
+     38,
+     39
+    ],
+    "text": "Verifying the first pair and preparing the circular-ring grasp"
+   },
+   {
+    "kind": "say",
+    "start": 254.01,
+    "end": 264.01,
+    "text": "The hexagonal pair is seated. Next, measure and grasp the circular ring.",
+    "source_event": 84
+   },
+   {
+    "kind": "tool",
+    "start": 267.88,
+    "end": 268.73,
+    "text": "Run deproject×3",
+    "source_lane_index": 18,
+    "source_event": 87
+   },
+   {
+    "kind": "model",
+    "start": 268.74,
+    "end": 274.86,
+    "source_lane_indices": [
+     40
+    ],
+    "text": "Planning the circular-ring approach"
+   },
+   {
+    "kind": "motion",
+    "start": 274.89,
+    "end": 285.68,
+    "text": "Move the gripper to the commanded pose",
+    "source_lane_index": 11,
+    "source_event": 91
+   },
+   {
+    "kind": "tool",
+    "start": 275.02,
+    "end": 286.4,
+    "text": "Run move_ee + frames",
+    "source_lane_index": 19,
+    "source_event": 92
+   },
+   {
+    "kind": "model",
+    "start": 276.03,
+    "end": 279.77,
+    "source_lane_indices": [
+     41
+    ],
+    "text": "Checking approach feedback"
+   },
+   {
+    "kind": "model",
+    "start": 284.78,
+    "end": 294.77,
+    "source_lane_indices": [
+     42,
+     43
+    ],
+    "text": "Positioning the circular-ring grasp"
+   },
+   {
+    "kind": "motion",
+    "start": 294.8,
+    "end": 296.89,
+    "text": "Open or close the gripper",
+    "source_lane_index": 12,
+    "source_event": 95
+   },
+   {
+    "kind": "tool",
+    "start": 294.94,
+    "end": 297.72,
+    "text": "Run gripper → frames",
+    "source_lane_index": 20,
+    "source_event": 96
+   },
+   {
+    "kind": "model",
+    "start": 295.95,
+    "end": 306.59,
+    "source_lane_indices": [
+     44,
+     45
+    ],
+    "text": "Checking the grip and planning the lift"
+   },
+   {
+    "kind": "motion",
+    "start": 306.63,
+    "end": 316.24,
+    "text": "Apply a relative gripper-position adjustment",
+    "source_lane_index": 13,
+    "source_event": 99
+   },
+   {
+    "kind": "tool",
+    "start": 306.77,
+    "end": 316.95,
+    "text": "Run move_delta + frames",
+    "source_lane_index": 21,
+    "source_event": 100
+   },
+   {
+    "kind": "model",
+    "start": 307.77,
+    "end": 314.95,
+    "source_lane_indices": [
+     46
+    ],
+    "text": "Checking the circular-ring grasp"
+   },
+   {
+    "kind": "say",
+    "start": 314.87,
+    "end": 324.87,
+    "text": "The circular ring is gripped. Carry it toward the wider cylinder.",
+    "source_event": 102
+   },
+   {
+    "kind": "model",
+    "start": 316.95,
+    "end": 324.37,
+    "source_lane_indices": [
+     47
+    ],
+    "text": "Planning the transfer toward the wider cylinder"
+   },
+   {
+    "kind": "motion",
+    "start": 324.4,
+    "end": 339.78,
+    "text": "Move the gripper to the commanded pose",
+    "source_lane_index": 14,
+    "source_event": 105
+   },
+   {
+    "kind": "tool",
+    "start": 324.54,
+    "end": 340.53,
+    "text": "Run move_ee + frames",
+    "source_lane_index": 22,
+    "source_event": 106
+   },
+   {
+    "kind": "model",
+    "start": 325.55,
+    "end": 328.57,
+    "source_lane_indices": [
+     48
+    ],
+    "text": "Checking transfer feedback"
+   },
+   {
+    "kind": "model",
+    "start": 333.58,
+    "end": 336.71,
+    "source_lane_indices": [
+     49
+    ],
+    "text": "Checking the carried ring"
+   },
+   {
+    "kind": "model",
+    "start": 340.53,
+    "end": 353.36,
+    "source_lane_indices": [
+     50,
+     51
+    ],
+    "text": "Planning the transfer toward the wider cylinder"
+   },
+   {
+    "kind": "motion",
+    "start": 353.39,
+    "end": 364.98,
+    "text": "Move the gripper to the commanded pose",
+    "source_lane_index": 15,
+    "source_event": 110
+   },
+   {
+    "kind": "tool",
+    "start": 353.53,
+    "end": 365.71,
+    "text": "Run move_ee + frames",
+    "source_lane_index": 23,
+    "source_event": 111
+   },
+   {
+    "kind": "model",
+    "start": 354.53,
+    "end": 357.37,
+    "source_lane_indices": [
+     52
+    ],
+    "text": "Checking the transfer"
+   },
+   {
+    "kind": "model",
+    "start": 362.38,
+    "end": 383.15,
+    "source_lane_indices": [
+     53,
+     54,
+     55
+    ],
+    "text": "Checking the approach to the cylinder"
+   },
+   {
+    "kind": "tool",
+    "start": 383.31,
+    "end": 387.75,
+    "text": "Run deproject → move_ee → frames",
+    "source_lane_index": 24,
+    "source_event": 116
+   },
+   {
+    "kind": "motion",
+    "start": 383.43,
+    "end": 386.84,
+    "text": "Move the gripper to the commanded pose",
+    "source_lane_index": 16,
+    "source_event": 117
+   },
+   {
+    "kind": "model",
+    "start": 384.31,
+    "end": 402.9,
+    "source_lane_indices": [
+     56,
+     57,
+     58
+    ],
+    "text": "Planning ring and cylinder alignment"
+   },
+   {
+    "kind": "say",
+    "start": 400.91,
+    "end": 410.91,
+    "text": "The ring is above the cylinder. Correct alignment before lowering.",
+    "source_event": 121
+   },
+   {
+    "kind": "motion",
+    "start": 402.93,
+    "end": 405.51,
+    "text": "Move the gripper to the commanded pose",
+    "source_lane_index": 17,
+    "source_event": 122
+   },
+   {
+    "kind": "tool",
+    "start": 403.07,
+    "end": 406.24,
+    "text": "Run move_ee → frames",
+    "source_lane_index": 25,
+    "source_event": 123
+   },
+   {
+    "kind": "model",
+    "start": 404.07,
+    "end": 418.5,
+    "source_lane_indices": [
+     59,
+     60,
+     61
+    ],
+    "text": "Checking alignment and insertion height"
+   },
+   {
+    "kind": "motion",
+    "start": 418.52,
+    "end": 421.98,
+    "text": "Move the gripper to the commanded pose",
+    "source_lane_index": 18,
+    "source_event": 127
+   },
+   {
+    "kind": "tool",
+    "start": 418.66,
+    "end": 422.64,
+    "text": "Run move_ee → frames",
+    "source_lane_index": 26,
+    "source_event": 128
+   },
+   {
+    "kind": "model",
+    "start": 419.66,
+    "end": 429.42,
+    "source_lane_indices": [
+     62,
+     63
+    ],
+    "text": "Planning the next lowering motion"
+   },
+   {
+    "kind": "motion",
+    "start": 429.45,
+    "end": 431.37,
+    "text": "Open or close the gripper",
+    "source_lane_index": 19,
+    "source_event": 131
+   },
+   {
+    "kind": "tool",
+    "start": 429.59,
+    "end": 432.17,
+    "text": "Run gripper → frames",
+    "source_lane_index": 27,
+    "source_event": 132
+   },
+   {
+    "kind": "model",
+    "start": 430.6,
+    "end": 440.88,
+    "source_lane_indices": [
+     64,
+     65
+    ],
+    "text": "Checking placement before withdrawing"
+   },
+   {
+    "kind": "motion",
+    "start": 440.92,
+    "end": 451.84,
+    "text": "Apply a relative gripper-position adjustment",
+    "source_lane_index": 20,
+    "source_event": 135
+   },
+   {
+    "kind": "tool",
+    "start": 441.06,
+    "end": 452.64,
+    "text": "Run move_delta + frames",
+    "source_lane_index": 28,
+    "source_event": 136
+   },
+   {
+    "kind": "model",
+    "start": 442.06,
+    "end": 450.73,
+    "source_lane_indices": [
+     66
+    ],
+    "text": "Checking the released circular assembly"
+   },
+   {
+    "kind": "say",
+    "start": 450.6,
+    "end": 460.6,
+    "text": "The circular pair is seated. Withdraw and verify both assemblies.",
+    "source_event": 138
+   },
+   {
+    "kind": "model",
+    "start": 452.64,
+    "end": 459.99,
+    "source_lane_indices": [
+     67
+    ],
+    "text": "Verifying the released pair"
+   },
+   {
+    "kind": "motion",
+    "start": 460.05,
+    "end": 462.91,
+    "text": "Return the arm home",
+    "source_lane_index": 21,
+    "source_event": 141
+   },
+   {
+    "kind": "tool",
+    "start": 460.19,
+    "end": 464.69,
+    "text": "Run home → frames → state → status",
+    "source_lane_index": 29,
+    "source_event": 142
+   },
+   {
+    "kind": "model",
+    "start": 461.23,
+    "end": 503.54,
+    "source_lane_indices": [
+     68,
+     69,
+     70,
+     71
+    ],
+    "text": "Verifying both assemblies and preparing the report"
+   },
+   {
+    "kind": "tool",
+    "start": 498.05,
+    "end": 498.05,
+    "text": "write report (RESULT.md)",
+    "source_lane_index": 30,
+    "source_event": 148
+   },
+   {
+    "kind": "say",
+    "start": 503.49,
+    "end": 513.0,
+    "text": "Both pairs are reported stable, with the gripper open and the arm withdrawn.",
+    "source_event": 149
+   }
+  ],
+  "stages": [
+   {
+    "start": 0.0,
+    "end": 22.74,
+    "text": "Study the interface and demonstration",
+    "source_chapter": 1
+   },
+   {
+    "start": 22.74,
+    "end": 97.79,
+    "text": "Inspect the scene and measure the parts",
+    "source_chapter": 2
+   },
+   {
+    "start": 97.79,
+    "end": 202.52,
+    "text": "Grasp and assemble the hexagonal pair",
+    "source_chapter": 3
+   },
+   {
+    "start": 202.52,
+    "end": 294.8,
+    "text": "Check the first pair and approach the circular ring",
+    "source_chapter": 4
+   },
+   {
+    "start": 294.8,
+    "end": 431.37,
+    "text": "Grasp and assemble the circular pair",
+    "source_chapter": 5
+   },
+   {
+    "start": 431.37,
+    "end": 513.0,
+    "text": "Withdraw, verify and report",
+    "source_chapter": 6
+   }
+  ]
+ }
 }

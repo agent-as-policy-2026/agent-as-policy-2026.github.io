@@ -1,4 +1,4 @@
-/* viewer.js - the boot stub for section 12, "Watch one run, second by second".
+/* viewer.js - the boot stub for section 12, "Task execution traces".
  *
  * The viewer itself is js/viewer-main.js, about 48 KB of module. It sits three
  * quarters of the way down a 470 KB page, so it is fetched the first time the

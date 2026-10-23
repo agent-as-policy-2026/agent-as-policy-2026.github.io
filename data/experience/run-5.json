@@ -1,0 +1,67 @@
+{
+  "cycle": 5,
+  "available_experience_version": 4,
+  "lesson": {
+    "geometry": "Demo: hex blue collar over narrow hex-foot white peg, round blue collar over wide stepped white cylinder; shafts protrude. Left base metres, table z=-.045. Inherited checkpoint1 triangulated heights hex.014,round.027,narrow.076,wide.080 (+/-.003), textureless white depth unreliable. Approx hole/peg diameters hex.029/.026,round.045/.040, not precision metrology. Use top-ray planes -.031,-.018,.031,.035 respectively for fresh centers. Cycle4 XY hex(.1475,-.1239),round(.3107,.1631),narrow(.131,.0854),wide(.2971,-.0331), historical only. Grasp z hex-.031,round-.022; down wxyz=(0,1,0,0). Held widths cycles1/2/3/4 hex53.4/47.1/47.9/47.8mm (yaw dependent), round52.2/52.0/52.1/51.9mm. Cycle5 NEW initial XY hex(.1485,-.1114),round(.3212,.1616),narrow(.1185,.0800),wide(.2819,-.0323), historical only. Held widths cycle5 hex46.8mm,round51.8mm. No height changes.",
+    "recipe": "Actually reused checkpoint4 operate.py unchanged and height recipe: python3 scratch/operate.py COMMAND JSON_ARGS, stdlib+provided robot_client.py. Await completion and inspect each returned action capture before next command. Clear initial planned approach(.23,-.06,.16) from home; then down wxyz=(0,1,0,0) linear. Hex fresh XY approach.025,grasp-.031,close,lift.09,transfer receiver.09,descend.052,.030,-.018,open,withdraw.12. Round fresh XY approach.12,.025,grasp-.022,close,lift.10,transfer receiver.10,descend.065,.032,-.008,open,withdraw.12,home. Both held lifts, shaft entries and stable released fits physically confirmed in all five cycles; cycle5 final open fraction.9991. No explicit joint targets; actual joints in capture metadata. Exact historical commands in cycle_05_recipe.json, never blindly replay XY. Measurement script needs operate.py and geometry_from_checkpoint1 in experience/cycle_03/artifacts/scratch/cycle_03_measurements.json (also embedded in cycle_05_measurements.json); view/report need Pillow. Stage seconds cycles1-5:512.465,467.965,410.864,395.131,362.099.",
+    "corrections": "Cycle1 initial two linear approaches rejected IK; clear planned approach worked. Wide receiver shifted about1cm during hex pickup, remeasured: check full open finger envelope. Narrow preshape untested. Cycle2 hex final target-.020 SETTLE_MISS3.9mm at achieved z=-.018; visually engaged, released there successfully, never repeat push. Cycle3 changed hex target to-.018, achieved-.01765 and stable; assembly shifted roughly1-2cm during release but stayed engaged, cause uncertain. Cycle4 retained-.018, achieved-.01689, no obvious lateral hex shift. Round final target-.008 achieved-.00964 and visibly settled on release, stable afterward. Round grasp target-.022 achieved-.02568, held lift verified, no observed table contact. No failed commands/regrasp/insertion retries cycles3/4. Earlier cycle2/cycle4 view helper race: shell can return session ID before image update; wait for process completion then inspect actual new image. No cycle4 action used stale image. Cycle5 no command failure/regrasp/insertion retry. Hex final-.018 achieved-.01810; slight approximately1cm lateral shift on release stayed upright/engaged, cause uncertain. Round grasp-.022 achieved-.02613, total target error6.1mm with ok=true; inspected grip/lift, no observed table contact. Round final-.008 achieved-.00906; settled on release, stable after withdrawal/home. No stale image used; all processes awaited. Heights and physical recipe unchanged.",
+    "next_cycle": "Assigned sequence ends at5: no next-cycle motion. Used checkpoint4 cumulative procedure (derived from3) unchanged except fresh XY. Upright poses, clear finger envelope, retained holds, shaft entries and stable release validated reuse; slight hex release displacement recorded. Any future independent use must remeasure source/receiver poses, recheck heights/orientation, clearances/held offsets and remeasure moved parts. Keep same limits and <=.25m moves. Five success markers and checkpoint5 complete sequence; final evidence checked again after checkpoint. Decreasing stage-time trend belongs to one ordered sequence with varying poses and analysis overhead, not a controlled comparison with five cycles without memory."
+  },
+  "artifacts": [
+    {
+      "source": "scratch/operate.py",
+      "sha256": "f3867c5a4e934f90443b880bcd24cf674573997a4e318bdd7074976ae7d44499",
+      "snapshot": "experience/cycle_05/artifacts/scratch/operate.py"
+    },
+    {
+      "source": "scratch/cycle_05_measure.py",
+      "sha256": "c0414729f388ec595a899f9ec8923dd0e23d3068316e5ca10650b8abd6ef45da",
+      "snapshot": "experience/cycle_05/artifacts/scratch/cycle_05_measure.py"
+    },
+    {
+      "source": "scratch/cycle_05_view.py",
+      "sha256": "875257de59d44efc4b799274fee01e6368eae08125438282062d8b914ad8cacc",
+      "snapshot": "experience/cycle_05/artifacts/scratch/cycle_05_view.py"
+    },
+    {
+      "source": "scratch/cycle_05_measurements.json",
+      "sha256": "f71d2b2e6ce762fafaa7d47c4babe526d188356c6f5549ee96f196f977e52a91",
+      "snapshot": "experience/cycle_05/artifacts/scratch/cycle_05_measurements.json"
+    },
+    {
+      "source": "scratch/cycle_05_recipe.json",
+      "sha256": "5d1c7ed6a0f83fc41ba87bfe27c03530fe3590b2f21e15082db42626dbf3050f",
+      "snapshot": "experience/cycle_05/artifacts/scratch/cycle_05_recipe.json"
+    },
+    {
+      "source": "scratch/cycle_05_commands.jsonl",
+      "sha256": "cac94621341906017f3233d5c81b05786edb3bed64e02c1511219ccf4d90e69d",
+      "snapshot": "experience/cycle_05/artifacts/scratch/cycle_05_commands.jsonl"
+    },
+    {
+      "source": "scratch/cycle_05_report.py",
+      "sha256": "1ab773717e8b038ce8f2d32813baded9ffde133259ef4934012742f923b4e14f",
+      "snapshot": "experience/cycle_05/artifacts/scratch/cycle_05_report.py"
+    },
+    {
+      "source": "scratch/cycle_05_checkpoint.py",
+      "sha256": "07e0674bd93c984b9d9aad1b4dc96f51309c62e79ab2ed07a30c7c4d4181b787",
+      "snapshot": "experience/cycle_05/artifacts/scratch/cycle_05_checkpoint.py"
+    },
+    {
+      "source": "scratch/attempts.md",
+      "sha256": "b610c811869baf5cb1532f82d87a07775f59eadc17a8e632cdc023c339e972b9",
+      "snapshot": "experience/cycle_05/artifacts/scratch/attempts.md"
+    },
+    {
+      "source": "scratch/cycle_05_RESULT.md",
+      "sha256": "080eea411e4825a33bfb2b4a0eab6b4f504e8a819b5789a27a26b1504740a853",
+      "snapshot": "experience/cycle_05/artifacts/scratch/cycle_05_RESULT.md"
+    },
+    {
+      "source": "scratch/cycle_05_final_pairs.png",
+      "sha256": "c7785296285cea54536b366ef0c6ff66941961ecbe52c940809830026d5eb9d4",
+      "snapshot": "experience/cycle_05/artifacts/scratch/cycle_05_final_pairs.png"
+    }
+  ]
+}

@@ -1,0 +1,99 @@
+{
+  "source": "https://huggingface.co/datasets/Agent-as-Policy/agent-as-policy",
+  "files": [
+    "trials/trials_evaluated-b02-0001.parquet",
+    "trials/trials_evaluated-b02-0002.parquet"
+  ],
+  "definition": "The main table uses all 10 trials, including the failed trial, following paper v3 Table 1. Individual records below come from the public dataset. Individual costs are unavailable.",
+  "trials": [
+    {
+      "slot_id": "throw-potato-t01",
+      "session_stamp": "20260914_133204",
+      "outcome": "success",
+      "time_min": "15.05",
+      "tokens_k": "3387.415"
+    },
+    {
+      "slot_id": "throw-potato-t02",
+      "session_stamp": "20260914_141619",
+      "outcome": "success",
+      "time_min": "15.05",
+      "tokens_k": "2779.258"
+    },
+    {
+      "slot_id": "throw-potato-t03",
+      "session_stamp": "20260914_145159",
+      "outcome": "success",
+      "time_min": "18.316666666666666",
+      "tokens_k": "5753.09"
+    },
+    {
+      "slot_id": "throw-potato-t04",
+      "session_stamp": "20260914_151654",
+      "outcome": "success",
+      "time_min": "10.8",
+      "tokens_k": "2578.976"
+    },
+    {
+      "slot_id": "throw-potato-t05",
+      "session_stamp": "20260914_160444",
+      "outcome": "failure",
+      "time_min": "15.8",
+      "tokens_k": "5337.499"
+    },
+    {
+      "slot_id": "throw-potato-t06",
+      "session_stamp": "20260914_162102",
+      "outcome": "success",
+      "time_min": "28.566666666666666",
+      "tokens_k": "14153.806"
+    },
+    {
+      "slot_id": "throw-potato-t07",
+      "session_stamp": "20260914_165149",
+      "outcome": "success",
+      "time_min": "17.066666666666666",
+      "tokens_k": "5393.427"
+    },
+    {
+      "slot_id": "throw-potato-t08",
+      "session_stamp": "20260914_171423",
+      "outcome": "success",
+      "time_min": "12.066666666666666",
+      "tokens_k": "2919.679"
+    },
+    {
+      "slot_id": "throw-potato-t09",
+      "session_stamp": "20260914_172946",
+      "outcome": "success",
+      "time_min": "22.316666666666666",
+      "tokens_k": "8975.392"
+    },
+    {
+      "slot_id": "throw-potato-t10",
+      "session_stamp": "20260914_194201",
+      "outcome": "success",
+      "time_min": "22.066666666666666",
+      "tokens_k": "5801.231"
+    }
+  ],
+  "paper_aggregate": {
+    "source": "https://arxiv.org/abs/2609.12541v3",
+    "trials": 10,
+    "time_min": {
+      "mean": 17.71,
+      "min": 10.8,
+      "max": 28.6
+    },
+    "tokens_m": {
+      "mean": 5.71,
+      "min": 2.58,
+      "max": 14.15
+    },
+    "cost_usd": {
+      "mean": 8.16,
+      "min": 4.1,
+      "max": 18.97
+    }
+  }
+}

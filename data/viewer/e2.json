@@ -1808,7 +1808,7 @@
    "type": "run",
    "t1": 23.61,
    "label": "Extract demo frames and build contact sheets",
-   "cmd": "ffmpeg -v error -i goal/demo_top.mp4 -vf \"fps=2,crop=700:450:700:300\" scratch/demo/f_%03d.png && ls scratch/demo | wc -l && python3 -c \"\nfrom PIL import Image\nims=[Image.open('scratch/demo/f_%03d.png'%i) for i in range(1,29)]\nW,H=350,225\nfor k in range(0,28,12):\n    sheet=Image.new('RGB',(W*4,H*3))\n    for j,im in enumerate(ims[k:k+12]):\n        sheet.paste(im.resize((W,H)),((j%4)*W,(j//4)*H))\n    sheet.save('scratch \u2026 [+24 chars]",
+   "cmd": "ffmpeg -v error -i goal/demo_top.mp4 -vf \"fps=2,crop=700:450:700:300\" scratch/demo/f_%03d.png && ls scratch/demo | wc -l && python3 -c \"\nfrom PIL import Image\nims=[Image.open('scratch/demo/f_%03d.png'%i) for i in range(1,29)]\nW,H=350,225\nfor k in range(0,28,12):\n    sheet=Image.new('RGB',(W*4,H*3))\n    for j,im in enumerate(ims[k:k+12]):\n        sheet.paste(im.resize((W,H)),((j%4)*W,(j//4)*H))\n    sheet.save('scratch … [+24 chars]",
    "kind": "shell",
    "w": 1
   },
@@ -2642,7 +2642,7 @@
    "type": "run",
    "t1": 396.05,
    "label": "Locate held nut's far vertex",
-   "cmd": "PY=python3; $PY -c \"\nimport cv2,numpy as np\nfrom PIL import Image\nim=np.array(Image.open('frames/0007_wrist.png').convert('RGB')); h=cv2.cvtColor(im,cv2.COLOR_RGB2HSV)\nm=((h[...,0]>=85)&(h[...,0]<=105)&(h[...,1]>=120)).astype(np.uint8)\nnl,lab,st,_=cv2.connectedComponentsWithStats(m); k=1+np.argmax(st[1:,4]); mm=lab==k\nys,xs=np.nonzero(mm); i=np.argmin(ys); print('top vertex',xs[i],ys[i])\nfor v in [230,250,270,290,310 \u2026 [+196 chars]",
+   "cmd": "PY=python3; $PY -c \"\nimport cv2,numpy as np\nfrom PIL import Image\nim=np.array(Image.open('frames/0007_wrist.png').convert('RGB')); h=cv2.cvtColor(im,cv2.COLOR_RGB2HSV)\nm=((h[...,0]>=85)&(h[...,0]<=105)&(h[...,1]>=120)).astype(np.uint8)\nnl,lab,st,_=cv2.connectedComponentsWithStats(m); k=1+np.argmax(st[1:,4]); mm=lab==k\nys,xs=np.nonzero(mm); i=np.argmin(ys); print('top vertex',xs[i],ys[i])\nfor v in [230,250,270,290,310 … [+196 chars]",
    "kind": "shell",
    "w": 1
   },
@@ -2662,7 +2662,7 @@
    "type": "run",
    "t1": 423.46,
    "label": "Fit held nut hole edge circle",
-   "cmd": "PY=python3; $PY -c \"\nimport sys; sys.path.insert(0,'knowledge/tools')\nfrom geo import *\nimport cv2\nfrom PIL import Image\nim=np.array(Image.open('frames/0007_wrist.png').convert('RGB')); h=cv2.cvtColor(im,cv2.COLOR_RGB2HSV)\n# top face = bright cyan\ntop=((h[...,0]>=85)&(h[...,0]<=105)&(h[...,1]>=120)&(h[...,2]>=200))\npts=[]\nfor u in range(250,420):\n    col=top[:,u]; \n    # scanning down from v=260, find first transitio \u2026 [+635 chars]",
+   "cmd": "PY=python3; $PY -c \"\nimport sys; sys.path.insert(0,'knowledge/tools')\nfrom geo import *\nimport cv2\nfrom PIL import Image\nim=np.array(Image.open('frames/0007_wrist.png').convert('RGB')); h=cv2.cvtColor(im,cv2.COLOR_RGB2HSV)\n# top face = bright cyan\ntop=((h[...,0]>=85)&(h[...,0]<=105)&(h[...,1]>=120)&(h[...,2]>=200))\npts=[]\nfor u in range(250,420):\n    col=top[:,u]; \n    # scanning down from v=260, find first transitio … [+635 chars]",
    "kind": "shell",
    "exit": 1,
    "w": 1
@@ -2691,7 +2691,7 @@
    "type": "run",
    "t1": 465.34,
    "label": "Fit visible hole rim arc of held nut",
-   "cmd": "PY=python3; $PY -c \"\nimport sys; sys.path.insert(0,'knowledge/tools')\nfrom geo import *\nimport cv2\nfrom PIL import Image\nim=np.array(Image.open('frames/0007_wrist.png').convert('RGB')); h=cv2.cvtColor(im,cv2.COLOR_RGB2HSV)\ntab=(h[...,1]<150)\npts=[]\nfor u in range(270,400,3):\n    col=tab[265:,u]\n    idx=np.nonzero(col)[0]\n    if len(idx): pts.append((u,265+idx[0]))\nprint(pts)\nP=np.array([pix2plane(7,'wrist',u,v,0.100) \u2026 [+264 chars]",
+   "cmd": "PY=python3; $PY -c \"\nimport sys; sys.path.insert(0,'knowledge/tools')\nfrom geo import *\nimport cv2\nfrom PIL import Image\nim=np.array(Image.open('frames/0007_wrist.png').convert('RGB')); h=cv2.cvtColor(im,cv2.COLOR_RGB2HSV)\ntab=(h[...,1]<150)\npts=[]\nfor u in range(270,400,3):\n    col=tab[265:,u]\n    idx=np.nonzero(col)[0]\n    if len(idx): pts.append((u,265+idx[0]))\nprint(pts)\nP=np.array([pix2plane(7,'wrist',u,v,0.100) … [+264 chars]",
    "kind": "shell",
    "w": 1
   },
@@ -3617,7 +3617,7 @@
    "type": "run",
    "t1": 734.31,
    "label": "Measure held ring offset from image",
-   "cmd": "PY=python3; for p in \"320 300\" \"320 312\" \"260 330\" \"380 330\" \"320 230\" \"320 215\"; do echo -n \"$p: \"; $PY knowledge/tools/geo.py 18 wrist $p; done; $PY -c \"\nimport sys; sys.path.insert(0,'knowledge/tools')\nfrom geo import *\nimport cv2\nfrom PIL import Image\nim=np.array(Image.open('frames/0018_wrist.png').convert('RGB')); h=cv2.cvtColor(im,cv2.COLOR_RGB2HSV)\nnt=(h[...,1]<120)  # non-teal (white rail through hole)\npts=[] \u2026 [+569 chars]",
+   "cmd": "PY=python3; for p in \"320 300\" \"320 312\" \"260 330\" \"380 330\" \"320 230\" \"320 215\"; do echo -n \"$p: \"; $PY knowledge/tools/geo.py 18 wrist $p; done; $PY -c \"\nimport sys; sys.path.insert(0,'knowledge/tools')\nfrom geo import *\nimport cv2\nfrom PIL import Image\nim=np.array(Image.open('frames/0018_wrist.png').convert('RGB')); h=cv2.cvtColor(im,cv2.COLOR_RGB2HSV)\nnt=(h[...,1]<120)  # non-teal (white rail through hole)\npts=[] … [+569 chars]",
    "kind": "shell",
    "w": 1
   },
@@ -4134,7 +4134,7 @@
    "type": "run",
    "t1": 890.5,
    "label": "Write kept tool with header and verify it runs",
-   "cmd": "mkdir -p scratch/knowledge_delta_tools && { cat <<'EOF'\n# tool: blobplane.py\n# category: geometry\n# purpose: take the colour blob containing a seed pixel in a wrist or top capture, project its outline onto a horizontal plane z, and report centroid, area, min-area rectangle and circle fits of the outer contour and the largest hole\n# usage: python3 knowledge/tools/blobplane.py N wrist|top u v z \"hmin,hmax,smin,smax,vmi \u2026 [+1345 chars]",
+   "cmd": "mkdir -p scratch/knowledge_delta_tools && { cat <<'EOF'\n# tool: blobplane.py\n# category: geometry\n# purpose: take the colour blob containing a seed pixel in a wrist or top capture, project its outline onto a horizontal plane z, and report centroid, area, min-area rectangle and circle fits of the outer contour and the largest hole\n# usage: python3 knowledge/tools/blobplane.py N wrist|top u v z \"hmin,hmax,smin,smax,vmi … [+1345 chars]",
    "kind": "shell",
    "w": 1
   },
@@ -4995,5 +4995,1115 @@
   "frames/0014_top.png",
   "frames/0023_top.png",
   "frames/0024_wrist.png"
- ]
+ ],
+ "presentation_captions": {
+  "description": "Complete model, tool and motion tracks. Model-generation intervals separated by at most 0.8 run seconds are grouped into readable summaries. Messages describe recorded updates. Display priority is resolved before filtering fragments shorter than 3 screen seconds. Original event times remain unchanged.",
+  "minimum_screen_seconds": 3,
+  "cues": [
+   {
+    "kind": "model",
+    "start": 0.0,
+    "end": 31.74,
+    "source_lane_indices": [
+     0,
+     1,
+     2,
+     3,
+     4,
+     5,
+     6,
+     7,
+     8,
+     9
+    ],
+    "text": "Reading the interface and studying the demonstration"
+   },
+   {
+    "kind": "tool",
+    "start": 0.0,
+    "end": 0.0,
+    "text": "List session directory contents",
+    "source_lane_index": 0,
+    "source_event": 0
+   },
+   {
+    "kind": "tool",
+    "start": 5.72,
+    "end": 6.0,
+    "text": "Read tool headers and robot status",
+    "source_lane_index": 1,
+    "source_event": 3
+   },
+   {
+    "kind": "tool",
+    "start": 17.82,
+    "end": 17.9,
+    "text": "Extract cropped demo frames at 1fps",
+    "source_lane_index": 2,
+    "source_event": 6
+   },
+   {
+    "kind": "tool",
+    "start": 22.9,
+    "end": 23.61,
+    "text": "Extract demo frames and build contact sheets",
+    "source_lane_index": 3,
+    "source_event": 7
+   },
+   {
+    "kind": "tool",
+    "start": 31.74,
+    "end": 33.07,
+    "text": "Get robot state and capture frames",
+    "source_lane_index": 4,
+    "source_event": 9
+   },
+   {
+    "kind": "model",
+    "start": 33.07,
+    "end": 121.1,
+    "source_lane_indices": [
+     10,
+     11,
+     12,
+     13,
+     14,
+     15
+    ],
+    "text": "Inspecting the scene and estimating part positions"
+   },
+   {
+    "kind": "tool",
+    "start": 84.51,
+    "end": 84.81,
+    "text": "Crop zoomed views of parts",
+    "source_lane_index": 5,
+    "source_event": 13
+   },
+   {
+    "kind": "tool",
+    "start": 121.1,
+    "end": 122.97,
+    "text": "Deproject top-image part locations",
+    "source_lane_index": 6,
+    "source_event": 16
+   },
+   {
+    "kind": "model",
+    "start": 122.97,
+    "end": 155.74,
+    "source_lane_indices": [
+     16,
+     17,
+     18
+    ],
+    "text": "Planning a closer wrist-camera view"
+   },
+   {
+    "kind": "tool",
+    "start": 148.23,
+    "end": 148.3,
+    "text": "Read rest of geo/facefit and compute view pose",
+    "source_lane_index": 7,
+    "source_event": 24
+   },
+   {
+    "kind": "tool",
+    "start": 151.48,
+    "end": 151.57,
+    "text": "Compute wrist viewing pose over parts",
+    "source_lane_index": 8,
+    "source_event": 25
+   },
+   {
+    "kind": "tool",
+    "start": 155.74,
+    "end": 169.08,
+    "text": "Move to overview pose and capture",
+    "source_lane_index": 9,
+    "source_event": 26
+   },
+   {
+    "kind": "motion",
+    "start": 155.75,
+    "end": 168.34,
+    "text": "Move the gripper to the commanded pose",
+    "source_lane_index": 0,
+    "source_event": 27
+   },
+   {
+    "kind": "model",
+    "start": 169.08,
+    "end": 200.45,
+    "source_lane_indices": [
+     19,
+     20,
+     21
+    ],
+    "text": "Interpreting camera observations and planning assembly"
+   },
+   {
+    "kind": "tool",
+    "start": 178.52,
+    "end": 179.22,
+    "text": "Deproject wrist pixels using depth",
+    "source_lane_index": 10,
+    "source_event": 30
+   },
+   {
+    "kind": "tool",
+    "start": 200.45,
+    "end": 209.45,
+    "text": "Move closer over nut and bolt, capture wrist",
+    "source_lane_index": 11,
+    "source_event": 32
+   },
+   {
+    "kind": "motion",
+    "start": 200.52,
+    "end": 208.97,
+    "text": "Move the gripper to the commanded pose",
+    "source_lane_index": 1,
+    "source_event": 33
+   },
+   {
+    "kind": "model",
+    "start": 209.45,
+    "end": 263.06,
+    "source_lane_indices": [
+     22,
+     23,
+     24,
+     25,
+     26,
+     27,
+     28
+    ],
+    "text": "Analysing images and depth to locate the parts"
+   },
+   {
+    "kind": "tool",
+    "start": 217.98,
+    "end": 218.31,
+    "text": "Check HSV and fit nut top face",
+    "source_lane_index": 12,
+    "source_event": 36
+   },
+   {
+    "kind": "tool",
+    "start": 243.04,
+    "end": 243.38,
+    "text": "Fit nut outline on its top plane",
+    "source_lane_index": 13,
+    "source_event": 39
+   },
+   {
+    "kind": "tool",
+    "start": 263.06,
+    "end": 268.87,
+    "text": "View bolt top close-up",
+    "source_lane_index": 14,
+    "source_event": 41
+   },
+   {
+    "kind": "motion",
+    "start": 263.15,
+    "end": 268.41,
+    "text": "Move the gripper to the commanded pose",
+    "source_lane_index": 2,
+    "source_event": 42
+   },
+   {
+    "kind": "model",
+    "start": 268.87,
+    "end": 322.12,
+    "source_lane_indices": [
+     29,
+     30,
+     31,
+     32,
+     33,
+     34
+    ],
+    "text": "Estimating bolt geometry and planning the nut approach"
+   },
+   {
+    "kind": "tool",
+    "start": 276.25,
+    "end": 276.69,
+    "text": "Get bolt top height and HSV samples",
+    "source_lane_index": 15,
+    "source_event": 45
+   },
+   {
+    "kind": "tool",
+    "start": 279.67,
+    "end": 279.88,
+    "text": "Fit bolt shaft top rim",
+    "source_lane_index": 16,
+    "source_event": 46
+   },
+   {
+    "kind": "tool",
+    "start": 306.85,
+    "end": 307.26,
+    "text": "Measure bolt head height from depth",
+    "source_lane_index": 17,
+    "source_event": 48
+   },
+   {
+    "kind": "tool",
+    "start": 322.12,
+    "end": 332.66,
+    "text": "Move above nut and capture",
+    "source_lane_index": 18,
+    "source_event": 49
+   },
+   {
+    "kind": "motion",
+    "start": 322.14,
+    "end": 332.11,
+    "text": "Move the gripper to the commanded pose",
+    "source_lane_index": 3,
+    "source_event": 50
+   },
+   {
+    "kind": "model",
+    "start": 332.66,
+    "end": 345.43,
+    "source_lane_indices": [
+     35,
+     36,
+     37
+    ],
+    "text": "Planning the nut grasp"
+   },
+   {
+    "kind": "tool",
+    "start": 341.01,
+    "end": 341.25,
+    "text": "Check nut alignment with grasp point",
+    "source_lane_index": 19,
+    "source_event": 53
+   },
+   {
+    "kind": "tool",
+    "start": 345.43,
+    "end": 351.37,
+    "text": "Descend to nut grasp height",
+    "source_lane_index": 20,
+    "source_event": 54
+   },
+   {
+    "kind": "motion",
+    "start": 345.45,
+    "end": 350.77,
+    "text": "Move the gripper to the commanded pose",
+    "source_lane_index": 4,
+    "source_event": 55
+   },
+   {
+    "kind": "model",
+    "start": 351.37,
+    "end": 356.25,
+    "source_lane_indices": [
+     38,
+     39
+    ],
+    "text": "Checking the grasp position"
+   },
+   {
+    "kind": "tool",
+    "start": 356.25,
+    "end": 358.92,
+    "text": "Close gripper on nut",
+    "source_lane_index": 21,
+    "source_event": 58
+   },
+   {
+    "kind": "motion",
+    "start": 356.27,
+    "end": 358.68,
+    "text": "Open or close the gripper",
+    "source_lane_index": 5,
+    "source_event": 59
+   },
+   {
+    "kind": "model",
+    "start": 358.92,
+    "end": 362.63,
+    "source_lane_indices": [
+     40
+    ],
+    "text": "Checking feedback before lifting"
+   },
+   {
+    "kind": "tool",
+    "start": 362.63,
+    "end": 372.37,
+    "text": "Lift nut and capture",
+    "source_lane_index": 22,
+    "source_event": 60
+   },
+   {
+    "kind": "motion",
+    "start": 362.65,
+    "end": 371.81,
+    "text": "Move the gripper to the commanded pose",
+    "source_lane_index": 6,
+    "source_event": 61
+   },
+   {
+    "kind": "model",
+    "start": 372.37,
+    "end": 487.23,
+    "source_lane_indices": [
+     41,
+     42,
+     43,
+     44,
+     45,
+     46,
+     47,
+     48,
+     49
+    ],
+    "text": "Inspecting the held nut and planning its alignment"
+   },
+   {
+    "kind": "tool",
+    "start": 377.54,
+    "end": 377.68,
+    "text": "Measure nut offset in hand",
+    "source_lane_index": 23,
+    "source_event": 64
+   },
+   {
+    "kind": "tool",
+    "start": 395.72,
+    "end": 396.05,
+    "text": "Locate held nut's far vertex",
+    "source_lane_index": 24,
+    "source_event": 65
+   },
+   {
+    "kind": "tool",
+    "start": 404.47,
+    "end": 405.09,
+    "text": "Sample depth points on held nut",
+    "source_lane_index": 25,
+    "source_event": 66
+   },
+   {
+    "kind": "tool",
+    "start": 423.35,
+    "end": 423.46,
+    "text": "Fit held nut hole edge circle",
+    "source_lane_index": 26,
+    "source_event": 67
+   },
+   {
+    "kind": "tool",
+    "start": 429.14,
+    "end": 429.28,
+    "text": "Zoom nut crop and sample HSV",
+    "source_lane_index": 27,
+    "source_event": 68
+   },
+   {
+    "kind": "tool",
+    "start": 465.2,
+    "end": 465.34,
+    "text": "Fit visible hole rim arc of held nut",
+    "source_lane_index": 28,
+    "source_event": 70
+   },
+   {
+    "kind": "tool",
+    "start": 487.23,
+    "end": 496.97,
+    "text": "Move nut above bolt shaft and capture",
+    "source_lane_index": 29,
+    "source_event": 71
+   },
+   {
+    "kind": "motion",
+    "start": 487.25,
+    "end": 496.14,
+    "text": "Move the gripper to the commanded pose",
+    "source_lane_index": 7,
+    "source_event": 72
+   },
+   {
+    "kind": "model",
+    "start": 496.97,
+    "end": 522.81,
+    "source_lane_indices": [
+     50,
+     51,
+     52,
+     53,
+     54
+    ],
+    "text": "Planning nut placement and checking alignment"
+   },
+   {
+    "kind": "tool",
+    "start": 500.79,
+    "end": 500.93,
+    "text": "Crop top view around bolt",
+    "source_lane_index": 30,
+    "source_event": 75
+   },
+   {
+    "kind": "tool",
+    "start": 510.91,
+    "end": 511.1,
+    "text": "Project shaft and hole centers into wrist image",
+    "source_lane_index": 31,
+    "source_event": 76
+   },
+   {
+    "kind": "tool",
+    "start": 522.81,
+    "end": 525.75,
+    "text": "Lower nut onto shaft top",
+    "source_lane_index": 32,
+    "source_event": 78
+   },
+   {
+    "kind": "motion",
+    "start": 522.83,
+    "end": 525.34,
+    "text": "Move the gripper to the commanded pose",
+    "source_lane_index": 8,
+    "source_event": 79
+   },
+   {
+    "kind": "model",
+    "start": 525.75,
+    "end": 532.04,
+    "source_lane_indices": [
+     55,
+     56
+    ],
+    "text": "Checking insertion progress"
+   },
+   {
+    "kind": "tool",
+    "start": 532.04,
+    "end": 534.98,
+    "text": "Lower nut further along shaft",
+    "source_lane_index": 33,
+    "source_event": 82
+   },
+   {
+    "kind": "motion",
+    "start": 532.06,
+    "end": 534.14,
+    "text": "Move the gripper to the commanded pose",
+    "source_lane_index": 9,
+    "source_event": 83
+   },
+   {
+    "kind": "model",
+    "start": 534.98,
+    "end": 544.59,
+    "source_lane_indices": [
+     57,
+     58
+    ],
+    "text": "Checking nut and bolt engagement"
+   },
+   {
+    "kind": "tool",
+    "start": 544.59,
+    "end": 546.53,
+    "text": "Lower nut closer to bolt head",
+    "source_lane_index": 34,
+    "source_event": 86
+   },
+   {
+    "kind": "motion",
+    "start": 544.61,
+    "end": 545.97,
+    "text": "Move the gripper to the commanded pose",
+    "source_lane_index": 10,
+    "source_event": 87
+   },
+   {
+    "kind": "model",
+    "start": 546.53,
+    "end": 551.11,
+    "source_lane_indices": [
+     59,
+     60
+    ],
+    "text": "Checking the assembly before release"
+   },
+   {
+    "kind": "tool",
+    "start": 551.11,
+    "end": 554.05,
+    "text": "Release nut and capture",
+    "source_lane_index": 35,
+    "source_event": 90
+   },
+   {
+    "kind": "motion",
+    "start": 551.13,
+    "end": 553.33,
+    "text": "Open or close the gripper",
+    "source_lane_index": 11,
+    "source_event": 91
+   },
+   {
+    "kind": "model",
+    "start": 554.05,
+    "end": 562.41,
+    "source_lane_indices": [
+     61,
+     62
+    ],
+    "text": "Planning a view of the assembled pair"
+   },
+   {
+    "kind": "tool",
+    "start": 562.41,
+    "end": 573.88,
+    "text": "Lift and view the bolt-nut assembly",
+    "source_lane_index": 36,
+    "source_event": 94
+   },
+   {
+    "kind": "motion",
+    "start": 562.42,
+    "end": 569.51,
+    "text": "Move the gripper to the commanded pose",
+    "source_lane_index": 12,
+    "source_event": 95
+   },
+   {
+    "kind": "motion",
+    "start": 569.75,
+    "end": 573.01,
+    "text": "Move the gripper to the commanded pose",
+    "source_lane_index": 13,
+    "source_event": 96
+   },
+   {
+    "kind": "model",
+    "start": 573.88,
+    "end": 591.28,
+    "source_lane_indices": [
+     63,
+     64,
+     65
+    ],
+    "text": "Inspecting the first assembly and locating the cylinder"
+   },
+   {
+    "kind": "tool",
+    "start": 581.0,
+    "end": 581.42,
+    "text": "Check nut resting height via depth",
+    "source_lane_index": 37,
+    "source_event": 99
+   },
+   {
+    "kind": "tool",
+    "start": 591.28,
+    "end": 612.36,
+    "text": "Move to view the tall cylinder",
+    "source_lane_index": 38,
+    "source_event": 100
+   },
+   {
+    "kind": "motion",
+    "start": 591.35,
+    "end": 596.81,
+    "text": "Move the gripper to the commanded pose",
+    "source_lane_index": 14,
+    "source_event": 101
+   },
+   {
+    "kind": "motion",
+    "start": 597.03,
+    "end": 611.57,
+    "text": "Move the gripper to the commanded pose",
+    "source_lane_index": 15,
+    "source_event": 102
+   },
+   {
+    "kind": "model",
+    "start": 612.36,
+    "end": 641.19,
+    "source_lane_indices": [
+     66,
+     67,
+     68,
+     69,
+     70,
+     71,
+     72
+    ],
+    "text": "Inspecting cylinder geometry and planning a close-up"
+   },
+   {
+    "kind": "tool",
+    "start": 617.99,
+    "end": 618.55,
+    "text": "Measure cylinder top and fit rim",
+    "source_lane_index": 39,
+    "source_event": 105
+   },
+   {
+    "kind": "tool",
+    "start": 626.8,
+    "end": 627.17,
+    "text": "Sample HSV and fit cylinder top rim",
+    "source_lane_index": 40,
+    "source_event": 106
+   },
+   {
+    "kind": "tool",
+    "start": 633.28,
+    "end": 633.51,
+    "text": "Refit cylinder rim with lower V floor",
+    "source_lane_index": 41,
+    "source_event": 108
+   },
+   {
+    "kind": "tool",
+    "start": 641.19,
+    "end": 650.62,
+    "text": "View ring close-up",
+    "source_lane_index": 42,
+    "source_event": 110
+   },
+   {
+    "kind": "motion",
+    "start": 641.29,
+    "end": 650.15,
+    "text": "Move the gripper to the commanded pose",
+    "source_lane_index": 16,
+    "source_event": 111
+   },
+   {
+    "kind": "model",
+    "start": 650.62,
+    "end": 681.61,
+    "source_lane_indices": [
+     73,
+     74,
+     75,
+     76,
+     77
+    ],
+    "text": "Inspecting the circular ring and planning the grasp"
+   },
+   {
+    "kind": "tool",
+    "start": 658.42,
+    "end": 658.85,
+    "text": "Measure ring height and colours",
+    "source_lane_index": 43,
+    "source_event": 114
+   },
+   {
+    "kind": "tool",
+    "start": 666.33,
+    "end": 666.72,
+    "text": "Fit ring outline at its top plane",
+    "source_lane_index": 44,
+    "source_event": 115
+   },
+   {
+    "kind": "tool",
+    "start": 681.61,
+    "end": 684.55,
+    "text": "Move above ring and capture",
+    "source_lane_index": 45,
+    "source_event": 117
+   },
+   {
+    "kind": "motion",
+    "start": 681.63,
+    "end": 683.97,
+    "text": "Move the gripper to the commanded pose",
+    "source_lane_index": 17,
+    "source_event": 118
+   },
+   {
+    "kind": "model",
+    "start": 684.55,
+    "end": 693.17,
+    "source_lane_indices": [
+     78,
+     79,
+     80
+    ],
+    "text": "Planning the ring grasp"
+   },
+   {
+    "kind": "tool",
+    "start": 689.79,
+    "end": 689.96,
+    "text": "Refit ring from closer view",
+    "source_lane_index": 46,
+    "source_event": 121
+   },
+   {
+    "kind": "tool",
+    "start": 693.17,
+    "end": 697.71,
+    "text": "Descend around ring",
+    "source_lane_index": 47,
+    "source_event": 122
+   },
+   {
+    "kind": "motion",
+    "start": 693.19,
+    "end": 697.27,
+    "text": "Move the gripper to the commanded pose",
+    "source_lane_index": 18,
+    "source_event": 123
+   },
+   {
+    "kind": "model",
+    "start": 697.71,
+    "end": 703.07,
+    "source_lane_indices": [
+     81,
+     82
+    ],
+    "text": "Checking gripper feedback"
+   },
+   {
+    "kind": "tool",
+    "start": 703.07,
+    "end": 705.34,
+    "text": "Close gripper on ring",
+    "source_lane_index": 48,
+    "source_event": 126
+   },
+   {
+    "kind": "motion",
+    "start": 703.08,
+    "end": 705.24,
+    "text": "Open or close the gripper",
+    "source_lane_index": 19,
+    "source_event": 127
+   },
+   {
+    "kind": "model",
+    "start": 705.34,
+    "end": 708.77,
+    "source_lane_indices": [
+     83
+    ],
+    "text": "Checking the grasp before lifting"
+   },
+   {
+    "kind": "tool",
+    "start": 708.77,
+    "end": 718.91,
+    "text": "Lift ring and capture",
+    "source_lane_index": 49,
+    "source_event": 128
+   },
+   {
+    "kind": "motion",
+    "start": 708.79,
+    "end": 718.31,
+    "text": "Move the gripper to the commanded pose",
+    "source_lane_index": 20,
+    "source_event": 129
+   },
+   {
+    "kind": "model",
+    "start": 718.91,
+    "end": 758.04,
+    "source_lane_indices": [
+     84,
+     85,
+     86
+    ],
+    "text": "Estimating the held ring offset and planning transfer"
+   },
+   {
+    "kind": "tool",
+    "start": 733.83,
+    "end": 734.31,
+    "text": "Measure held ring offset from image",
+    "source_lane_index": 50,
+    "source_event": 132
+   },
+   {
+    "kind": "tool",
+    "start": 758.04,
+    "end": 766.98,
+    "text": "Move ring above cylinder",
+    "source_lane_index": 51,
+    "source_event": 133
+   },
+   {
+    "kind": "motion",
+    "start": 758.06,
+    "end": 766.61,
+    "text": "Move the gripper to the commanded pose",
+    "source_lane_index": 21,
+    "source_event": 134
+   },
+   {
+    "kind": "model",
+    "start": 766.98,
+    "end": 773.51,
+    "source_lane_indices": [
+     87,
+     88
+    ],
+    "text": "Checking ring and cylinder alignment"
+   },
+   {
+    "kind": "tool",
+    "start": 773.51,
+    "end": 776.64,
+    "text": "Lower ring onto cylinder top",
+    "source_lane_index": 52,
+    "source_event": 137
+   },
+   {
+    "kind": "motion",
+    "start": 773.52,
+    "end": 776.17,
+    "text": "Move the gripper to the commanded pose",
+    "source_lane_index": 22,
+    "source_event": 138
+   },
+   {
+    "kind": "model",
+    "start": 776.64,
+    "end": 783.85,
+    "source_lane_indices": [
+     89,
+     90
+    ],
+    "text": "Checking placement feedback"
+   },
+   {
+    "kind": "tool",
+    "start": 783.85,
+    "end": 786.99,
+    "text": "Lower ring along cylinder",
+    "source_lane_index": 53,
+    "source_event": 141
+   },
+   {
+    "kind": "motion",
+    "start": 783.87,
+    "end": 786.54,
+    "text": "Move the gripper to the commanded pose",
+    "source_lane_index": 23,
+    "source_event": 142
+   },
+   {
+    "kind": "model",
+    "start": 786.99,
+    "end": 794.46,
+    "source_lane_indices": [
+     91,
+     92
+    ],
+    "text": "Checking insertion depth"
+   },
+   {
+    "kind": "tool",
+    "start": 794.46,
+    "end": 797.0,
+    "text": "Release ring and capture",
+    "source_lane_index": 54,
+    "source_event": 145
+   },
+   {
+    "kind": "motion",
+    "start": 794.48,
+    "end": 796.43,
+    "text": "Open or close the gripper",
+    "source_lane_index": 24,
+    "source_event": 146
+   },
+   {
+    "kind": "model",
+    "start": 797.0,
+    "end": 803.91,
+    "source_lane_indices": [
+     93,
+     94
+    ],
+    "text": "Checking the assembly before inspection"
+   },
+   {
+    "kind": "tool",
+    "start": 803.91,
+    "end": 815.38,
+    "text": "Lift and view ring-cylinder assembly",
+    "source_lane_index": 55,
+    "source_event": 149
+   },
+   {
+    "kind": "motion",
+    "start": 803.93,
+    "end": 810.87,
+    "text": "Move the gripper to the commanded pose",
+    "source_lane_index": 25,
+    "source_event": 150
+   },
+   {
+    "kind": "motion",
+    "start": 811.06,
+    "end": 814.48,
+    "text": "Move the gripper to the commanded pose",
+    "source_lane_index": 26,
+    "source_event": 151
+   },
+   {
+    "kind": "model",
+    "start": 815.38,
+    "end": 834.27,
+    "source_lane_indices": [
+     95,
+     96,
+     97,
+     98,
+     99
+    ],
+    "text": "Verifying the released assembly and planning withdrawal"
+   },
+   {
+    "kind": "tool",
+    "start": 821.1,
+    "end": 821.57,
+    "text": "Check ring resting height via depth",
+    "source_lane_index": 56,
+    "source_event": 154
+   },
+   {
+    "kind": "tool",
+    "start": 827.46,
+    "end": 827.62,
+    "text": "Crop top view of assemblies",
+    "source_lane_index": 57,
+    "source_event": 155
+   },
+   {
+    "kind": "tool",
+    "start": 834.27,
+    "end": 845.68,
+    "text": "Lift, return home, capture final frames",
+    "source_lane_index": 58,
+    "source_event": 157
+   },
+   {
+    "kind": "motion",
+    "start": 834.29,
+    "end": 839.68,
+    "text": "Move the gripper to the commanded pose",
+    "source_lane_index": 27,
+    "source_event": 158
+   },
+   {
+    "kind": "motion",
+    "start": 839.76,
+    "end": 844.87,
+    "text": "Return the arm home",
+    "source_lane_index": 28,
+    "source_event": 159
+   },
+   {
+    "kind": "model",
+    "start": 845.68,
+    "end": 900.76,
+    "source_lane_indices": [
+     100,
+     101,
+     102,
+     103,
+     104,
+     105,
+     106
+    ],
+    "text": "Checking the final state and preparing the report"
+   },
+   {
+    "kind": "tool",
+    "start": 848.73,
+    "end": 848.88,
+    "text": "Crop final top view",
+    "source_lane_index": 59,
+    "source_event": 161
+   },
+   {
+    "kind": "tool",
+    "start": 859.64,
+    "end": 860.18,
+    "text": "Check final state, budget and time",
+    "source_lane_index": 60,
+    "source_event": 164
+   },
+   {
+    "kind": "tool",
+    "start": 890.32,
+    "end": 890.5,
+    "text": "Write kept tool with header and verify it runs",
+    "source_lane_index": 61,
+    "source_event": 168
+   },
+   {
+    "kind": "say",
+    "start": 900.76,
+    "end": 916.76,
+    "text": "The agent reports both pairs assembled and the arm returned to its observation posture.",
+    "source_event": 169
+   }
+  ],
+  "stages": [
+   {
+    "start": 0.0,
+    "end": 32.22,
+    "text": "Study the interface and demonstration",
+    "source_chapter": 1
+   },
+   {
+    "start": 32.22,
+    "end": 356.27,
+    "text": "Inspect the scene and measure the parts",
+    "source_chapter": 2
+   },
+   {
+    "start": 356.27,
+    "end": 553.33,
+    "text": "Grasp and assemble the hexagonal pair",
+    "source_chapter": 3
+   },
+   {
+    "start": 553.33,
+    "end": 703.08,
+    "text": "Check the first pair and approach the circular ring",
+    "source_chapter": 4
+   },
+   {
+    "start": 703.08,
+    "end": 796.43,
+    "text": "Grasp and assemble the circular pair",
+    "source_chapter": 5
+   },
+   {
+    "start": 796.43,
+    "end": 918.0,
+    "text": "Withdraw, verify and report",
+    "source_chapter": 6
+   }
+  ]
+ }
 }

@@ -1,0 +1,52 @@
+{
+  "cycle": 1,
+  "available_experience_version": 0,
+  "lesson": {
+    "geometry": "Demo mapping: blue hex collar slides down narrow white hex-foot peg; round blue collar slides down wide stepped white cylinder; white stems remain protruding. All units metres, left_base, table z=-.045. Capture4 cross-camera triangulation gives estimated heights hex .014, round .027, narrow peg .076, wide peg .080 (rough +/- .003); textureless white depth was unreliable. Initial XY: hex (.29092,.04760), round (.25439,-.11896), narrow (.15762,.08173). Wide moved about .010 during hex pickup and was remeasured in cap14 at (.3402,-.0367), top z=.0348. Exact pixels/ray residuals and estimates in measurements.json. Canonical down quaternion wxyz=(0,1,0,0). Closure widths hex .0534 / fraction .559; round .0522 / .5461. Hole/shaft diameter estimates are approximate, not precision fit measurements.",
+    "recipe": "Actual executed entry point python3 scratch/operate.py COMMAND JSON_ARGS (Python3 stdlib; calls provided robot_client.py only). Each action logs and captures, then operator inspects images before next action. Exact target and feedback sequence in cycle_01_recipe.json and commands.jsonl; do not blind replay XY. Initial clear planned target (.29,.045,.15) succeeded. Hex approach (.291,.0476,.025), grasp z=-.031, close, lift .09, transfer (.1576,.0817,.09), descend .052,.030,-.020; open; withdraw .120. Round approach (.2544,-.119,.120) then .025, grasp -.022, close, lift .10, transfer freshly measured (.3402,-.0367,.10), descend .065,.032,-.008; open; withdraw .120 then home. Commands used canonical down rotation; no explicit joint targets, achieved joints in capture metadata. Held objects confirmed caps8/19, peg entry caps11/22, stable released assemblies caps14/25-27. Latest final cap27 and empty open gripper .9991 supported accepted success. Stage took 512.465s, 52 counted commands through reporting.",
+    "corrections": "No failed assembly attempt, regrasp, or insertion retry. Two initial linear observation approaches failed IK without motion (caps2/3); mode=plan at (.29,.045,.15) worked, then linear moves worked. Wide white receiver shifted about 1cm during hex pickup/lift, likely open-finger contact; remained upright. Fresh cap14 measurement replaced old center before round insertion. Avoid this by checking complete open-finger clearance; narrower preshape is only an untested suggestion. Unreliable white depth replaced by cross-camera center triangulation. No right-side contact observed.",
+    "next_cycle": "No prior version existed; this establishes checkpoint1. Reuse operate.py, historical recipe and measured geometry; freshly measure all source/receiver centers, check upright orientation, heights, finger clearance, workspace limits and held offsets. Cap15 validated round source and cap14 validated moved receiver; no stale coordinates were replayed. Save time by top deprojection at estimated top heights followed by wrist cross-check near approach, rather than repeating solved demo/geometry analysis. Maintain per-action visual checks and current motion limits. After final home EE is about (.354,.015,.350), unlike initial (.287,-.016,.264); split >.25m approaches and use planned moves only in clear space. Only assigned next agent may start cycle2 after checkpoint; current cycle has ended and gripper is empty/withdrawn."
+  },
+  "artifacts": [
+    {
+      "source": "scratch/operate.py",
+      "sha256": "f3867c5a4e934f90443b880bcd24cf674573997a4e318bdd7074976ae7d44499",
+      "snapshot": "experience/cycle_01/artifacts/scratch/operate.py"
+    },
+    {
+      "source": "scratch/measurements.json",
+      "sha256": "39f1d40c8911ed52d0fbfa6779dedfc59421558e9b54dc8d1b362e72a5ba207f",
+      "snapshot": "experience/cycle_01/artifacts/scratch/measurements.json"
+    },
+    {
+      "source": "scratch/cycle_01_recipe.json",
+      "sha256": "02ced8937a1534b1690ca9d9d1b8ec12f206a3c0ec10f5fdb2ecad516dc373f3",
+      "snapshot": "experience/cycle_01/artifacts/scratch/cycle_01_recipe.json"
+    },
+    {
+      "source": "scratch/commands.jsonl",
+      "sha256": "b3db2bd6eeb997ec23aeb285ad685ab6db967b2ede0b0a503e19af8404b3818a",
+      "snapshot": "experience/cycle_01/artifacts/scratch/commands.jsonl"
+    },
+    {
+      "source": "scratch/attempts.md",
+      "sha256": "21790efb666f01ff362bd9eb2b16dc91ad5a7ad628b7874e345ddeffd43d76ae",
+      "snapshot": "experience/cycle_01/artifacts/scratch/attempts.md"
+    },
+    {
+      "source": "scratch/cycle_01_RESULT.md",
+      "sha256": "d568f74785ff8ea58e281e3bf426bcaa94736474ae3e07044a2a5aa1f42ac91a",
+      "snapshot": "experience/cycle_01/artifacts/scratch/cycle_01_RESULT.md"
+    },
+    {
+      "source": "scratch/cycle_01_final_pairs.png",
+      "sha256": "cd78606ac0b3fa403affad197452bf12ada1dfde11ab2614d929a17f9a6d90f4",
+      "snapshot": "experience/cycle_01/artifacts/scratch/cycle_01_final_pairs.png"
+    },
+    {
+      "source": "scratch/demo_contact.png",
+      "sha256": "edef78d257262d435df967d7cc741ea3d7bd3eef5a804d67fb7e13dd5c323693",
+      "snapshot": "experience/cycle_01/artifacts/scratch/demo_contact.png"
+    }
+  ]
+}
