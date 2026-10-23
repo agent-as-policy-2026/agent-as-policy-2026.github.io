@@ -117,7 +117,7 @@
   gap: 0.4rem 0.75rem;
   margin: 0 0 1rem;
   padding-bottom: 0.7rem;
-  border-bottom: 1px solid var(--ev-rule);
+  border-bottom: 0;
 }
 .ev-picker-label {
   font-size: 0.8125rem;
@@ -289,43 +289,17 @@
 
 .ev-strip { margin-top: 0.8rem; }
 
-.ev-chapbar {
-  display: grid;
-  gap: 2px;
-  margin-left: var(--ev-gutter);
-  margin-bottom: 5px;
-}
-.ev-chap {
-  font: inherit;
-  font-size: 0.75rem;
-  text-align: left;
-  color: var(--ev-muted);
-  background: var(--ev-track);
-  border: 0;
-  border-radius: 2px;
-  padding: 0.2rem 0.4rem;
-  min-height: 24px;
-  overflow: hidden;
-  white-space: nowrap;
-  cursor: pointer;
-}
-/* A chapter button is as wide as its chapter is long, which at any page width leaves
-   some of them too narrow for their title: "3 Pick up the h" carries no information and
-   reads as a rendering fault. viewer.js measures each button after layout and keeps the
-   title only where the whole title fits; the rest show the number alone, with the title
-   on the button as its accessible name and spelled out in the Chapters list below. */
-.ev-chap-title { white-space: nowrap; }
-.ev-chap:hover { background: #dce4ef; color: var(--ev-ink); }
-.ev-chap[aria-current="true"] {
-  background: var(--ev-ink);
-  color: var(--ev-bg);
-}
-.ev-chap:not(.ev-chap--wide) { text-align: center; padding-inline: 0.1rem; }
-.ev-chap-num {
-  font-family: var(--ev-mono);
-  opacity: 0.7;
-}
-.ev-chap--wide .ev-chap-num { margin-right: 0.35rem; }
+.ev-chapbar { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; margin: 0 0 14px; }
+.ev-chap { display: flex; flex-direction: column; gap: 5px; align-items: flex-start;
+  font: inherit; font-size: 0.85rem; line-height: 1.4; text-align: left;
+  color: var(--ev-ink); background: var(--ev-track); border: 0; border-radius: 6px;
+  padding: 12px; min-width: 0; cursor: pointer; white-space: normal; }
+.ev-chap-title { display: block; white-space: normal; overflow-wrap: anywhere; }
+.ev-chap-num { font-size: 0.75rem; font-weight: 650; color: var(--ev-muted); }
+.ev-chap:hover { background: #dce4ef; }
+.ev-chap[aria-current="true"] { background: var(--ev-ink); color: var(--ev-bg); }
+.ev-chap[aria-current="true"] .ev-chap-num { color: inherit; }
+@media (max-width: 650px) { .ev-chapbar { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 .ev-chapnow {
   margin: 0.5rem 0 0;
   font-size: 0.8125rem;
@@ -933,9 +907,16 @@
     align-items: start;
   }
   .ev--js .ev-ep-head,
+  .ev--js .ev-transport,
+  .ev--js .ev-clocknote,
+  .ev--js .ev-strip,
   .ev--js .ev-filmwrap,
   .ev--js .ev-summary { grid-column: 1 / -1; }
-  .ev--js .ev-railwrap { align-self: stretch; }
+  .ev--js .ev-railwrap { align-self: stretch; contain: size;
+    display: flex; flex-direction: column; min-height: 0; }
+  .ev--js .ev-rail { flex: 1; min-height: 0; max-height: none; }
+  .ev--js .ev-stage { grid-column: 1; }
+  .ev--js .ev-railwrap { grid-column: 2; }
 
   .ev--js .ev-frame { display: grid; place-items: center; }
 }
@@ -943,9 +924,8 @@
 @media (max-width: 47.99rem) {
   .ev { --ev-gutter: 5.4rem; }
   .ev-lane-name { font-size: 0.6875rem; gap: 0.3rem; }
-  .ev-lane-long, .ev-chap-title { display: none; }
+  .ev-lane-long { display: none; }
   .ev-lane-short { display: inline; }
-  .ev-chap { font-size: 0.6875rem; padding: 0.2rem 0.1rem; text-align: center; }
   .ev-btn-more { display: none; }
   .ev-rail { max-height: 26rem; }
   .ev-speed { margin-left: 0; }
@@ -983,7 +963,7 @@
 .ev-budget,.ev-counts,.ev-chapters-static{margin-top:1.5rem;margin-bottom:1.5rem}
 .ev-h4{font-size:1rem;margin-bottom:0.8rem;color:var(--ev-ink)}
 .ev-caption,.ev-budget-note{line-height:1.7}
-@container(max-width:950px){.ev--js .ev-ep:not([hidden]){display:block}.ev-railwrap{margin-top:1.5rem}.ev-rail{max-height:30rem}}
+@container(max-width:950px){.ev--js .ev-ep:not([hidden]){display:block}.ev--js .ev-railwrap{margin-top:1.5rem;contain:none;display:block}.ev--js .ev-rail{max-height:30rem}}
 @media(max-width:480px){.ev-video-progress{padding:1.3rem 0.5rem 0.4rem;gap:0.35rem}.ev-video-progress .ev-btn--play{width:30px;height:30px}.ev-video-seek-clock{font-size:0.6rem}.ev-video-progress .ev-speed select{font-size:0.7rem}.ev-dl{grid-template-columns:repeat(2,minmax(0,1fr))}}
 
 agp-video-player {display:contents}video-neutral-skin {position:relative;width:100%;--media-accent:#fff;--media-color-primary:#fff}.ev-frame{display:block!important}.ev-video{padding:0!important}

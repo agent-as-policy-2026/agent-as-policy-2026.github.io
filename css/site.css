@@ -198,18 +198,9 @@ a:hover { text-decoration-thickness: 2px; }
 .agp-section > :where(p, ul, ol, dl, blockquote) { max-width: var(--measure); }
 .agp-section > :where(h2, h3, h4) { max-width: 34ch; }
 
-.agp-section-head { display: flex; flex-wrap: wrap; gap: 0.5rem 2.5rem; align-items: baseline;
-                    justify-content: space-between; margin-bottom: 0.9rem; }
-/* A section that has a lede puts it beside the heading instead of under it. Stacked, a
-   two-word heading sat over a 550px ribbon in a 1120px track and the right third of the
-   board was empty through every section opening. Below 62rem they stack, in source order,
-   exactly as before. */
-.agp-section-head-wide { display: grid; grid-template-columns: minmax(0, 1fr); gap: 0.4rem 3rem;
-                         align-items: baseline; justify-content: start; margin-bottom: 1.1rem; }
-.agp-section-head-wide > .agp-lede { margin: 0; max-width: var(--measure); }
-@media (min-width: 62rem) {
-  .agp-section-head-wide { grid-template-columns: minmax(0, 1fr); }
-}
+.agp-section-head { display: flex; flex-direction: column; align-items: center;
+  gap: 0.75rem; text-align: center; margin-bottom: 1.1rem; }
+.agp-section-head .agp-lede { width: 100%; max-width: none; margin: 0 auto; }
 
 .agp-h2 {
   font-size: clamp(1.6rem, 1.1rem + 1.6vw, 2.05rem);
@@ -361,13 +352,16 @@ code { font-family: var(--font-mono); font-size: 0.92em; }
 .agp-plate > :first-child { margin-top: 0; }
 .agp-plate > :last-child { margin-bottom: 0; }
 
-/* The masthead: title and claim left, identity and buttons right, stacking below 860px
-   with the left column first. */
-.agp-masthead { display: grid; gap: 1.6rem 2.5rem; align-items: start; }
-@media (min-width: 54rem) {
-  .agp-masthead { grid-template-columns: 7fr 5fr; }
-}
-.agp-masthead-main > :first-child, .agp-masthead-side > :first-child { margin-top: 0; }
+/* A single centered column introduces the project. */
+.agp-masthead { display: flex; flex-direction: column; align-items: center;
+  gap: 1.4rem; text-align: center; }
+.agp-masthead .agp-title { max-width: none; width: 100%; margin: 0;
+  font-size: clamp(2rem, 3.5vw, 3.2rem); line-height: 1.15; }
+.agp-identity { width: 100%; }
+.agp-identity .agp-authors, .agp-identity .agp-affils { max-width: none; }
+.agp-identity .agp-hero-meta { justify-content: center; margin-bottom: 0; }
+.agp-masthead .agp-claim { max-width: 72ch; margin: 0; }
+.agp-masthead .agp-btns { justify-content: center; margin: 0; }
 
 .agp-chiprow { display: flex; flex-wrap: wrap; gap: 10px; margin: 1.2rem 0 0; padding: 0; }
 .agp-chip-tab {
@@ -715,7 +709,7 @@ p.fig-note, p.fig-src { font-size: 0.75rem; color: var(--ink-3); margin: 0.4rem 
 
 /* ---------------------------------------------------------------- tasks */
 
-.agp-task-detail > .agp-section-head { flex-direction: column; align-items: flex-start; }
+.agp-task-detail > .agp-section-head { align-items: center; }
 .agp-task-detail > p { max-width: none; }
 
 .agp-scores { list-style: none; margin: 0; padding: 0; display: grid; gap: 0.3rem; }
@@ -898,7 +892,7 @@ body.agp-page-watch { --board: #ffffff; --bg: #ffffff; background: #ffffff; }
 /* Links into the flow, never only in the navigation: the two under Table 1 that DECISIONS
    asks for, and the "in full" line under a section the split shortened. */
 .agp-linkrow { list-style: none; max-width: none; padding: 0.8rem 0 0; margin: 1.6rem 0 0.4rem;
-               display: grid; gap: 0.4rem; border-top: 1px solid var(--rule); }
+               display: grid; gap: 0.4rem; border: 0; }
 @media (min-width: 46rem) { .agp-linkrow { grid-template-columns: 1fr 1fr; gap: 0 2rem; } }
 .agp-linkrow a { font-size: 0.9375rem; }
 .agp-morelink { margin: 1rem 0 0; font-size: 0.9375rem; }
@@ -1254,9 +1248,6 @@ body.agp-page-watch { --board: #ffffff; --bg: #ffffff; background: #ffffff; }
 .agp-category-filters { margin-bottom: 1rem; }
 .agp-category-filters .agp-filter { border-radius: 999px; padding-inline: 1rem; }
 
-.agp-section-head { flex-direction: column; align-items: flex-start; gap: 0.75rem; }
-.agp-section-head-wide { display: grid; grid-template-columns: minmax(0, 1fr); }
-.agp-section-head .agp-lede { width: 100%; max-width: none; }
 .agp-abstract p { font-size: 1.15rem; line-height: 1.7; }
 .agp-table-reading { margin:0.75rem 0 1.2rem; font-size:0.8rem; line-height:1.5; color:var(--ink-2); }
 .agp-method-flow { margin: 1.8rem 0; padding: clamp(20px, 3vw, 40px); background: #f1f5fa; border: 1px solid #e0e7f0; border-radius: 20px; }
@@ -1308,3 +1299,49 @@ body.agp-page-watch { --board: #ffffff; --bg: #ffffff; background: #ffffff; }
 @container(max-width:850px){.exp-run-flow,.exp-memory-highlights{grid-template-columns:1fr}.exp-run-flow>div{display:grid;grid-template-columns:65px 1fr;gap:4px 12px}.exp-run-flow strong{grid-row:span 2;margin:0}.exp-run-flow small{margin:0}.exp-memory-highlights li{padding:14px}.exp-study{padding:18px}.exp-compare-row{grid-template-columns:130px minmax(0,1fr) 60px}}
 /* Takeaways link to exact evidence while retaining the full saved record. */
 .exp-memory-panel{position:relative}.exp-takeaways{display:grid;gap:10px;margin:12px 0 20px}.exp-takeaway{display:block;width:100%;text-align:left;font:inherit;color:#23445e;background:#f0f6fc;border:1px solid #c9dced;border-radius:7px;padding:12px;cursor:pointer}.exp-takeaway strong,.exp-takeaway span{display:block}.exp-takeaway strong{font-size:.95rem;margin-bottom:6px}.exp-takeaway span{font-size:.88rem;line-height:1.5}.exp-takeaway[aria-pressed=true]{border-color:#285d9b;background:#e4effb}.exp-takeaway:focus-visible{outline:2px solid #285d9b;outline-offset:3px}.exp-memory-summary .exp-evidence-hint{font-size:.8rem;color:#526477}.exp-evidence-link{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;overflow:visible}.exp-evidence-link path{fill:none;stroke:#285d9b;stroke-width:2;stroke-dasharray:1;vector-effect:non-scaling-stroke}.exp-memory-source .exp-evidence-selected{background:#d5e8ff;color:#183c68;outline:2px solid #285d9b;outline-offset:2px}
+
+.agp-abstract { max-width: none; margin-inline: auto; text-align: center; }
+.exp-study > h3, .exp-memory-study > h3 { text-align: center; }
+.exp-study > p, .exp-memory-study > p { margin-inline: auto; text-align: center; max-width: 78ch; }
+#how-it-works { margin-top: 2rem; }
+.agp-section > .agp-h2 { max-width: none; text-align: center; }
+.agp-simulation-videos { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1.5rem; margin-top: 2rem; }
+.agp-simulation-videos figure { margin: 0; min-width: 0; }
+.agp-simulation-videos video { display: block; width: 100%; height: auto; border-radius: 10px; }
+.agp-simulation-videos figcaption { text-align: center; }
+.agp-simulation-videos h3 { margin: 0.8rem 0 0.3rem; font-size: 1.1rem; }
+.agp-simulation-videos p { margin: 0; color: var(--muted); }
+@media (max-width: 650px) { .agp-simulation-videos { grid-template-columns: 1fr; } }
+
+/* Compact resource links and section navigation. */
+.agp-resource { align-items: center; gap: .55rem; border-radius: 999px; padding: .65rem 1.1rem; font-weight: 600; }
+.agp-resource img { display: block; width: 22px; height: 22px; object-fit: contain; flex-shrink: 0; }
+.agp-resource-arxiv { color: #8d2534; background: #fff1f3; border-color: #e7bfc5; }
+.agp-resource-pdf { color: #245bad; background: #edf4ff; border-color: #bfd2ef; }
+.agp-resource-hf { color: #704f0a; background: #fff7d9; border-color: #e4d18f; }
+.agp-resource-github { color: #fff; background: #24292f; border-color: #24292f; }
+.agp-resource:hover { filter: brightness(.94); }
+.agp-toc { position: fixed; left: 12px; top: 20px; z-index: 60; }
+.agp-toc details { position: relative; }
+.agp-toc summary { display: flex; flex-direction: column; align-items: center; gap: 4px; list-style: none; cursor: pointer; padding: 10px 7px; border: 1px solid var(--rule); border-radius: 9px; background: #fff; box-shadow: 0 2px 10px #18223012; font-size: 10px; color: var(--ink); }
+.agp-toc summary::-webkit-details-marker { display: none; }
+.agp-toc summary svg { width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width: 1.7; }
+.agp-toc-panel { position: absolute; left: 0; top: 100%; width: min(260px, calc(100vw - 24px)); max-height: calc(100dvh - 110px); overflow-y: auto; padding: 18px; background: #fff; border: 1px solid var(--rule); border-radius: 10px; box-shadow: 0 8px 28px #18223020; }
+.agp-toc-home { display: block; font-weight: 650; text-decoration: none; margin-bottom: 12px; }
+.agp-toc ol { list-style: none; padding: 0; margin: 0; }
+.agp-toc li { margin: 0; }
+.agp-toc li a { display: block; padding: 9px 10px; border-radius: 5px; text-decoration: none; font-size: .9rem; color: var(--ink); }
+.agp-toc li a:hover, .agp-toc li a:focus-visible { background: #edf4ff; color: var(--accent); }
+.agp-toc .agp-pauseall { margin-top: 12px; }
+.agp-code-example-head { grid-column: 1 / -1; text-align: center; }
+.agp-code-example .agp-code-example-head h3 { font-size: 1.6rem; margin: 0 0 .5rem; }
+.agp-code-example-head p { margin: 0; color: var(--muted); }
+.agp-code-example h4 { font-size: 1.1rem; margin: 0 0 1rem; }
+.agp-benchmark-key { margin: 1.5rem 0 .7rem; font-size: .85rem; color: var(--muted); text-align: center; }
+.agp-benchmark-table { min-width: 1040px; }
+.agp-benchmark-table td, .agp-benchmark-table th { text-align: center; }
+.agp-benchmark-table td { white-space: nowrap; font-variant-numeric: tabular-nums; }
+.agp-benchmark-table td span { color: var(--muted); font-size: .82em; }
+#dig .agp-doors { width: 100%; }
+#dig .agp-door-line { max-width: none; }
+@media(max-width:650px) { .agp-toc { top: 8px; left: 8px; } .agp-toc summary { padding: 7px; } .agp-toc summary span { display: none; } }

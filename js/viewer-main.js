@@ -285,38 +285,16 @@ class Episode {
     });
   }
 
-  /** Show a chapter title only where the whole title fits inside its button.
-   *  A button is as wide as its chapter is long, so which titles fit changes with the
-   *  page width; every title stays on the button as its accessible name, and all six
-   *  are spelled out in the Chapters list under the episode. */
-  fitChapters() {
-    if (!this.chapBtns || !this.chapBar || !this.chapBar.clientWidth) return;
-    this.chapBtns.forEach((b) => {
-      const title = b.querySelector('.ev-chap-title');
-      if (!title) return;
-      b.classList.add('ev-chap--wide');
-      title.hidden = false;
-      if (b.scrollWidth > b.clientWidth + 1) {
-        title.hidden = true;
-        b.classList.remove('ev-chap--wide');
-      }
-    });
-  }
-
   buildStrip() {
     const d = this.data;
     const mount = this.root.querySelector('[data-mount="strip"]');
     mount.innerHTML = '';
 
-    /* chapters, widths proportional to their run duration */
+    /* Chapter navigation uses equal cards so every stage has room for its title. */
     const bar = el('div', 'ev-chapbar');
-    /* minmax(0, Nfr), not Nfr: a track's own content must never widen it, or a long
-       chapter title would steal width from its neighbours */
-    bar.style.gridTemplateColumns = d.chapters
-      .map((c) => 'minmax(0,' + (c.t1 - c.t).toFixed(3) + 'fr)').join(' ');
     this.chapBtns = d.chapters.map((c) => {
       const b = el('button', 'ev-chap',
-        '<span class="ev-chap-num">' + c.i + '</span>' +
+        '<span class="ev-chap-num">Chapter ' + c.i + '</span>' +
         '<span class="ev-chap-title">' + esc(c.title) + '</span>');
       b.type = 'button';
       b.title = c.title + ', from ' + mmss(c.t);
@@ -327,12 +305,6 @@ class Episode {
     });
     mount.appendChild(bar);
     this.chapBar = bar;
-    this.fitChapters();
-    if ('ResizeObserver' in window) {
-      this.chapRO = new ResizeObserver(() => this.fitChapters());
-      this.chapRO.observe(bar);
-    }
-
     /* lanes */
     const plot = el('div', 'ev-plot');
     plot.tabIndex = 0;
@@ -1211,7 +1183,7 @@ class Viewer {
       ep.ready = ep.load().then(() => ep.build()).catch(() => this.degrade(ep));
     }
     await ep.ready;
-    if (ep.built) { ep.fitChapters(); if (this.visible) ep.warm(); }
+    if (ep.built) { if (this.visible) ep.warm(); }
     return ep;
   }
 
