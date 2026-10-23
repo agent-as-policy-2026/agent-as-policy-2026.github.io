@@ -1,6 +1,6 @@
-import './vendor/videojs.js';
-import { ActivityCaptions } from './activity-captions.js';
-import { presentationRows } from './presentation-captions.js';
+import './vendor/videojs.js?v=fddac3dbde89';
+import { ActivityCaptions } from './activity-captions.js?v=236743ac6646';
+import { presentationRows } from './presentation-captions.js?v=106a2466b953';
 /* Episode viewer — section 12, "Task execution traces".
  *
  * ES2020 module with a self-hosted Video.js player and two JSON files that
