@@ -1,3 +1,4 @@
+import { motionPlaybackRate } from './adaptive-playback.js';
 import './vendor/videojs.js?v=fddac3dbde89';
 import { ActivityCaptions } from './activity-captions.js?v=236743ac6646';
 import { presentationRows } from './presentation-captions.js?v=106a2466b953';
@@ -118,6 +119,8 @@ class Episode {
     this.revealed = new Set();
     this.runT = 0;
     this.rafId = 0;
+    this.autoSpeed = true;
+    this.expectedRate = null;
   }
 
   /* time map — the only two places the two clocks meet */
@@ -170,7 +173,14 @@ class Episode {
     this.video.addEventListener('seeked', () => { this.activityDisplay.reset(); this.tick(true); });
     this.video.addEventListener('timeupdate', () => { if (this.video.paused) this.tick(true); });
     this.video.addEventListener('loadedmetadata', () => this.tick(true));
-    this.video.addEventListener('ratechange', () => { this.activityDisplay.reset(); this.tick(true); });
+    this.video.addEventListener('ratechange', () => {
+      if (this.autoSpeed && this.video.playbackRate !== this.expectedRate) {
+        this.autoSpeed = false;
+        this.syncAutoSpeed();
+      }
+      this.activityDisplay.reset();
+      this.tick(true);
+    });
 
     this.setCaptions(true);
     this.tick(true);
@@ -185,6 +195,20 @@ class Episode {
     this.capBtn.setAttribute('aria-pressed', 'true');
     this.capBtn.addEventListener('click', () => this.setCaptions(!this.captionsOn));
     mount.appendChild(this.capBtn);
+    this.autoSpeedBtn = el('button', 'ev-btn', 'Auto speed on');
+    this.autoSpeedBtn.type = 'button';
+    this.autoSpeedBtn.setAttribute('aria-pressed', 'true');
+    this.autoSpeedBtn.addEventListener('click', () => {
+      this.autoSpeed = !this.autoSpeed;
+      if (!this.autoSpeed) {
+        this.expectedRate = 1 / this.speed;
+        this.video.playbackRate = this.expectedRate;
+      }
+      this.syncAutoSpeed();
+      this.tick(true);
+    });
+    mount.appendChild(this.autoSpeedBtn);
+    mount.appendChild(el('span', 'ev-clocknote', 'Auto speed · motion 4× · thinking and waiting 16×'));
 
     const activityNote = el('p', 'ev-clocknote', 'Selected captions highlight longer activities and agent updates. The event log below shows the full record.');
     mount.parentNode.insertBefore(activityNote, mount.nextSibling);
@@ -203,7 +227,7 @@ class Episode {
     // The transcript feeds the activity captions rather than a second subtitle layer.
     this.video.querySelectorAll('track[kind="captions"], track[kind="subtitles"]').forEach(track => { track.kind = 'metadata'; });
     this.player = document.createElement('agp-video-player');
-    this.player.setAttribute('rates', JSON.stringify([1, 2, 4, 8].map(rate => rate / this.speed)));
+    this.player.setAttribute('rates', JSON.stringify([1, 2, 4, 8, 16].map(rate => rate / this.speed)));
     this.skin = document.createElement('video-neutral-skin');
     this.skin.style.cssText = 'display:block;width:100%;aspect-ratio:4/3';
     this.video.before(this.player);
@@ -904,11 +928,24 @@ class Episode {
     }
   }
 
+  syncAutoSpeed() {
+    this.autoSpeedBtn.textContent = this.autoSpeed ? 'Auto speed on' : 'Auto speed off';
+    this.autoSpeedBtn.setAttribute('aria-pressed', String(this.autoSpeed));
+  }
+
   /** One frame of synchronisation: playhead, clock, chapter, rail, filmstrip. */
   tick(force) {
     const run = this.videoToRun(this.video.currentTime || 0);
     if (!force && Math.abs(run - this.runT) < 0.02) return;
     this.runT = run;
+    if (this.autoSpeed) {
+      this.expectedRate = motionPlaybackRate(this.data.lanes.motion, run, this.speed);
+      if (this.video.playbackRate !== this.expectedRate) {
+        this.video.defaultPlaybackRate = this.expectedRate;
+        this.video.playbackRate = this.expectedRate;
+      }
+    }
+
 
     const pct = clamp(run / this.duration, 0, 1) * 100;
     this.playhead.style.left = pct.toFixed(4) + '%';

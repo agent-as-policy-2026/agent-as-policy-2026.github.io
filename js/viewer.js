@@ -16,7 +16,7 @@ if (root) {
   const start = () => {
     if (started) return;
     started = true;
-    import('./viewer-main.js?v=e41d0f4d44ee').catch(() => { /* the static markup carries the section */ });
+    import('./viewer-main.js?v=b1a535ac92f1').catch(() => { /* the static markup carries the section */ });
   };
 
   const deepLink = () => /^#(e1|e2)(\b|&)|^#episode-/.test(location.hash || '');
